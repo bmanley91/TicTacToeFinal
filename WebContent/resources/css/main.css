@@ -1,0 +1,58 @@
+#gameBoard {
+	margin:0 auto;
+	border-collapse:collapse;
+}
+#gameBoard td{
+	width:150px;
+	height:150px;
+	cursor:pointer;
+
+    background-color:whiteSmoke;
+	
+}
+.middleCol {
+	border-left:1px solid black;
+	border-right:1px solid black;
+}
+
+#middleRow {
+	border-top:1px solid black;
+	border-bottom:1px solid black;
+}
+
+#wrapper {
+	width:100%;
+	text-align:center;
+}
+
+.closedPiece {
+	color:red;
+}
+.hidden {
+	display:none;
+}
+.center {
+	margin:0 auto;
+	text-align:center;
+}
+h1 {
+	width:100%;
+}
+#legend {
+	border:10px solid black;
+	width:200px;
+	margin:10px auto;
+}
+.legendKey{
+	dispaly:inline !important;
+	border-bottom: 1px solid black;
+	font-size: 45px;
+	font-weight: 700;
+}
+.inline{
+	display:inline !important;
+}
+.imgKey {
+	width:40px;
+	height:40px;
+}
