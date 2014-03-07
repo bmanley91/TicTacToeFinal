@@ -44,7 +44,7 @@ public class StartGame extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(); 
-		User user1 = (User)request.getAttribute("user1");
+		Player user1 = (Player)request.getAttribute("user1");
 		String name1 = request.getParameter("name1"); 
 		String name2 = request.getParameter("name2"); 
 		
@@ -56,7 +56,7 @@ public class StartGame extends HttpServlet {
 		if (name1 == null || name1.isEmpty() || name2 == null || name2.isEmpty()) 
 			msg="Please fill out all fields";
 		else {
-			Player player1 = new Player(user1, 1);
+			Player player1 = new Player(name1, 1);
 			Player player2 = new Player(name2, 2);
 			List<Player> players = new ArrayList<Player>();
 			players.add(player1);

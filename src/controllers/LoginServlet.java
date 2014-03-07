@@ -53,10 +53,11 @@ public class LoginServlet extends HttpServlet {
 		if (username == null || username.isEmpty() || password == null || password.isEmpty()) 
 			msg="Please fill out all fields";
 		else {
-			User user = new User(name, password, username);
-			session.setAttribute("user", user);
+			//User user = new User(name, password, username);
+			Player player = new Player(name, password, username);
+			session.setAttribute("user", player);
 			session.setAttribute("loggedIn", "true");
-			msg=user.name+", you are logged in!";
+			msg=player.name+", you are logged in!";
 		}
 		request.setAttribute("msg", msg);
 		

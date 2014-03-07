@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="models.User" %>
+<%@ page import="models.Player" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -20,9 +21,10 @@ String path = sc.getContextPath();//This code get the path relative to the root 
 			out.print("You are not logged in. <a href='/views/login.jsp'>Login</a>");
 		}
 		else {
-			User user = (User)session.getAttribute("user");
+			//User user = (User)session.getAttribute("user");
+			Player player = (Player)session.getAttribute("user");
 			out.print(
-					"<h1>"+user.name+", you have played "+user.games.size()+" games</h1>" +
+					"<h1>"+player.getName()+", you have played "+player.games.size()+" games</h1>" +
 					"<a href='"+path+"/views/gameBoard.jsp'>Start a game</a>"
 					);
 		}

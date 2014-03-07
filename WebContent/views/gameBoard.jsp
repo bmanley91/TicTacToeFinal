@@ -2,7 +2,8 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="models.GameBoard" %>
 <%@ page import="models.Game" %>
-<%@ page import="models.User" %>
+<%@ page import="models.Player" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -27,7 +28,7 @@
 		
 		
 			
-			User user = (User)session.getAttribute("user");
+			Player user = (Player)session.getAttribute("user");
 			Game game = (Game)session.getAttribute("game");
 			
 			String msg = (String)request.getAttribute("msg");

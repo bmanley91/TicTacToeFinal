@@ -1,15 +1,30 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player {
 
 	public User user;
+	public List<Game> games;
 	public int id;
-	String name;
-
+	public String name;
+	public String username;
+	private String password;
+	
+public Player(String name, String password, String username) {
+		
+		//this.name = name;   for now we are just going to use username
+		this.name = username;
+		this.setPassword(password);
+		this.username = username;
+		games = new ArrayList<Game>();
+	}
+/*
 	public Player(User user, int id) {
 		this.user = user;
 		this.id = id;
-	}
+	}*/
 	
 	public Player(String name, int id) {
 		this.name = name;
@@ -20,5 +35,13 @@ public class Player {
 		if(user != null)
 			return user.name;
 		return name;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }
