@@ -7,12 +7,12 @@ public class Player {
 
 	public User user;
 	public List<Game> games;
-	public int id;
+	private int id;
 	public String name;
 	public String username;
 	private String password;
 	
-public Player(String name, String password, String username) {
+	public Player(String name, String password, String username) {
 		
 		//this.name = name;   for now we are just going to use username
 		this.name = username;
@@ -28,7 +28,7 @@ public Player(String name, String password, String username) {
 	
 	public Player(String name, int id) {
 		this.name = name;
-		this.id = id;
+		this.setId(id);
 	}
 	
 	public String getName() {
@@ -43,5 +43,13 @@ public Player(String name, String password, String username) {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }
