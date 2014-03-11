@@ -4,4 +4,9 @@ $(document).ready(function(){
 			$("#yChoice").val($(this).attr("yPos"));
 			$("#gameChoiceForm").submit();
 		});
+		
+		$("#logoutButton").click(function() {
+			$("#logoutForm").submit();
+		});
+		
 	});

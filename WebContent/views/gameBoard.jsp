@@ -3,40 +3,25 @@
 <%@ page import="models.GameBoard" %>
 <%@ page import="models.Game" %>
 <%@ page import="models.Player" %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<style type="text/css">
-	<%@ include file="/resources/css/main.css" %>
-</style>
 <title>Game Board</title>
-<script type="text/javascript">
-    <jsp:include page="/resources/javascript/jquery/jquery-2.1.0.js" />
-</script>
-<script type="text/javascript">
-    <jsp:include page="/resources/javascript/playGame.js" />
-</script>
+<jsp:include page="/views/include.jsp" />
 </head>
 <body>
-	<div id="wrapper">
+<jsp:include page="/views/header.jsp" />
+	<div class="innerContent">
 		<% 
 			ServletContext sc = this.getServletContext();
 			String path = sc.getContextPath();//This code get the path relative to the root web content directory of the project
-			
-		
-		
-			
 			Player user = (Player)session.getAttribute("user");
 			Game game = (Game)session.getAttribute("game");
 			
 			String msg = (String)request.getAttribute("msg");
-			
-			out.print("<a href='"+path+"/views/home.jsp'>Home</a>");
-			
 			if(msg != null)
-				out.print("<h1>"+msg+"</h1>");
+				out.print("<span class='center'><h1>"+msg+"</h1></span>");
 			
 			
 			if(game != null) {
@@ -132,7 +117,7 @@
 						
 
 						"<form action='startGame' method='post'>"+
-							"<input type='submit' value='New Game'/>" +
+							"<div class='center'><input type='submit' value='New Game'/></div>" +
 							"<input type='hidden' name='name1' value='"+game.getPlayer1().getName()+"'/>" +
 							"<input type='hidden' name='name2' value='"+game.getPlayer2().getName()+"'/>" +
 						"</form>"
@@ -149,14 +134,9 @@
 							"</form>" +
 						"</div>"
 						);
-				
-				//if(game.winnerId != 0)
-					//out.print("<h1 class='center'>"+game.getWinner().name+" Wins!</h1>");
-				//else if(game.isTie)
-					//out.print("<h1 class='center'>Its a Tie!</h1>");
 			}
 			else if(user != null){
-				out.print("<form action='startGame' method='post'>");
+				out.print("<form action='startGame' id='gameForm' method='post'>");
 				out.print("<label>Player 1: <label>");
 				out.print("<input type='text' name='name1' readonly='true' value='"+user.name+"'/>");
 				out.print("<input type='hidden' name='user1' value='"+user+"'/>");

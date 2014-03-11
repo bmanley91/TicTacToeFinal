@@ -1,8 +1,11 @@
 package controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.Statement;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,9 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import models.Game;
+import models.Database;
 import models.Player;
-import models.User;
 
 /**
  * Servlet implementation class LoginServlet
@@ -23,21 +25,6 @@ import models.User;
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public LoginServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -58,6 +45,43 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("user", player);
 			session.setAttribute("loggedIn", "true");
 			msg=player.name+", you are logged in!";
+			
+			PreparedStatement savePlayer = null;
+	    	ResultSet generatedKeys = null;
+	    	String updateStatement =			//logic for prepared statement
+					 "insert into Player(p_username, p_password) values(?, ?)";
+	    	try{
+	    		savePlayer = Database.getConnection().prepareStatement(updateStatement, Statement.RETURN_GENERATED_KEYS);	//get connection and declare prepared statement
+	    		savePlayer.setString(1, player.username); 		// set input parameter 1
+	    		savePlayer.setString(2, player.getPassword()); 		// set input parameter 2
+	    		savePlayer.executeUpdate(); 					// execute insert statement
+	           
+	    		generatedKeys = savePlayer.getGeneratedKeys();
+				if (generatedKeys.next()) {
+					player.setId(generatedKeys.getInt(1));
+		        } else {
+		            throw new SQLException("Creating user failed, no generated key obtained.");
+		        }
+	       }
+	       catch (SQLException | ClassNotFoundException s){
+	           	System.out.println("SQL statement is not executed:");
+	           	System.out.println(s);
+	           	if (s instanceof SQLIntegrityConstraintViolationException) {
+	           		//validation.addError("employee.username", "Username already exists");
+	           		//validation.keep();
+	           		//createEmployee();
+	           		System.out.println("error creating user");
+	           	}
+	       }
+	       finally {
+	           if (savePlayer != null) { 
+	           	try {
+	           		savePlayer.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					} 
+	           }
+	       }
 		}
 		request.setAttribute("msg", msg);
 		
