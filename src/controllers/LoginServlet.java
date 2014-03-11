@@ -36,55 +36,58 @@ public class LoginServlet extends HttpServlet {
 		
 		String url = "/views/home.jsp"; 
 		String msg = null;
+		Player player = null;
 		
-		if (username == null || username.isEmpty() || password == null || password.isEmpty()) 
+		System.out.println(username.isEmpty());
+		if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
 			msg="Please fill out all fields";
+			url = "/views/login.jsp"; 
+		}
 		else {
-			//User user = new User(name, password, username);
-			Player player = new Player(name, password, username);
-			session.setAttribute("user", player);
-			session.setAttribute("loggedIn", "true");
-			msg=player.name+", you are logged in!";
-			
-			PreparedStatement savePlayer = null;
-	    	ResultSet generatedKeys = null;
-	    	String updateStatement =			//logic for prepared statement
-					 "insert into Player(p_username, p_password) values(?, ?)";
+			System.out.println("eklse");
+			PreparedStatement findPlayer = null;
+	    	ResultSet rs = null;
+	    	String selectStatement =			//logic for prepared statement
+					 "SELECT * FROM Player WHERE p_username = ? AND p_password = ?";
 	    	try{
-	    		savePlayer = Database.getConnection().prepareStatement(updateStatement, Statement.RETURN_GENERATED_KEYS);	//get connection and declare prepared statement
-	    		savePlayer.setString(1, player.username); 		// set input parameter 1
-	    		savePlayer.setString(2, player.getPassword()); 		// set input parameter 2
-	    		savePlayer.executeUpdate(); 					// execute insert statement
+	    		findPlayer = Database.getConnection().prepareStatement(selectStatement);	//get connection and declare prepared statement
+	    		findPlayer.setString(1, username); 		// set input parameter 1
+	    		findPlayer.setString(2, password); 		// set input parameter 2
+	    		rs = findPlayer.executeQuery(); 					// execute statement
 	           
-	    		generatedKeys = savePlayer.getGeneratedKeys();
-				if (generatedKeys.next()) {
-					player.setId(generatedKeys.getInt(1));
-		        } else {
-		            throw new SQLException("Creating user failed, no generated key obtained.");
-		        }
+				while(rs.next()) {
+					player  = new Player(rs.getString("p_username"), rs.getString("p_password"),rs.getLong("p_id"));
+				}
 	       }
 	       catch (SQLException | ClassNotFoundException s){
 	           	System.out.println("SQL statement is not executed:");
 	           	System.out.println(s);
 	           	if (s instanceof SQLIntegrityConstraintViolationException) {
-	           		//validation.addError("employee.username", "Username already exists");
-	           		//validation.keep();
-	           		//createEmployee();
 	           		System.out.println("error creating user");
 	           	}
 	       }
 	       finally {
-	           if (savePlayer != null) { 
+	           if (findPlayer != null) { 
 	           	try {
-	           		savePlayer.close();
+	           		findPlayer.close();
 					} catch (SQLException e) {
 						e.printStackTrace();
 					} 
 	           }
 	       }
+			if(player != null) {
+				session.setAttribute("user", player);
+				session.setAttribute("loggedIn", "true");
+				msg=player.getName()+", you are logged in!";
+			}
+			else {
+				msg="Incorrect username or password";
+				url = "/views/login.jsp"; 
+			}
 		}
-		request.setAttribute("msg", msg);
 		
+		
+		request.setAttribute("msg", msg);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url); 
 			dispatcher.forward(request, response);
 	}

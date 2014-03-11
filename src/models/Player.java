@@ -6,18 +6,17 @@ import java.util.List;
 public class Player {
 
 	public List<Game> games;
-	private int id;
-	public String name;
+	private long id;
 	public String username;
 	private String password;
 	public int wins, losses, draws;
 	
-	public Player(String name, String password, String username) {
+	public Player(String username, String password,  long id) {
 		
 		//this.name = name;   for now we are just going to use username
-		this.name = username;
 		this.setPassword(password);
 		this.username = username;
+		this.setId(id);
 		games = new ArrayList<Game>();
 	}
 /*
@@ -27,12 +26,12 @@ public class Player {
 	}*/
 	
 	public Player(String name, int id) {
-		this.name = name;
+		this.username = name;
 		this.setId(id);
 	}
 	
 	public String getName() {
-		return name;
+		return username;
 	}
 	
 	public String getPassword() {
@@ -43,11 +42,11 @@ public class Player {
 		this.password = password;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	
