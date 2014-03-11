@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Player {
 
-	public User user;
 	public List<Game> games;
 	private int id;
 	public String name;
@@ -33,8 +32,6 @@ public class Player {
 	}
 	
 	public String getName() {
-		if(user != null)
-			return user.name;
 		return name;
 	}
 	
