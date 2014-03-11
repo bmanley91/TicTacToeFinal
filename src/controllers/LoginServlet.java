@@ -38,7 +38,6 @@ public class LoginServlet extends HttpServlet {
 		String msg = null;
 		Player player = null;
 		
-		System.out.println(username.isEmpty());
 		if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
 			msg="Please fill out all fields";
 			url = "/views/login.jsp"; 

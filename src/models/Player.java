@@ -3,6 +3,8 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.Game;
+
 public class Player {
 
 	public List<Game> games;
