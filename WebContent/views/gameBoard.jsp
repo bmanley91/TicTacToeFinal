@@ -138,7 +138,7 @@
 			else if(user != null){
 				out.print("<form action='startGame' id='gameForm' method='post'>");
 				out.print("<label>Player 1: <label>");
-				out.print("<input type='text' name='name1' readonly='true' value='"+user.name+"'/>");
+				out.print("<input type='text' name='name1' readonly='true' value='"+user.getName()+"'/>");
 				out.print("<input type='hidden' name='user1' value='"+user+"'/>");
 				out.print("<label>Player 2: <label>");
 				out.print("<input type='text' name='name2'/>");

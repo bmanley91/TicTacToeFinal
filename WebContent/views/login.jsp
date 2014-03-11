@@ -14,7 +14,7 @@
 	<jsp:include page="/views/header.jsp" />
 	<div class="innerContent">
 		<%
-			String msg = request.getParameter("msg");
+			String msg = (String)request.getAttribute("msg");
 			String loggedInString = (String)session.getAttribute("loggedIn");
 			boolean loggedIn = (loggedInString != null && loggedInString.equals("true"));
 			if(msg != null)
