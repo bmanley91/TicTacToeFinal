@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Player {
 
-	public User user;
+	public Player user;
 	public List<Game> games;
 	private int id;
 	public String name;
