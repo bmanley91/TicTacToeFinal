@@ -19,6 +19,64 @@ public class GameBoard {
 		tiles.put("row3", new ArrayList<Integer>(row));
 	}
 	
+	public boolean isValidMove(String xChoice, String yChoice){
+		
+		//boolean validMove = false;
+		//ArrayList<Integer> row = new ArrayList<Integer>();
+		System.out.println(xChoice+", "+yChoice);
+		
+		if(xChoice.equals("row1")){
+			//row = getRow1();
+			//System.out.println("Valid row1");
+			
+			if(yChoice.equals("0")){
+				return getRow1().get(0) == 0;
+			}
+			else if(yChoice.equals("1")){
+				return getRow1().get(1) == 0;
+			}
+			else if(yChoice.equals("2")){
+				return getRow1().get(2) == 0;
+			}
+			
+			
+		}
+		
+		else if(xChoice.equals("row2")){
+			//System.out.println("Valid row2");
+			//row = getRow1();
+			
+			if(yChoice.equals("0")){
+				return getRow2().get(0) == 0;
+			}
+			else if(yChoice.equals("1")){
+				return getRow2().get(1) == 0;
+			}
+			else if(yChoice.equals("2")){
+				return getRow2().get(2) == 0;
+			}
+			
+		}
+		
+		else if(xChoice.equals("row3")){
+			//System.out.println("Valid row3");
+			//row = getRow1();
+			
+			if(yChoice.equals("0")){
+				return getRow3().get(0) == 0;
+			}
+			else if(yChoice.equals("1")){
+				return getRow3().get(1) == 0;
+			}
+			else if(yChoice.equals("2")){
+				return getRow3().get(2) == 0;
+			}
+			
+		}
+		
+		return false;
+	}
+	
 	public ArrayList<Integer> getRow1() {
 		return tiles.get("row1");
 	}
@@ -29,6 +87,12 @@ public class GameBoard {
 		return tiles.get("row3");
 	}
 	public void setPlayerChoice(String xChoice, String yChoice, int playersTurn) {
+		if(isValidMove(xChoice, yChoice)){
+			System.out.println("Valid Move "+xChoice+" "+yChoice);
+		}
+		else{
+			System.out.println("Invalid move "+xChoice+" "+yChoice);
+		}
 		tiles.get(xChoice).set(Integer.parseInt(yChoice), playersTurn);
 	}
 	public ArrayList<Integer> getUpHillDiagonal() {

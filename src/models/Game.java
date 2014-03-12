@@ -17,7 +17,7 @@ public class Game {
 	}
 
 	public void takeTurn(String xChoice, String yChoice, int playersTurn2) {
-		System.out.println("**");
+		System.out.println(xChoice+", "+yChoice);
 		if(this.playersTurn == playersTurn2) {
 			board.setPlayerChoice(xChoice,yChoice,playersTurn);
 			if (playersTurn == 1)

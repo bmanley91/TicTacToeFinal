@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import models.Game;
 import models.Player;
+import models.Game;
 
 /**
  * Servlet implementation class StartGame
