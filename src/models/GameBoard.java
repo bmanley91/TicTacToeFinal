@@ -20,7 +20,7 @@ public class GameBoard {
 	}
 	
 	public boolean isValidMove(String xChoice, String yChoice){
-		
+		//System.out.println("gameboard compturn "+xChoice+", "+yChoice);
 		return tiles.get(xChoice).get(Integer.parseInt(yChoice)) == 0;
 	}
 	
@@ -35,7 +35,8 @@ public class GameBoard {
 	}
 	public void setPlayerChoice(String xChoice, String yChoice, int playersTurn) {
 		if(isValidMove(xChoice, yChoice)){
-			System.out.println("Valid Move "+xChoice+" "+yChoice);
+			
+			System.out.println("Valid Move ");
 		}
 		else{
 			System.out.println("Invalid move "+xChoice+" "+yChoice);

@@ -10,10 +10,14 @@ public class Game {
 	public List<Player> players; 
 	public int winnerId = 0;
 	public boolean isTie = false;
+	public Computer comp;
+	
 	
 	public Game(List<Player> players) {
 		this.board = new GameBoard();
 		this.players = players;
+		comp = new Computer(0, board);
+		
 	}
 
 	public void takeTurn(String xChoice, String yChoice, int playersTurn2) {
