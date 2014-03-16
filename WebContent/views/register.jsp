@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-
-<%@ page import="models.Player" %>
+    
+ <%@ page import="models.Player" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Login</title>
+<title>Register</title>
 <jsp:include page="/views/include.jsp" />
 </head>
 <body>
@@ -15,39 +15,25 @@
 	<div class="innerContent">
 		<%
 			String msg = (String)request.getAttribute("msg");
-			String loggedInString = (String)session.getAttribute("loggedIn");
-			boolean loggedIn = (loggedInString != null && loggedInString.equals("true"));
-			if(msg != null)
-				out.print("<h1>"+msg+"</h1>");
-			if(!loggedIn) {
-				out.print(
-						"<form action='login' id='loginForm' method='post'>"+
+			out.print(
+						"<form action='reg' id='regForm' method='post'>"+
 							"<div>" +
 							"<label>Username: </label>" +
 							"<input type='text' name='username' />" +
 							"<label>Password: </label>" +
 							"<input type='password' name='password' />" +
 							"</div>" +
+							"<label>Retype Password: </label>" +
+							"<input type='password' name='retypePassword' />" +
+							"</div>" +
 							"<div class='center'>" +
-							"<input type='submit' value='Login'/>" +
+							"<input type='submit' value='Register'/>" +
 							"</div>" +
 						"</form>" +
-							"<a href='views/register.jsp'>Register</a>"
-						);
-				
-				
-			}
-			else {
-				//User user = (User)session.getAttribute("user");
-				Player player = (Player)session.getAttribute("user");
-				out.print(
-						"<a href='views/gameBoard.jsp'>Start a local game</a>" +
-						"<a href=''>Find Friends</a>"
-						);
-			}
-				
-		
+						"<a href='views/registration.jsp'>Register</a>");
+			
 		%>
 	</div>
+
 </body>
 </html>
