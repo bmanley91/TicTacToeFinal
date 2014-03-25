@@ -16,7 +16,7 @@
 		<%
 			String msg = (String)request.getAttribute("msg");
 			out.print(
-						"<form action='reg' id='regForm' method='post'>"+
+						"<form action='register' id='regForm' method='post'>"+
 							"<div>" +
 							"<label>Username: </label>" +
 							"<input type='text' name='username' />" +

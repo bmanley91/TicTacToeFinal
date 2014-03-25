@@ -14,6 +14,8 @@
 	<jsp:include page="/views/header.jsp" />
 	<div class="innerContent">
 		<%
+			ServletContext sc = this.getServletContext();
+			String path = sc.getContextPath();//This code get the path relative to the root web content directory of the project
 			String msg = (String)request.getAttribute("msg");
 			String loggedInString = (String)session.getAttribute("loggedIn");
 			boolean loggedIn = (loggedInString != null && loggedInString.equals("true"));
@@ -32,7 +34,7 @@
 							"<input type='submit' value='Login'/>" +
 							"</div>" +
 						"</form>" +
-							"<a href='views/register.jsp'>Register</a>"
+							"<a href='"+path+"/views/register.jsp'>Register</a>"
 						);
 				
 				

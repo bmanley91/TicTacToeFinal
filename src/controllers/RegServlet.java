@@ -40,7 +40,7 @@ public class RegServlet extends HttpServlet {
 		
 		String url = "/views/home.jsp"; 
 		String msg = null;
-		Player player = null;
+		Long newUserId = null;
 		
 		if(username == null || username.isEmpty() || pw.isEmpty() || rePw.isEmpty()){
 			msg="Please fill out all fields.";
@@ -49,24 +49,29 @@ public class RegServlet extends HttpServlet {
 		else{
 			System.out.println("regElse");
 			PreparedStatement regPlayer = null;
-			ResultSet rs = null;
+			ResultSet rs;
 			String stmt =
 					"INSERT INTO Player (p_username,p_password) VALUES(?,?)";
 			try{
-				regPlayer = Database.getConnection().prepareStatement(stmt);
+				regPlayer = Database.getConnection().prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
 				regPlayer.setString(1, username);
 				regPlayer.setString(2, pw);
-				rs = regPlayer.executeQuery();
+				regPlayer.executeUpdate();
+				rs = regPlayer.getGeneratedKeys();
+				if (rs != null && rs.next()) {
+					newUserId = rs.getLong(1);
+				}
 			}
 			catch (SQLException | ClassNotFoundException s){
 				System.out.println("SQL statement is not executed:");
 				System.out.println(s);
 				if (s instanceof SQLIntegrityConstraintViolationException) {
 					System.out.println("error creating user");
+					msg = "Username already exists";
 					}
 				}
 			finally{
-				if(regPlayer == null){
+				if(regPlayer != null){
 					try {
 		           		regPlayer.close();
 						} 
@@ -76,6 +81,8 @@ public class RegServlet extends HttpServlet {
 				}
 			}
 			request.setAttribute("msg", msg);
+			System.out.println("**"+newUserId);
+			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url); 
 				dispatcher.forward(request, response);
 		}

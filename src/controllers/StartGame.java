@@ -42,7 +42,6 @@ public class StartGame extends HttpServlet {
 		
 		String url = "/views/gameBoard.jsp"; 
 		String msg = null;
-		System.out.println("gete hererere");
 		if (name1 == null || name1.isEmpty() || name2 == null || name2.isEmpty()) 
 			msg="Please fill out all fields";
 		else {
