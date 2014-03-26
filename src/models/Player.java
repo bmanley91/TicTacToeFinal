@@ -12,6 +12,7 @@ public class Player {
 	public String username;
 	private String password;
 	public int wins, losses, draws;
+	public boolean isComp;
 	
 	public Player(String username, String password,  long id) {
 		
@@ -31,6 +32,15 @@ public class Player {
 		this.username = name;
 		this.setId(id);
 	}
+	
+	public Player(){
+		username = null;
+		this.setId(0);
+	}
+	
+	/*public boolean isComp(){
+		return isComp.equals("on");
+	}*/
 	
 	public String getName() {
 		return username;

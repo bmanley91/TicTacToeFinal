@@ -28,6 +28,7 @@ String path = sc.getContextPath();//This code get the path relative to the root 
 			out.print(
 					"<h1>"+player.getName()+", you have played "+player.games.size()+" games</h1>" +
 					"<a href='"+path+"/views/gameBoard.jsp'>Start a game</a>"
+					
 					);
 		}
 		 %>		

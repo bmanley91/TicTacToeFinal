@@ -10,14 +10,18 @@ public class Game {
 	public List<Player> players; 
 	public int winnerId = 0;
 	public boolean isTie = false;
+	public Computer comp;
+	
 	
 	public Game(List<Player> players) {
 		this.board = new GameBoard();
 		this.players = players;
+		comp = new Computer(0, board);
+		
 	}
 
 	public void takeTurn(String xChoice, String yChoice, int playersTurn2) {
-		System.out.println("**");
+		System.out.println(xChoice+", "+yChoice);
 		if(this.playersTurn == playersTurn2) {
 			board.setPlayerChoice(xChoice,yChoice,playersTurn);
 			if (playersTurn == 1)

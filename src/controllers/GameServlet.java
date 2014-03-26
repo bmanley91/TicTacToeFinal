@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import models.Game;
+
 import models.GameBoard;
+import models.Game;
+import models.Computer;
 
 /**
  * Servlet implementation class GameServlet
@@ -28,8 +30,25 @@ public class GameServlet extends HttpServlet {
 		String url = "/views/gameBoard.jsp"; 
 		String msg = null;
 		Game game = (Game) session.getAttribute("game");
-		String xChoice =  request.getParameter("xChoice");
-		String yChoice =  request.getParameter("yChoice");	
+		Computer comp = game.comp;
+		String[] move = new String[2];
+		String xChoice, yChoice;
+		
+		//response.setIntHeader("Refresh", 5);
+		
+		if(game.getCurrentPlayer().isComp){
+			move = comp.compTurn();
+			
+			//while( game.board.isValidMove(move[0], move[1]) )
+			
+			System.out.println("game servlet compturn "+move[0]+", "+move[1]);
+			xChoice = move[0];
+			yChoice = move[1];
+		}
+		else{
+			xChoice =  request.getParameter("xChoice");
+			yChoice =  request.getParameter("yChoice");
+		}
 		int playersTurn = Integer.valueOf(request.getParameter("playersTurn"));	
 		game.takeTurn(xChoice,yChoice,playersTurn);
 		if(!game.isOver())
@@ -50,6 +69,8 @@ public class GameServlet extends HttpServlet {
 		*/
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url); 
 			dispatcher.forward(request, response);
+		
+		
 	}
 
 }

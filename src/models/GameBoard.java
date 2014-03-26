@@ -19,6 +19,11 @@ public class GameBoard {
 		tiles.put("row3", new ArrayList<Integer>(row));
 	}
 	
+	public boolean isValidMove(String xChoice, String yChoice){
+		//System.out.println("gameboard compturn "+xChoice+", "+yChoice);
+		return tiles.get(xChoice).get(Integer.parseInt(yChoice)) == 0;
+	}
+	
 	public ArrayList<Integer> getRow1() {
 		return tiles.get("row1");
 	}
@@ -29,6 +34,13 @@ public class GameBoard {
 		return tiles.get("row3");
 	}
 	public void setPlayerChoice(String xChoice, String yChoice, int playersTurn) {
+		if(isValidMove(xChoice, yChoice)){
+			
+			System.out.println("Valid Move ");
+		}
+		else{
+			System.out.println("Invalid move "+xChoice+" "+yChoice);
+		}
 		tiles.get(xChoice).set(Integer.parseInt(yChoice), playersTurn);
 	}
 	public ArrayList<Integer> getUpHillDiagonal() {

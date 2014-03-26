@@ -18,6 +18,8 @@
 			String path = sc.getContextPath();//This code get the path relative to the root web content directory of the project
 			Player user = (Player)session.getAttribute("user");
 			Game game = (Game)session.getAttribute("game");
+			//String isPC = null;
+			
 			
 			String msg = (String)request.getAttribute("msg");
 			if(msg != null)
@@ -25,6 +27,7 @@
 			
 			
 			if(game != null) {
+				
 				GameBoard board = game.board;
 				int playersTurn = game.playersTurn;
 				
@@ -101,6 +104,9 @@
 							);
 					colCounter++;
 				}
+				/*if(game.getPlayer2().isComp){
+					isPC = "on";
+				} */
 				
 				out.print(
 								"</tr>" +
@@ -120,6 +126,7 @@
 							"<div class='center'><input type='submit' value='New Game'/></div>" +
 							"<input type='hidden' name='name1' value='"+game.getPlayer1().getName()+"'/>" +
 							"<input type='hidden' name='name2' value='"+game.getPlayer2().getName()+"'/>" +
+							"<input type='hidden' name= 'vsPC' value='"+game.getPlayer2().isComp+"'/>" +
 						"</form>"
 						);
 				
@@ -143,6 +150,9 @@
 				out.print("<label>Player 2: <label>");
 				out.print("<input type='text' name='name2'/>");
 				out.print("<input type='submit' value='Start Game'/>");
+				out.print("<label>Computer Opponent<label>");
+				out.print("<input type= 'checkbox' name='vsPC'/>");
+				
 				out.print("</form>");
 			}
 			else {
