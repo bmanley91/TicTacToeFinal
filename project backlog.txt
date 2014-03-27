@@ -8,3 +8,4 @@ update profile functions
 leaderboard for number of wins
 friends list
 put on website? (maybe amazon web services)
+password recovery function
