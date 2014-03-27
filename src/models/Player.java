@@ -13,6 +13,7 @@ public class Player {
 	private String password;
 	public int wins, losses, draws;
 	public boolean isComp;
+	public int diff;
 	
 	public Player(String username, String password,  long id) {
 		

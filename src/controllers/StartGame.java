@@ -30,16 +30,18 @@ public class StartGame extends HttpServlet {
 		Player user1 = (Player)request.getAttribute("user1");
 		String name1 = request.getParameter("name1"); 
 		String name2 = request.getParameter("name2");
-		boolean vsPC = request.getParameter("vsPC") != null;
+		int vsPC = Integer.parseInt(request.getParameter("vsPC"));
+		//boolean vsPC = request.getParameter("vsPC") != null;
 		Player player1 = new Player();
 		Player player2 = new Player();
 		
-		System.out.println(user1);
+		System.out.println("vspc "+vsPC+" "+request.getParameter("vsPC"));
 		
-		if( (vsPC) && (!request.getParameter("vsPC").equals("on")) ){
+		/*if( (vsPC) && !(request.getParameter("vsPC").equals("on")) ){
 			vsPC = false;
 		}
-		
+		System.out.println("vspc2 "+vsPC+" "+request.getParameter("vsPC"));
+		*/
 		String url = "/views/gameBoard.jsp"; 
 		String msg = null;
 		System.out.println("gete hererere");
@@ -52,11 +54,12 @@ public class StartGame extends HttpServlet {
 			player1.setId(2);
 			//Player comp = new Player("Computer", 2);
 			System.out.println("vs comp = "+vsPC);
-			if(vsPC){
+			if(vsPC != 0){
 				System.out.println("vs comp");
 				player2.isComp = true;
+				player2.diff = vsPC;
 			}
-			System.out.println("p2 comp = "+player2.isComp);
+			System.out.println("p2 comp = "+player2.diff);
 			
 			List<Player> players = new ArrayList<Player>();
 			players.add(player1);
@@ -65,6 +68,7 @@ public class StartGame extends HttpServlet {
 			
 			Game game = new Game(players);
 			session.setAttribute("game", game);
+			game.comp.game = game;
 			msg="New Game! "+ game.getCurrentPlayer().getName()+ ", its your turn";
 		}
 		request.setAttribute("msg", msg);
