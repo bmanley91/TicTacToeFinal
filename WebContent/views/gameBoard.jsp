@@ -163,9 +163,6 @@
 				out.print("</select>");
 				out.print("<br>");
 				
-		    
-		    
-				
 				out.print("</form>");
 			}
 			else {
