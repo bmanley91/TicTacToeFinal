@@ -63,25 +63,4 @@ public class Player {
 		this.id = id;
 	}
 	
-	/* Methods to return number of wins, losses, draws -Brian */
-	public int getWins(){
-		return this.wins;
-	}
-	public int getLoss(){
-		return this.losses;
-	}
-	public int getDraw(){
-		return this.draws;
-	}
-	
-	/* Methods to  add wins, losses, draws -Brian */
-	public void addWin(){
-		this.wins++;
-	}
-	public void addLoss(){
-		this.losses++;
-	}
-	public void addDraw(){
-		this.draws++;
-	}
 }
