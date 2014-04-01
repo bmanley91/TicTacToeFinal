@@ -7,5 +7,5 @@ public profile page
 update profile functions
 leaderboard for number of wins
 friends list
-put on website? (maybe amazon web services)
+put on website? (on amazon web services now images not appearing)
 password recovery function
