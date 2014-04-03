@@ -12,10 +12,6 @@ public class Game{
 	public boolean isTie = false;
 	public Computer comp;
 	
-	public Game(){
-		
-	}
-	
 	public Game(List<Player> players) {
 		this.board = new GameBoard();
 		this.players = players;
@@ -31,44 +27,55 @@ public class Game{
 				playersTurn = 2;
 			else
 				playersTurn = 1;
-			checkForWinner();
-			checkForTie();
+			checkForWinner(board);
+			checkForTie(board);
 		}
 		else
 			System.out.println("Wrong turn!");
 	}
 	
-	public String[] getWinningMove(){
+	public String[] getWinningMove(int player){
 		
 		String[] rows = {"row1", "row2", "row3"};
 		String[] cols = {"0", "1", "2"};
 		String[] move = new String[2];
-		GameBoard newBoard = board;
+		GameBoard newBoard = new GameBoard(board);
 		boolean winner = false;
+		boolean valid = false;
 		
-		move[0] = rows[0];
-		move[1] = cols[0];
-		if(newBoard == null){
-			System.out.println("game is null");
+		//move[0] = rows[0];
+		//move[1] = cols[0];
+		if(newBoard.equals(board)){
+			System.out.println("game is equal");
 		}
+		
+		
 		for(int i=0; i<rows.length; i++){
 			for(int j=0; j<cols.length; j++){
 				
-				if(newBoard.isValidMove(rows[i], cols[j]))
-					newBoard.setPlayerChoice(rows[i], cols[j], playersTurn);
+				if(newBoard.isValidMove(rows[i], cols[j])){
+					newBoard.tiles.get(rows[i]).set(Integer.parseInt(cols[j]), player);
+					valid = true;
+				}
 				
-				/*if(newBoard.checkForWinner()){
+				if(checkForWinner(newBoard)){
+					winnerId = 0;
+					isTie = false;
+					newBoard.tiles.get(rows[i]).set(Integer.parseInt(cols[j]), 0);
+					
 					System.out.println("Col1, "+ j+ " "+ newBoard.getCol1().get(j) );
 					System.out.println("Col2, "+ j+ " "+ newBoard.getCol2().get(j) );
 					System.out.println("Col3, "+ j+ " "+ newBoard.getCol3().get(j) );
 					move[0] = rows[i];
 					move[1] = cols[j];
+					//newBoard.tiles.get(rows[i]).set(Integer.parseInt(cols[j]), 0);
 					return move;
 					
-				}*/
+				}
 				
-				else{
-					newBoard = board;
+				if(valid){
+					newBoard.tiles.get(rows[i]).set(Integer.parseInt(cols[j]), 0);
+					valid = false;
 				}
 				
 			}
@@ -78,26 +85,26 @@ public class Game{
 		return move;
 	}
 
-	public boolean checkForWinner() {
-		return checkAllRows() || checkAllCols() || checkDiagonals();
+	public boolean checkForWinner(GameBoard gb) {
+		return checkAllRows(gb) || checkAllCols(gb) || checkDiagonals(gb);
 	}
 	
-	public boolean checkForTie() {
-		if(checkRow1ForTie() && checkRow2ForTie() && checkRow3ForTie())
+	public boolean checkForTie(GameBoard gb) {
+		if(checkRow1ForTie(gb) && checkRow2ForTie(gb) && checkRow3ForTie(gb))
 			isTie = true;
 		return isTie;
 	}
 	
 	
-	private boolean checkAllCols() {
-		return checkCol1() || checkCol2() || checkCol3();
+	private boolean checkAllCols(GameBoard gb) {
+		return checkCol1(gb) || checkCol2(gb) || checkCol3(gb);
 	}
-	private boolean checkDiagonals() {
-		return checkUpHillDiagonal() || checkDownHillDiagonal();
+	private boolean checkDiagonals(GameBoard gb) {
+		return checkUpHillDiagonal(gb) || checkDownHillDiagonal(gb);
 	}
 
-	private boolean checkAllRows() {
-		return checkRow1() || checkRow2() || checkRow3();
+	private boolean checkAllRows(GameBoard gb) {
+		return checkRow1(gb) || checkRow2(gb) || checkRow3(gb);
 	}
 
 	public Player getPlayer1() {
@@ -111,41 +118,43 @@ public class Game{
 		return players.get(playersTurn-1);
 	}
 	
-	public boolean checkRow1() {
-		return checkRowForWinner(board.getRow1());
+	public boolean checkRow1(GameBoard gb) {
+		return checkRowForWinner(gb.getRow1());
 	}
-	public boolean checkRow2() {
-		return checkRowForWinner(board.getRow2());
+	public boolean checkRow2(GameBoard gb) {
+		return checkRowForWinner(gb.getRow2());
 	}
-	public boolean checkRow3() {
-		return checkRowForWinner(board.getRow3());
+	public boolean checkRow3(GameBoard gb) {
+		return checkRowForWinner(gb.getRow3());
 	}
-	public boolean checkRow1ForTie() {
-		return checkRowForTie(board.getRow1());
+	public boolean checkRow1ForTie(GameBoard gb) {
+		return checkRowForTie(gb.getRow1());
 	}
-	public boolean checkRow2ForTie() {
-		return checkRowForTie(board.getRow2());
+	public boolean checkRow2ForTie(GameBoard gb) {
+		return checkRowForTie(gb.getRow2());
 	}
-	public boolean checkRow3ForTie() {
-		return checkRowForTie(board.getRow3());
+	public boolean checkRow3ForTie(GameBoard gb) {
+		return checkRowForTie(gb.getRow3());
 	}
-	public boolean checkDownHillDiagonal() {
-		return checkRowForWinner(board.getDownHillDiagonal());
+	public boolean checkDownHillDiagonal(GameBoard gb) {
+		return checkRowForWinner(gb.getDownHillDiagonal());
 	}
 
-	public boolean checkUpHillDiagonal() {
-		return checkRowForWinner(board.getUpHillDiagonal());
+	public boolean checkUpHillDiagonal(GameBoard gb) {
+		return checkRowForWinner(gb.getUpHillDiagonal());
 	}
-	public boolean checkCol1() {
-		return checkRowForWinner(board.getCol1());
+	public boolean checkCol1(GameBoard gb) {
+		return checkRowForWinner(gb.getCol1());
 	}
-	public boolean checkCol2() {
-		return checkRowForWinner(board.getCol2());
+	public boolean checkCol2(GameBoard gb) {
+		return checkRowForWinner(gb.getCol2());
 	}
-	public boolean checkCol3() {
-		return checkRowForWinner(board.getCol3());
+	public boolean checkCol3(GameBoard gb) {
+		return checkRowForWinner(gb.getCol3());
 	}
 	public boolean checkRowForWinner(ArrayList<Integer> row) {
+		//return this.board.checkForWinner(row);
+		
 		Integer currentTileInRow = null;
 		for(Integer i:row) {
 			if(i == 0)
@@ -157,6 +166,7 @@ public class Game{
 		}
 		winnerId = currentTileInRow;
 		return true;
+		
 	}
 	
 	public boolean checkRowForTie(ArrayList<Integer> row) {

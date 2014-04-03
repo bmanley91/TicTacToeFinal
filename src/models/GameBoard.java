@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GameBoard extends Game{
+public class GameBoard{
 
 	public Map<String, ArrayList<Integer>> tiles = new LinkedHashMap<String, ArrayList<Integer>>();
 	
@@ -17,6 +17,10 @@ public class GameBoard extends Game{
 		tiles.put("row1", row);
 		tiles.put("row2", new ArrayList<Integer>(row));
 		tiles.put("row3", new ArrayList<Integer>(row));
+	}
+	
+	public GameBoard(GameBoard gb){
+		this.tiles = gb.tiles;
 	}
 	
 	public boolean isValidMove(String xChoice, String yChoice){
@@ -78,6 +82,11 @@ public class GameBoard extends Game{
 		column.add(getRow3().get(2));
 		return column;
 	}
+
+	//public boolean checkForWinner(ArrayList<Integer> row) {
+		
+		
+	//}
 	
 	
 }

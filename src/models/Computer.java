@@ -23,20 +23,28 @@ public class Computer extends Player {
 		Random rand = new Random();
 		//int x;
 		
-		if(difficulty >= 2){
-			String[] m = new String[2];
-			//hard comp
-			//move = hardMove();
-			//System.out.println("Tough computer move "+move[0]+" "+move[1]);
-			//m = game.getWinningMove();
-			//System.out.println("move = "+m[0]+" "+m[1]);
-		}
-		
 		if(board.isValidMove("row2", "1")){
 			move[0] = "row2";
 			move[1] = "1";
 			return move;
 		}
+		
+		if(difficulty >= 2){
+			String[] m = new String[2];
+			//hard comp
+			//move = hardMove();
+			//System.out.println("Tough computer move "+move[0]+" "+move[1]);
+			m = game.getWinningMove(2);
+			if(m[0] == null){
+				m = game.getWinningMove(1);
+			}
+			System.out.println("move = "+m[0]+" "+m[1]);
+			if(m[0] != null && board.isValidMove(m[0], m[1])){
+				return m;
+			}
+		}
+		
+		
 		for(int i=0; i<25; i++){
 			do{
 				//move[0] = "row";
@@ -60,7 +68,7 @@ public class Computer extends Player {
 	private boolean winMove(){
 		
 		
-		for(int x = 0; x < 3; x++){
+		/*for(int x = 0; x < 3; x++){
 			for(int y = 0; y < 3; y++){
 				if(board.isValidMove(rows[x], cols[y])){
 					board.tiles.get(rows[x]).set(y, 2);
@@ -73,11 +81,11 @@ public class Computer extends Player {
 								System.out.println("win move2 "+move[0]+", "+move[1]);
 								return true;
 							}
-					}//*/
+					}
 					board.tiles.get(rows[x]).set(y, 0);
 				}
 			}
-		}
+		}*/
 		return false;
 		
 	}
@@ -85,7 +93,7 @@ public class Computer extends Player {
 	private boolean blockMove(){
 		
 		//System.out.println("compturn "+move[0]+", "+move[1]);
-		for(int x = 0; x < 3; x++){
+		/*for(int x = 0; x < 3; x++){
 			for(int y = 0; y < 3; y++){
 				if(board.isValidMove(rows[x], cols[y])){
 					board.tiles.get(rows[x]).set(y, 1);
@@ -98,7 +106,7 @@ public class Computer extends Player {
 					board.tiles.get(rows[x]).set(y, 0);
 				}
 			}
-		}
+		}*/
 		return false;
 		
 	}
