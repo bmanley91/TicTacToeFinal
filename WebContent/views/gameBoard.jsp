@@ -126,7 +126,7 @@
 							"<div class='center'><input type='submit' value='New Game'/></div>" +
 							"<input type='hidden' name='name1' value='"+game.getPlayer1().getName()+"'/>" +
 							"<input type='hidden' name='name2' value='"+game.getPlayer2().getName()+"'/>" +
-							"<input type='hidden' name= 'vsPC' value='"+game.getPlayer2().isComp+"'/>" +
+							"<input type='hidden' name= 'vsPC' value='"+game.getPlayer2().diff+"'/>" +
 						"</form>"
 						);
 				
@@ -149,9 +149,19 @@
 				out.print("<input type='hidden' name='user1' value='"+user+"'/>");
 				out.print("<label>Player 2: <label>");
 				out.print("<input type='text' name='name2'/>");
-				out.print("<input type='submit' value='Start Game'/>");
+				out.print("<input type='submit' value='Start Game'/> <br>");
 				out.print("<label>Computer Opponent<label>");
-				out.print("<input type= 'checkbox' name='vsPC'/>");
+				//out.print("<input type= 'checkbox' name='vsPC'/><br><br>");
+				//out.print("</form>");
+				
+				//out.print("<form method='post' action='select.jsp'>");
+				out.print("<select name='vsPC'>");
+				out.print("<option value='0'>None</option>");
+				out.print("<option value='1'>Easy</option>");
+				out.print("<option value='2'>Med</option>");
+				out.print("<option value='3'>Hard</option>");
+				out.print("</select>");
+				out.print("<br>");
 				
 				out.print("</form>");
 			}

@@ -3,7 +3,7 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game {
+public class Game{
 
 	public GameBoard board;
 	public int playersTurn = 1 + (int)(Math.random() * ((2 - 1) + 1));
@@ -12,10 +12,14 @@ public class Game {
 	public boolean isTie = false;
 	public Computer comp;
 	
+	public Game(){
+		
+	}
 	
 	public Game(List<Player> players) {
 		this.board = new GameBoard();
 		this.players = players;
+<<<<<<< HEAD
 		comp = new Computer(0, board);
 	}
 
@@ -24,6 +28,10 @@ public class Game {
 		this.players = new ArrayList<Player>();
 		this.players.add(user);
 		this.players.add(friend);
+=======
+		this.comp = new Computer(1, board);
+		
+>>>>>>> 4534b811a041b95871374b87cbacdf24357f38f1
 	}
 
 	public void takeTurn(String xChoice, String yChoice, int playersTurn2) {
@@ -39,6 +47,46 @@ public class Game {
 		}
 		else
 			System.out.println("Wrong turn!");
+	}
+	
+	public String[] getWinningMove(){
+		
+		String[] rows = {"row1", "row2", "row3"};
+		String[] cols = {"0", "1", "2"};
+		String[] move = new String[2];
+		GameBoard newBoard = board;
+		boolean winner = false;
+		
+		move[0] = rows[0];
+		move[1] = cols[0];
+		if(newBoard == null){
+			System.out.println("game is null");
+		}
+		for(int i=0; i<rows.length; i++){
+			for(int j=0; j<cols.length; j++){
+				
+				if(newBoard.isValidMove(rows[i], cols[j]))
+					newBoard.setPlayerChoice(rows[i], cols[j], playersTurn);
+				
+				/*if(newBoard.checkForWinner()){
+					System.out.println("Col1, "+ j+ " "+ newBoard.getCol1().get(j) );
+					System.out.println("Col2, "+ j+ " "+ newBoard.getCol2().get(j) );
+					System.out.println("Col3, "+ j+ " "+ newBoard.getCol3().get(j) );
+					move[0] = rows[i];
+					move[1] = cols[j];
+					return move;
+					
+				}*/
+				
+				else{
+					newBoard = board;
+				}
+				
+			}
+		}
+		
+		
+		return move;
 	}
 
 	public boolean checkForWinner() {

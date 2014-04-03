@@ -37,6 +37,8 @@ public class GameServlet extends HttpServlet {
 		//response.setIntHeader("Refresh", 5);
 		
 		if(game.getCurrentPlayer().isComp){
+			
+			comp.difficulty = game.getPlayer2().diff;
 			move = comp.compTurn();
 			
 			//while( game.board.isValidMove(move[0], move[1]) )
