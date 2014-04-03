@@ -10,6 +10,7 @@ import models.Game;
 public class Player {
 
 	public List<Game> games;
+	public List<Player> friends;
 	private long id;
 	public String username;
 	private String password;
