@@ -30,11 +30,12 @@
     <display-name>LogoutServlet</display-name>
     <servlet-name>LogoutServlet</servlet-name>
     <servlet-class>controllers.LogoutServlet</servlet-class>
-  </servlet><servlet>
-  	<description></description>
-  	<display-name>RegServlet</display-name>
-  	<servlet-name>RegServlet</servlet-name>
-  	<servlet-class>controllers.RegServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>RegServlet</display-name>
+    <servlet-name>RegServlet</servlet-name>
+    <servlet-class>controllers.RegServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>GameServlet</servlet-name>
@@ -56,10 +57,9 @@
     <url-pattern>/logout</url-pattern>
     <url-pattern>/views/logout</url-pattern>
   </servlet-mapping>
-  
   <servlet-mapping>
-  	<servlet-name>RegServlet</servlet-name>
-  	<url-pattern>/register</url-pattern>
-  	<url-pattern>/views/register</url-pattern>
+    <servlet-name>RegServlet</servlet-name>
+    <url-pattern>/register</url-pattern>
+    <url-pattern>/views/register</url-pattern>
   </servlet-mapping>
 </web-app>
