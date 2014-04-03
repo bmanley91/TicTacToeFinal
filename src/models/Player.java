@@ -1,10 +1,12 @@
 package models;
+import javax.persistence.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import models.Game;
 
+@Entity
 public class Player {
 
 	public List<Game> games;
@@ -52,6 +54,14 @@ public class Player {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+	
+	public void setUsername(String name) {
+		this.username = username;
 	}
 
 	public long getId() {

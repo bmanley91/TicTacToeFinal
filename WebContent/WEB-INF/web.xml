@@ -21,6 +21,12 @@
   </servlet>
   <servlet>
     <description></description>
+    <display-name>ChallengeFriend</display-name>
+    <servlet-name>ChallengeFriend</servlet-name>
+    <servlet-class>controllers.ChallengeFriend</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
     <display-name>LoginServlet</display-name>
     <servlet-name>LoginServlet</servlet-name>
     <servlet-class>controllers.LoginServlet</servlet-class>
@@ -30,11 +36,12 @@
     <display-name>LogoutServlet</display-name>
     <servlet-name>LogoutServlet</servlet-name>
     <servlet-class>controllers.LogoutServlet</servlet-class>
-  </servlet><servlet>
-  	<description></description>
-  	<display-name>RegServlet</display-name>
-  	<servlet-name>RegServlet</servlet-name>
-  	<servlet-class>controllers.RegServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>RegServlet</display-name>
+    <servlet-name>RegServlet</servlet-name>
+    <servlet-class>controllers.RegServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>GameServlet</servlet-name>
@@ -56,10 +63,14 @@
     <url-pattern>/logout</url-pattern>
     <url-pattern>/views/logout</url-pattern>
   </servlet-mapping>
-  
   <servlet-mapping>
-  	<servlet-name>RegServlet</servlet-name>
-  	<url-pattern>/register</url-pattern>
-  	<url-pattern>/views/register</url-pattern>
+    <servlet-name>RegServlet</servlet-name>
+    <url-pattern>/register</url-pattern>
+    <url-pattern>/views/register</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ChallengeFriend</servlet-name>
+    <url-pattern>/challengeFriend</url-pattern>
+    <url-pattern>/views/challengeFriend</url-pattern>
   </servlet-mapping>
 </web-app>

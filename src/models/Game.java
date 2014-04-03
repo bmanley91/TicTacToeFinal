@@ -17,7 +17,13 @@ public class Game {
 		this.board = new GameBoard();
 		this.players = players;
 		comp = new Computer(0, board);
-		
+	}
+
+	public Game(Player user, Player friend) {
+		this.board = new GameBoard();
+		this.players = new ArrayList<Player>();
+		this.players.add(user);
+		this.players.add(friend);
 	}
 
 	public void takeTurn(String xChoice, String yChoice, int playersTurn2) {

@@ -8,10 +8,11 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
 public class Database {
 
-	
-    
     
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
     	Connection con = null;
@@ -65,4 +66,74 @@ public class Database {
            }
        }
     }
+    
+    public static Player findPlayer(String username, String password) {
+    	Player player = null;
+    	PreparedStatement findPlayer = null;
+    	ResultSet rs = null;
+    	String selectStatement =			//logic for prepared statement
+				 "SELECT * FROM Player WHERE p_username = ? AND p_password = ?";
+    	try{
+    		findPlayer = Database.getConnection().prepareStatement(selectStatement);	//get connection and declare prepared statement
+    		findPlayer.setString(1, username); 		// set input parameter 1
+    		findPlayer.setString(2, password); 		// set input parameter 2
+    		rs = findPlayer.executeQuery(); 					// execute statement
+           
+			while(rs.next()) {
+				player  = new Player(rs.getString("p_username"), rs.getString("p_password"),rs.getLong("p_id"));
+			}
+       }
+       catch (SQLException | ClassNotFoundException s){
+           	System.out.println("SQL statement is not executed:");
+           	System.out.println(s);
+           	if (s instanceof SQLIntegrityConstraintViolationException) {
+           		System.out.println("error creating user");
+           	}
+       }
+       finally {
+           if (findPlayer != null) { 
+           	try {
+           		findPlayer.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} 
+           }
+       }
+		return player;
+    }
+    
+    public static Player findPlayerById(long id) {
+    	Player player = null;
+    	PreparedStatement findPlayer = null;
+    	ResultSet rs = null;
+    	String selectStatement =			//logic for prepared statement
+				 "SELECT * FROM Player WHERE p_id = ?";
+    	try{
+    		findPlayer = Database.getConnection().prepareStatement(selectStatement);	//get connection and declare prepared statement
+    		findPlayer.setLong(1, id); 		// set input parameter 1
+    		rs = findPlayer.executeQuery(); 					// execute statement
+           
+			while(rs.next()) {
+				player  = new Player(rs.getString("p_username"), rs.getString("p_password"),rs.getLong("p_id"));
+			}
+       }
+       catch (SQLException | ClassNotFoundException s){
+           	System.out.println("SQL statement is not executed:");
+           	System.out.println(s);
+           	if (s instanceof SQLIntegrityConstraintViolationException) {
+           		System.out.println("error creating user");
+           	}
+       }
+       finally {
+           if (findPlayer != null) { 
+           	try {
+           		findPlayer.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} 
+           }
+       }
+		return player;
+    }
+    
 }
