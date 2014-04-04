@@ -39,7 +39,7 @@ public class Game{
 		String[] rows = {"row1", "row2", "row3"};
 		String[] cols = {"0", "1", "2"};
 		String[] move = new String[2];
-		GameBoard newBoard = board;//new GameBoard(board.tiles);
+		GameBoard newBoard = new GameBoard(board.tiles);
 		boolean winner = false;
 		boolean valid = false;
 		
