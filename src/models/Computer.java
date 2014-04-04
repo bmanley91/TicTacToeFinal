@@ -44,7 +44,7 @@ public class Computer extends Player {
 			}
 		}
 		
-		
+		//easy computer
 		for(int i=0; i<25; i++){
 			do{
 				//move[0] = "row";

@@ -19,8 +19,8 @@ public class GameBoard{
 		tiles.put("row3", new ArrayList<Integer>(row));
 	}
 	
-	public GameBoard(GameBoard gb){
-		this.tiles = gb.tiles;
+	public GameBoard(Map<String, ArrayList<Integer>> t){
+		this.tiles = t;
 	}
 	
 	public boolean isValidMove(String xChoice, String yChoice){
