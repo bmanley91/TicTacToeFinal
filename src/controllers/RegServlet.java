@@ -34,35 +34,35 @@ public class RegServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String username = request.getParameter("username");
-		String pw = request.getParameter("password");
-		String rePw = request.getParameter("retypePassword");
+		String username = request.getParameter("username");		// gets player username
+		String pw = request.getParameter("password");			// gets player password
+		String rePw = request.getParameter("retypePassword");	// check if pw matches retyped pw
 		
-		String url = "/views/home.jsp"; 
-		String msg = null;
+		String url = "/views/home.jsp"; 						// url for page
+		String msg = null;										
 		Long newUserId = null;
 		
 		if(username == null || username.isEmpty() || pw.isEmpty() || rePw.isEmpty()){
-			msg="Please fill out all fields.";
-			url= "/views/login.jsp"; 
+			msg="Please fill out all fields.";					// error message if fields aren't filled in
+			url= "/views/login.jsp"; 							// send back to login page
 		}
 		else{
-			System.out.println("regElse");
-			PreparedStatement regPlayer = null;
-			ResultSet rs;
+			System.out.println("regElse");						
+			PreparedStatement regPlayer = null;					// declare statement to use later
+			ResultSet rs;										// declare result set to use later
 			String stmt =
-					"INSERT INTO Player (p_username,p_password) VALUES(?,?)";
+					"INSERT INTO Player (p_username,p_password) VALUES(?,?)";		// syntax for SQL statement
 			try{
 				regPlayer = Database.getConnection().prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
-				regPlayer.setString(1, username);
-				regPlayer.setString(2, pw);
-				regPlayer.executeUpdate();
-				rs = regPlayer.getGeneratedKeys();
-				if (rs != null && rs.next()) {
+				regPlayer.setString(1, username);				// put username into statement
+				regPlayer.setString(2, pw);						// put password into statement
+				regPlayer.executeUpdate();						// execute statement
+				rs = regPlayer.getGeneratedKeys();				// save the result set
+				if (rs != null && rs.next()) {					
 					newUserId = rs.getLong(1);
 				}
 			}
-			catch (SQLException | ClassNotFoundException s){
+			catch (SQLException | ClassNotFoundException s){	// catch sql exception
 				System.out.println("SQL statement is not executed:");
 				System.out.println(s);
 				if (s instanceof SQLIntegrityConstraintViolationException) {
@@ -70,17 +70,17 @@ public class RegServlet extends HttpServlet {
 					msg = "Username already exists";
 					}
 				}
-			finally{
+			finally{											
 				if(regPlayer != null){
 					try {
-		           		regPlayer.close();
+		           		regPlayer.close();						// close statement after execution
 						} 
 					catch (SQLException e) {
-							e.printStackTrace();
+							e.printStackTrace();				
 						} 
 				}
 			}
-			request.setAttribute("msg", msg);
+			request.setAttribute("msg", msg);					
 			System.out.println("**"+newUserId);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url); 
