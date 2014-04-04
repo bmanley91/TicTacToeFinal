@@ -8,11 +8,13 @@ import models.Game;
 public class Player {
 
 	public List<Game> games;
+	public List<Player> friends;
 	private long id;
 	public String username;
 	private String password;
 	public int wins, losses, draws;
 	public boolean isComp;
+	public int diff;
 	
 	public Player(String username, String password,  long id) {
 		
