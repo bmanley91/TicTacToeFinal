@@ -212,12 +212,12 @@ public class Game{
 
 	public String getPlayer2Img() {
 		//return "O";
-		return "/TicTacToe/resources/images/blueO.png";
+		return "https://elasticbeanstalk-us-east-1-920081316738.s3.amazonaws.com/418Resources/blueO.png";
 	}
 
 	public String getPlayer1Img() {
 		//return "X";
-		return "/TicTacToe/resources/images/redX.png";
+		return "https://elasticbeanstalk-us-east-1-920081316738.s3.amazonaws.com/418Resources/redX.png";
 	}
 
 	public boolean isWinner() {
