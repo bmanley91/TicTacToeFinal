@@ -23,10 +23,35 @@ public class Computer extends Player {
 		Random rand = new Random();
 		//int x;
 		
-		if(board.isValidMove("row2", "1")){
-			move[0] = "row2";
-			move[1] = "1";
-			return move;
+		//System.out.println("Turn number = "+game.numTurn());
+		System.out.println("Last move corner ?= "+game.isCorner(game.lastMove) );
+		System.out.println("Last move side ?= "+game.isSide(game.lastMove) );
+		
+		if(game.numTurn() <= 3 && difficulty >= 2){
+			//set up the first couple of moves
+			
+			move = game.getWinningMove(1);
+			
+			if(move[0] != null){
+				return move;
+			}
+			
+			if(board.isValidMove("row2", "1")){
+				//always take the center if it's free
+				move[0] = "row2";
+				move[1] = "1";
+				return move;
+			}
+			
+			else if (board.tiles.get("row2").get(1) == 1 && game.numTurn() <= 1){
+				//opponent has the center
+				return game.getCorner();
+			}
+			
+			if( (game.isCorner(game.lastMove) || game.isSide(game.lastMove)) && difficulty == 3 ){
+				return game.getOppositeCorner();
+			}
+			
 		}
 		
 		if(difficulty >= 2){
@@ -65,69 +90,6 @@ public class Computer extends Player {
 		return board.tiles.get(x).get(Integer.parseInt(y)) == 2;
 	}
 	
-	private boolean winMove(){
 		
-		
-		/*for(int x = 0; x < 3; x++){
-			for(int y = 0; y < 3; y++){
-				if(board.isValidMove(rows[x], cols[y])){
-					board.tiles.get(rows[x]).set(y, 2);
-					System.out.println("win move "+move[0]+", "+move[1]);
-					if(game.checkForWinner()){
-							if( (game.getWinner() != null) && (game.getWinner().isComp) ){
-								board.tiles.get(rows[x]).set(y, 0);
-								move[0] = rows[x];
-								move[1] = cols[y];
-								System.out.println("win move2 "+move[0]+", "+move[1]);
-								return true;
-							}
-					}
-					board.tiles.get(rows[x]).set(y, 0);
-				}
-			}
-		}*/
-		return false;
-		
-	}
-	
-	private boolean blockMove(){
-		
-		//System.out.println("compturn "+move[0]+", "+move[1]);
-		/*for(int x = 0; x < 3; x++){
-			for(int y = 0; y < 3; y++){
-				if(board.isValidMove(rows[x], cols[y])){
-					board.tiles.get(rows[x]).set(y, 1);
-					if( (game.checkForWinner()) && !(game.getWinner().isComp) ){
-						board.tiles.get(rows[x]).set(y, 0);
-						move[0] = rows[x];
-						move[1] = cols[y];
-						return true;
-					}
-					board.tiles.get(rows[x]).set(y, 0);
-				}
-			}
-		}*/
-		return false;
-		
-	}
-	
-	private String[] hardMove(){
-		
-		
-		if(winMove()){
-			
-			return move;
-		}
-		
-		if(board.isValidMove("row2", "1")){
-			//always take the center if it's available
-			move[0] = "row2";
-			move[1] = "1";
-			return move;
-		}
-		
-		return move;
-	}
-	
 	
 }

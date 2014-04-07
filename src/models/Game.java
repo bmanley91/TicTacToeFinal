@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 public class Game{
@@ -11,6 +12,7 @@ public class Game{
 	public int winnerId = 0;
 	public boolean isTie = false;
 	public Computer comp;
+	public String lastMove[] = new String[2];
 	
 	public Game(List<Player> players) {
 		this.board = new GameBoard();
@@ -20,6 +22,9 @@ public class Game{
 	}
 
 	public void takeTurn(String xChoice, String yChoice, int playersTurn2) {
+		
+		lastMove[0] = xChoice;
+		lastMove[1] = yChoice;
 		System.out.println(xChoice+", "+yChoice);
 		if(this.playersTurn == playersTurn2) {
 			board.setPlayerChoice(xChoice,yChoice,playersTurn);
@@ -34,21 +39,123 @@ public class Game{
 			System.out.println("Wrong turn!");
 	}
 	
+	public boolean isCorner(String m[]){
+		
+		String rows[] = {"row1", "row3"};
+		String cols[] = {"0", "2"};
+		
+		if(m[0] == null)
+			return false;
+		
+		if(m[0].equals("row2") && m[1].equals("1")){
+			//center square
+			return false;
+		}
+		
+		for(int i=0; i< rows.length; i++){
+			for(int j=0; j<cols.length; j++){
+				
+				if( rows[i].equals(m[0]) && cols[j].equals(m[1]) ){
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean isSide(String m[]){
+		
+		if(m[0] == null)
+			return false;
+		
+		if(m[0].equals("row2") && m[1].equals("1")){
+			//center square
+			return false;
+		}
+		
+		return !isCorner(m);
+	}
+	
+	public String[] getSide(){
+		String move[] = new String[2];
+		String[] rows = {"row1", "row2", "row3"};
+		String[] cols = {"0", "1", "2"};
+		Random rand = new Random();
+		
+		do{
+			for(int x=0; x<10; x++){
+				
+				move[0] = rows[(rand.nextInt(rows.length))];
+				move[1] = cols[(rand.nextInt(cols.length))];
+			}
+		}while(!board.isValidMove(move[0], move[1]) && !isSide(move));
+		
+		
+		return move;
+	}
+	
+	public String[] getCorner(){
+		
+		String move[] = new String[2];
+		Random rand = new Random();
+		String rows[] = {"row1", "row3"};
+		String cols[] = {"0", "2"};
+		
+		do{
+			for(int x = 0; x < 10; x++){
+				
+				move[0] = rows[(rand.nextInt(rows.length))];
+				move[1] = cols[(rand.nextInt(cols.length))];
+			}
+		}while(!board.isValidMove(move[0], move[1]));
+		
+		return move;
+	}
+	
+	public String[] getOppositeCorner(){
+		
+		String move[] = getCorner();
+		int i = 0;
+		
+		while(lastMove[0].equals(move[0]) || lastMove[1].equals(move[1]) ){
+			move = getCorner();
+			if(i > 10)
+				break;
+			i++;
+		}
+		
+		return move;
+		
+	}
+	
+	public int numTurn(){
+		
+		int turn = 0;
+		String[] rows = {"row1", "row2", "row3"};
+		String[] cols = {"0", "1", "2"};
+		
+		for(int i=0; i<rows.length; i++){
+			for(int j=0; j<cols.length; j++){
+				
+				if( board.tiles.get(rows[i]).get(Integer.parseInt(cols[j])) != 0){
+					turn++;
+				}
+				
+			}
+		}
+		
+		return turn;
+	}
+	
 	public String[] getWinningMove(int player){
 		
 		String[] rows = {"row1", "row2", "row3"};
 		String[] cols = {"0", "1", "2"};
 		String[] move = new String[2];
-		GameBoard newBoard = new GameBoard(board.tiles);
-		boolean winner = false;
+		GameBoard newBoard = board;//new GameBoard(board.tiles);
+		//boolean winner = false;
 		boolean valid = false;
-		
-		//move[0] = rows[0];
-		//move[1] = cols[0];
-		//if(!newBoard.equals(board)){
-			System.out.println("new board "+newBoard.toString());
-			System.out.println("board "+board.toString());
-		//}
 		
 		
 		for(int i=0; i<rows.length; i++){
@@ -64,9 +171,9 @@ public class Game{
 					isTie = false;
 					newBoard.tiles.get(rows[i]).set(Integer.parseInt(cols[j]), 0);
 					
-					System.out.println("Col1, "+ j+ " "+ newBoard.getCol1().get(j) );
-					System.out.println("Col2, "+ j+ " "+ newBoard.getCol2().get(j) );
-					System.out.println("Col3, "+ j+ " "+ newBoard.getCol3().get(j) );
+					//System.out.println("Col1, "+ j+ " "+ newBoard.getCol1().get(j) );
+					//System.out.println("Col2, "+ j+ " "+ newBoard.getCol2().get(j) );
+					//System.out.println("Col3, "+ j+ " "+ newBoard.getCol3().get(j) );
 					move[0] = rows[i];
 					move[1] = cols[j];
 					//newBoard.tiles.get(rows[i]).set(Integer.parseInt(cols[j]), 0);
@@ -212,12 +319,12 @@ public class Game{
 
 	public String getPlayer2Img() {
 		//return "O";
-		return "https://elasticbeanstalk-us-east-1-920081316738.s3.amazonaws.com/418Resources/blueO.png";
+		return "/TicTacToe/resources/images/blueO.png";
 	}
 
 	public String getPlayer1Img() {
 		//return "X";
-		return "https://elasticbeanstalk-us-east-1-920081316738.s3.amazonaws.com/418Resources/redX.png";
+		return "/TicTacToe/resources/images/redX.png";
 	}
 
 	public boolean isWinner() {
