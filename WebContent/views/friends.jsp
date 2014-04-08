@@ -13,6 +13,7 @@
 	<div class='innerContent'>
 	<%
 	Player player = (Player)session.getAttribute("user");
+	String[] friends = (String[])session.getAttribute("friends");
 	ServletContext sc = this.getServletContext();
 	String path = sc.getContextPath();//This code get the path relative to the root web content directory of the project
 		String msg = request.getParameter("msg");
@@ -29,6 +30,10 @@
 				out.println(player.friends.get(i).username);
 				}
 			}
+		System.out.println("Friends");
+		for(int i=0; i<friends.length; i++){
+			System.out.println(friends[i]);
+		}
 			%>
 </div>
 </body>
