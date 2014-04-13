@@ -1,39 +1,63 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.*;
-import java.util.List;
 
 public class Game{
 
 	public GameBoard board;
 	public int playersTurn = 1 + (int)(Math.random() * ((2 - 1) + 1));
-	public List<Player> players; 
+	public List<Player> players = new ArrayList<Player>();
 	public int winnerId = 0;
 	public boolean isTie = false;
 	public Computer comp;
-	public String lastMove[] = new String[2];
+	//public String lastMove[] = new String[2];
 	
 	public Game(List<Player> players) {
 		this.board = new GameBoard();
 		this.players = players;
-		this.comp = new Computer(1, board);
+		//this.comp = new Computer(board);
+	}
+	
+	public Game(Player p, int difficulty) {
+		this.board = new GameBoard();
+		//comp.board = this.board;
+		this.players.add(p);
 		
+		comp = new Computer(difficulty, this.board, this);
+		this.players.add(comp);
+		//comp = (Computer)players.get(1);
+	}
+	
+	public Game() {
+		//this is the new contstructor thats on dans laptop
 	}
 
 	public void takeTurn(String xChoice, String yChoice, int playersTurn2) {
 		
-		lastMove[0] = xChoice;
-		lastMove[1] = yChoice;
-		System.out.println(xChoice+", "+yChoice);
+		String move[] = new String[2];
+		
+		if(isComputer()){
+			move = comp.compTurn();
+			xChoice = move[0];
+			yChoice = move[1];
+		}
+		/*else{
+			lastMove[0] = xChoice;
+			lastMove[1] = yChoice;
+		}*/
+		
 		if(this.playersTurn == playersTurn2) {
 			board.setPlayerChoice(xChoice,yChoice,playersTurn);
+			this.getCurrentPlayer().setLastMove(xChoice, yChoice);
+			
 			if (playersTurn == 1)
 				playersTurn = 2;
 			else
 				playersTurn = 1;
 			checkForWinner(board);
 			checkForTie(board);
+			if(this.getCurrentPlayer().isComputer() && !this.isOver())
+				this.takeTurn(xChoice, yChoice, playersTurn);
 		}
 		else
 			System.out.println("Wrong turn!");
@@ -95,6 +119,20 @@ public class Game{
 		return move;
 	}
 	
+	public String[] getCorner(String[] m){
+		return this.getCorner(m[0], m[1], 25);
+	}
+	
+	private String[] getCorner(String row, String col, int i){
+		String m[] = getCorner();
+		if( (row.equals(m[0]) || col.equals(m[1])) && i >= 0 ){
+			return this.getCorner(row, col, i-1);
+		}
+		
+		return m;
+	}
+	
+	
 	public String[] getCorner(){
 		
 		String move[] = new String[2];
@@ -113,12 +151,12 @@ public class Game{
 		return move;
 	}
 	
-	public String[] getOppositeCorner(){
+	public String[] getOppositeCorner(String lastTurn[]){
 		
 		String move[] = getCorner();
 		int i = 0;
 		
-		while(lastMove[0].equals(move[0]) || lastMove[1].equals(move[1]) ){
+		while(lastTurn[0].equals(move[0]) || lastTurn[1].equals(move[1]) ){
 			move = getCorner();
 			if(i > 10)
 				break;
@@ -191,6 +229,91 @@ public class Game{
 		
 		return move;
 	}
+	
+	public String[] twoCorners(Player player){
+		//check if the player has 2 corners that could lead to a win
+		if(player.moveList.size()< 2)
+			return new String[2];
+		
+		String c1[] = player.moveList.get(0);
+		String c2[] = player.moveList.get(1);
+		
+		if(this.isCorner(c1) && this.isCorner(c2)){
+			return this.getSide();
+		}
+		return new String[2];
+	}
+	
+	public String[] twoSides(Player player){
+		//checks if the other player has 2 sides that could lead to a win
+		String move[] = new String[2];
+		String side1[] = new String[2];
+		String side2[] = new String[2];
+		
+		if(player.moveList.size() < 2)
+			return move;//not enough moves yet
+		
+		for(int i=0; i<player.moveList.size(); i++){
+			if(side1[0] == null && this.isSide(player.moveList.get(i)))
+				side1 = player.moveList.get(i);
+			if(side1[0] != null && this.isSide(player.moveList.get(i))){
+				if(!player.moveList.get(i)[0].equals(side1[0]) && !player.moveList.get(i)[1].equals(side1[1]) )
+					side2 = player.moveList.get(i);
+			}
+		}
+		
+		if(side1[0] == null || side1[1] == null || side2[0] == null || side2[1] == null ){
+			return new String[2];
+		}
+		
+		if( side2[0].equals("row2")){
+			move[0] = side1[0];
+			move[1] = side2[1];
+		}
+		
+		else{
+			move[0] = side2[0];
+			move[1] = side1[1];
+		}
+		
+		/*if(board.tiles.get("row2").get(0) == 1){
+			move[1] = "0";
+			if(board.tiles.get("row1").get(1) == 1)
+				move[0] = "row1";
+			else if(board.tiles.get("row3").get(1) == 1)
+				move[0] = "row3";
+		}
+		
+		else if(board.tiles.get("row2").get(2) == 1){
+			move[1] = "2";
+			if(board.tiles.get("row1").get(1) == 1)
+				move[0] = "row1";
+			else if(board.tiles.get("row3").get(1) == 1)
+				move[0] = "row3";
+		}
+		
+		else if(board.tiles.get("row1").get(1) == 1){
+			move[0] = "row1";
+			if(board.tiles.get("row2").get(0) == 1)
+				move[1] = "0";
+			else if(board.tiles.get("row2").get(2) == 1)
+				move[1] = "2";
+		}
+		
+		else if(board.tiles.get("row3").get(1) == 1){
+			move[0] = "row3";
+			if(board.tiles.get("row2").get(0) == 1)
+				move[1] = "0";
+			else if(board.tiles.get("row2").get(2) == 1)
+				move[1] = "2";
+		}*/
+		
+		return move;
+	}
+	
+	public boolean isComputer(){
+		return getCurrentPlayer().isComputer();
+	}
 
 	public boolean checkForWinner(GameBoard gb) {
 		return checkAllRows(gb) || checkAllCols(gb) || checkDiagonals(gb);
@@ -223,6 +346,10 @@ public class Game{
 	
 	public Player getCurrentPlayer() {
 		return players.get(playersTurn-1);
+	}
+	
+	public Player getOtherPlayer(){
+		return players.get(0) == this.getCurrentPlayer() ? players.get(1) : players.get(0); 
 	}
 	
 	public boolean checkRow1(GameBoard gb) {

@@ -8,12 +8,12 @@ import models.Game;
 public class Player {
 
 	public List<Game> games;
-	public List<Player> friends;
 	private long id;
 	public String username;
 	private String password;
 	public int wins, losses, draws;
-	public boolean isComp;
+	//public String[] lastMove = new String[2];
+	public List<String[]> moveList = new ArrayList<>();
 	public int diff;
 	
 	public Player(String username, String password,  long id) {
@@ -62,6 +62,23 @@ public class Player {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	public void setLastMove(String row, String col){
+		String m[] = {row, col};
+		//lastMove = m;
+		moveList.add(m);
+	}
+	
+	public String[] getLastMove(){
+		if(this.moveList.size() > 0)
+			return this.moveList.get(this.moveList.size()-1);
+		return new String[2];
+	}
+
+	public boolean isComputer() {
+		System.out.println("NOT Overriding");
+		return this instanceof Computer;
 	}
 	
 }
