@@ -23,8 +23,15 @@ public class GameBoard{
 		this.tiles = t;
 	}
 	
+	public boolean isValidMove(String s[]){
+		if(s.length!=2)
+			return false;
+		return this.isValidMove(s[0], s[1]);
+	}
+	
 	public boolean isValidMove(String xChoice, String yChoice){
-		//System.out.println("gameboard compturn "+xChoice+", "+yChoice);
+		if(xChoice == null || yChoice == null)
+			return false;
 		return tiles.get(xChoice).get(Integer.parseInt(yChoice)) == 0;
 	}
 	
@@ -38,13 +45,6 @@ public class GameBoard{
 		return tiles.get("row3");
 	}
 	public void setPlayerChoice(String xChoice, String yChoice, int playersTurn) {
-		if(isValidMove(xChoice, yChoice)){
-			
-			System.out.println("Valid Move ");
-		}
-		else{
-			System.out.println("Invalid move "+xChoice+" "+yChoice);
-		}
 		tiles.get(xChoice).set(Integer.parseInt(yChoice), playersTurn);
 	}
 	public ArrayList<Integer> getUpHillDiagonal() {

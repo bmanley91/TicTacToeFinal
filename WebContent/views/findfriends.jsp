@@ -20,7 +20,6 @@
 			"</div>"+
 			"<div class='center'>"+
 			"<input type='submit' value='Search'/>"
-			
 			);
 	
 	%>

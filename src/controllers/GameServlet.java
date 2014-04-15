@@ -30,15 +30,14 @@ public class GameServlet extends HttpServlet {
 		String url = "/views/gameBoard.jsp"; 
 		String msg = null;
 		Game game = (Game) session.getAttribute("game");
-		Computer comp = game.comp;
-		String[] move = new String[2];
+		//Computer comp = game.comp;
+		//String[] move = new String[2];
 		String xChoice, yChoice;
 		
 		//response.setIntHeader("Refresh", 5);
 		
-		if(game.getCurrentPlayer().isComp){
-			
-			comp.difficulty = game.getPlayer2().diff;
+		/*if(game.isComputer()){
+			//comp.difficulty = game.getPlayer2().diff;
 			move = comp.compTurn();
 			
 			//while( game.board.isValidMove(move[0], move[1]) )
@@ -47,10 +46,10 @@ public class GameServlet extends HttpServlet {
 			xChoice = move[0];
 			yChoice = move[1];
 		}
-		else{
+		else{*/
 			xChoice =  request.getParameter("xChoice");
 			yChoice =  request.getParameter("yChoice");
-		}
+		//}
 		int playersTurn = Integer.valueOf(request.getParameter("playersTurn"));	
 		game.takeTurn(xChoice,yChoice,playersTurn);
 		if(!game.isOver())
