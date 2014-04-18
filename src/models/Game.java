@@ -79,6 +79,8 @@ public class Game{
 		for(int i=0; i< rows.length; i++){
 			for(int j=0; j<cols.length; j++){
 				
+				//System.out.println("iscorner: "+rows[i]+", "+cols[j]);
+				
 				if( rows[i].equals(m[0]) && cols[j].equals(m[1]) ){
 					return true;
 				}
@@ -95,6 +97,7 @@ public class Game{
 		
 		if(m[0].equals("row2") && m[1].equals("1")){
 			//center square
+			System.out.println("isside center");
 			return false;
 		}
 		
@@ -103,19 +106,19 @@ public class Game{
 	
 	public String[] getSide(){
 		String move[] = new String[2];
-		String[] rows = {"row1", "row2", "row3"};
-		String[] cols = {"0", "1", "2"};
+		String sides[][] = { {"row1", "1"}, {"row2", "0"},
+						{"row2", "2"}, {"row3", "1"} };
+		
 		Random rand = new Random();
 		
 		do{
 			for(int x=0; x<10; x++){
 				
-				move[0] = rows[(rand.nextInt(rows.length))];
-				move[1] = cols[(rand.nextInt(cols.length))];
+				move = sides[rand.nextInt(sides.length)];
 			}
-		}while(!board.isValidMove(move[0], move[1]) && !isSide(move));
+		}while(!isSide(move) && !board.isValidMove(move[0], move[1]));
 		
-		
+		System.out.println("getSide: "+move[0]+", "+move[1]);
 		return move;
 	}
 	
@@ -171,12 +174,12 @@ public class Game{
 		
 		int turn = 0;
 		String[] rows = {"row1", "row2", "row3"};
-		String[] cols = {"0", "1", "2"};
+		//String[] cols = {"0", "1", "2"};
 		
 		for(int i=0; i<rows.length; i++){
-			for(int j=0; j<cols.length; j++){
+			for(int j=0; j<rows.length; j++){
 				
-				if( board.tiles.get(rows[i]).get(Integer.parseInt(cols[j])) != 0){
+				if( board.tiles.get(rows[i]).get(j) != 0){
 					turn++;
 				}
 				
@@ -185,6 +188,7 @@ public class Game{
 		
 		return turn;
 	}
+	
 	
 	public String[] getWinningMove(int player){
 		
@@ -275,6 +279,8 @@ public class Game{
 			move[0] = side2[0];
 			move[1] = side1[1];
 		}
+		
+		//move[0] = this.getOppositeCorner(move)[0];
 		
 		/*if(board.tiles.get("row2").get(0) == 1){
 			move[1] = "0";

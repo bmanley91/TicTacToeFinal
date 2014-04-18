@@ -9,21 +9,15 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 
 public class Database {
-
-
-    
-    
+	
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
     	Connection con = null;
     	String url = "jdbc:mysql://sql2.freesqldatabase.com/sql232715";
         String username = "sql232715";
         String password = "jR3!dD8%";
         String driver = "com.mysql.jdbc.Driver";
-        System.out.println("a");
     	Class.forName(driver);
-    	System.out.println("b");
-    	con = DriverManager.getConnection(url,username,password);
-    	System.out.println("c");	
+    	con = DriverManager.getConnection(url,username,password);	
     	return con;
     }
     

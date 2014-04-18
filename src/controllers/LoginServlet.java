@@ -43,7 +43,6 @@ public class LoginServlet extends HttpServlet {
 			url = "/views/login.jsp"; 
 		}
 		else {
-			System.out.println("eklse");
 			PreparedStatement findPlayer = null;
 	    	ResultSet rs = null;
 	    	String selectStatement =			//logic for prepared statement
@@ -56,6 +55,9 @@ public class LoginServlet extends HttpServlet {
 	           
 				while(rs.next()) {
 					player  = new Player(rs.getString("p_username"), rs.getString("p_password"),rs.getLong("p_id"));
+					player.wins = rs.getInt("p_wins");
+					player.losses = rs.getInt("p_loss");
+					player.draws = rs.getInt("p_tie");
 				}
 	       }
 	       catch (SQLException | ClassNotFoundException s){

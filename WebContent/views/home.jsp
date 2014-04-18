@@ -26,7 +26,8 @@ String path = sc.getContextPath();//This code get the path relative to the root 
 			//User user = (User)session.getAttribute("user");
 			Player player = (Player)session.getAttribute("user");
 			out.print(
-					"<h1>"+player.getName()+", you have played "+player.games.size()+" games</h1>" +
+					"<h1>"+player.getName()+", you have played "+player.getNumOfGames()+" games:</h1>" +
+					"<h3>"+player.wins+" wins, "+player.losses+" losses, and "+player.draws+" ties.</h3>"+
 					"<a href='"+path+"/views/gameBoard.jsp'>Start a game</a>"
 					
 					);
