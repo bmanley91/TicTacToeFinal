@@ -27,6 +27,12 @@
   </servlet>
   <servlet>
     <description></description>
+    <display-name>ContinueGameServlet</display-name>
+    <servlet-name>ContinueGameServlet</servlet-name>
+    <servlet-class>controllers.ContinueGameServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
     <display-name>LoginServlet</display-name>
     <servlet-name>LoginServlet</servlet-name>
     <servlet-class>controllers.LoginServlet</servlet-class>
@@ -72,5 +78,10 @@
     <servlet-name>ChallengeFriend</servlet-name>
     <url-pattern>/challengeFriend</url-pattern>
     <url-pattern>/views/challengeFriend</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ContinueGameServlet</servlet-name>
+    <url-pattern>/continueGameServlet</url-pattern>
+    <url-pattern>/views/continueGameServlet</url-pattern>
   </servlet-mapping>
 </web-app>

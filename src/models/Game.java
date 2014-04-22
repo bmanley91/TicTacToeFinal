@@ -2,9 +2,11 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Game{
 
+	private long id;
 	public GameBoard board;
 	public int playersTurn = 1 + (int)(Math.random() * ((2 - 1) + 1));
 	public List<Player> players; 
@@ -19,7 +21,6 @@ public class Game{
 	public Game(List<Player> players) {
 		this.board = new GameBoard();
 		this.players = players;
-<<<<<<< HEAD
 		comp = new Computer(0, board);
 	}
 
@@ -28,10 +29,18 @@ public class Game{
 		this.players = new ArrayList<Player>();
 		this.players.add(user);
 		this.players.add(friend);
-=======
-		this.comp = new Computer(1, board);
-		
->>>>>>> 4534b811a041b95871374b87cbacdf24357f38f1
+		//this.comp = new Computer(1, board);
+	}
+	
+	
+
+	public Game(Player p1, Player p2, Map<String, ArrayList<Integer>> tiles, int playersTurn, long gameId) {
+		this.players = new ArrayList<Player>();
+		this.players.add(p1);
+		this.players.add(p2);
+		this.board = new GameBoard(tiles);
+		this.playersTurn = playersTurn;
+		this.id = gameId;
 	}
 
 	public void takeTurn(String xChoice, String yChoice, int playersTurn2) {
@@ -119,6 +128,7 @@ public class Game{
 	}
 	
 	public Player getCurrentPlayer() {
+		System.out.println(playersTurn );
 		return players.get(playersTurn-1);
 	}
 	
@@ -226,6 +236,30 @@ public class Game{
 	
 	public boolean isOver() {
 		return isWinner() || isTie;
+	}
+
+	public long getId() {
+		return this.id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Long getWinnerId() {
+		Player winner = getWinner();
+		if (winner != null)
+			return winner.getId();
+		return null;
+	}
+
+	public String getMsg() {
+		if(!this.isOver())
+			return "It's " +this.getCurrentPlayer().getName() + "'s turn";
+		else if(this.isWinner())
+			return this.getWinner().getName()+ " Wins!";
+		else
+			return "It's a Tie!";
 	}
 	
 }

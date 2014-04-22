@@ -66,7 +66,7 @@ public class StartGame extends HttpServlet {
 			//players.add(comp);
 			
 			Game game = new Game(players);
-			session.setAttribute("game", game);
+			request.setAttribute("game", game);
 			game.comp.game = game;
 			msg="New Game! "+ game.getCurrentPlayer().getName()+ ", its your turn";
 		}

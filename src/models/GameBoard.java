@@ -19,6 +19,10 @@ public class GameBoard extends Game{
 		tiles.put("row3", new ArrayList<Integer>(row));
 	}
 	
+	public GameBoard(Map<String, ArrayList<Integer>> tiles) {
+		this.tiles = tiles;
+	}
+
 	public boolean isValidMove(String xChoice, String yChoice){
 		//System.out.println("gameboard compturn "+xChoice+", "+yChoice);
 		return tiles.get(xChoice).get(Integer.parseInt(yChoice)) == 0;

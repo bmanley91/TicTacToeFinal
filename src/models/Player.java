@@ -32,6 +32,7 @@ public class Player {
 		this.id = id;
 	}*/
 	
+	
 	public Player(String name, int id) {
 		this.username = name;
 		this.setId(id);
@@ -62,7 +63,7 @@ public class Player {
 		return username;
 	}
 	
-	public void setUsername(String name) {
+	public void setUsername(String username) {
 		this.username = username;
 	}
 
@@ -74,4 +75,20 @@ public class Player {
 		this.id = id;
 	}
 	
+	public List<Game> getAllGames() {
+		return Database.getAllOfPlayersGames(id);
+	}
+	
+	@Override
+	public String toString() {
+		return this.username;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		System.out.println("my .equals");
+		if(o instanceof Player)
+			return ((Player)o).getId() == this.getId();
+		return false;
+	}
 }

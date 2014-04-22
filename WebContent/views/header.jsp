@@ -9,7 +9,7 @@ String path = sc.getContextPath();//This code get the path relative to the root 
 				out.print(
 						"<li class='active'><a href='"+path+"/views/home.jsp'>Home</a></li>" +
 						"<li><a href='"+path+"/views/friends.jsp'>Friends</a></li>" +
-						"<li><a href='"+path+"/views/home.jsp'>Games</a></li>" +
+						"<li><a href='"+path+"/views/myGames.jsp'>Games</a></li>" +
 						"<li><a id='logoutButton'>Logout</a></li>" 
 						
 						);

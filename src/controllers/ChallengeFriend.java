@@ -31,8 +31,9 @@ public class ChallengeFriend extends HttpServlet {
 		Player user = (Player)session.getAttribute("user");
 		String url = "/views/gameBoard.jsp"; 
 		String msg = null;
-		long friendId = (Long)request.getAttribute("friendId");
-		
+		long friendId = 0;
+		if(request.getParameter("friendId") != null)
+			friendId = Long.parseLong(request.getParameter("friendId"));
 		if(friendId == 0) {
 			url = "/views/friends.jsp";
 			msg = "Could not find friend, please try gain";
@@ -40,12 +41,23 @@ public class ChallengeFriend extends HttpServlet {
 		else {
 			Player friend = Database.findPlayerById(friendId);
 			Game g = new Game(user, friend);
-			session.setAttribute("game", g);
-			msg="New Game! "+ g.getCurrentPlayer().getName()+ ", its your turn";
+			g = Database.createGame(g);
+			if(g != null) {
+				request.setAttribute("game", g);
+				msg="New Game! "+ g.getCurrentPlayer().getName()+ ", its your turn";
+			}
+			else
+				msg="Error creating game. Please try again";
 		}
 		request.setAttribute("msg", msg);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url); 
 		dispatcher.forward(request, response);
+		try {
+			Database.DB_Close();
+		} catch (Throwable e) {
+			System.out.println("error closing connection");
+			e.printStackTrace();
+		}
 	}
 
 }
