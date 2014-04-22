@@ -12,8 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import models.Player;
-import models.Game;
+import models.*;
 
 /**
  * Servlet implementation class StartGame
@@ -52,22 +51,37 @@ public class StartGame extends HttpServlet {
 			player2.username = name2;
 			player1.setId(2);
 			//Player comp = new Player("Computer", 2);
-			System.out.println("vs comp = "+vsPC);
-			if(vsPC != 0){
-				System.out.println("vs comp");
-				player2.isComp = true;
-				player2.diff = vsPC;
-			}
-			System.out.println("p2 comp = "+player2.diff);
-			
 			List<Player> players = new ArrayList<Player>();
-			players.add(player1);
-			players.add(player2);
-			//players.add(comp);
+			Game game = new Game();
 			
-			Game game = new Game(players);
+			
+			//System.out.println("vs comp = "+vsPC);
+			if(vsPC != 0){
+				//player2.diff = vsPC;
+				//Computer c = new Computer(vsPC);
+				//System.out.println("player1 "+(player1 == null));
+				game = new Game(player1, vsPC);
+				//System.out.println("game "+game);
+				
+				players.add(player1);
+				players.add(game.comp);
+				
+				if(game.getCurrentPlayer().isComputer() ){
+					String m[] = game.comp.compTurn();
+					game.takeTurn(null, null, game.playersTurn);
+					
+				}
+			}
+			//System.out.println("p2 comp = "+player2.diff);
+			else{
+				players.add(player1);
+				players.add(player2);
+				//players.add(comp);
+				game = new Game(players);
+				
+			}
+			
 			session.setAttribute("game", game);
-			game.comp.game = game;
 			msg="New Game! "+ game.getCurrentPlayer().getName()+ ", its your turn";
 		}
 		request.setAttribute("msg", msg);

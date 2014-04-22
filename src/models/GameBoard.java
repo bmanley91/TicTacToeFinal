@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GameBoard extends Game{
+public class GameBoard{
 
 	public Map<String, ArrayList<Integer>> tiles = new LinkedHashMap<String, ArrayList<Integer>>();
 	
@@ -19,8 +19,19 @@ public class GameBoard extends Game{
 		tiles.put("row3", new ArrayList<Integer>(row));
 	}
 	
+	public GameBoard(Map<String, ArrayList<Integer>> t){
+		this.tiles = t;
+	}
+	
+	public boolean isValidMove(String s[]){
+		if(s.length!=2)
+			return false;
+		return this.isValidMove(s[0], s[1]);
+	}
+	
 	public boolean isValidMove(String xChoice, String yChoice){
-		//System.out.println("gameboard compturn "+xChoice+", "+yChoice);
+		if(xChoice == null || yChoice == null)
+			return false;
 		return tiles.get(xChoice).get(Integer.parseInt(yChoice)) == 0;
 	}
 	
@@ -34,13 +45,6 @@ public class GameBoard extends Game{
 		return tiles.get("row3");
 	}
 	public void setPlayerChoice(String xChoice, String yChoice, int playersTurn) {
-		if(isValidMove(xChoice, yChoice)){
-			
-			System.out.println("Valid Move ");
-		}
-		else{
-			System.out.println("Invalid move "+xChoice+" "+yChoice);
-		}
 		tiles.get(xChoice).set(Integer.parseInt(yChoice), playersTurn);
 	}
 	public ArrayList<Integer> getUpHillDiagonal() {
@@ -78,6 +82,11 @@ public class GameBoard extends Game{
 		column.add(getRow3().get(2));
 		return column;
 	}
+
+	//public boolean checkForWinner(ArrayList<Integer> row) {
+		
+		
+	//}
 	
 	
 }

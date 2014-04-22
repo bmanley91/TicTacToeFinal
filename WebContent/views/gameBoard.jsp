@@ -124,6 +124,9 @@
 
 						"<form action='startGame' method='post'>"+
 							"<div class='center'><input type='submit' value='New Game'/></div>" +
+								"<label>Computer Opponent<label><select name='vsPC'><option value ='"+game.getPlayer2().diff+"'>Same</option>"+
+								"<option value='0'>None</option><option value='1'>Easy</option>"+
+								"<option value='2'>Med</option><option value='3'>Hard</option>"+
 							"<input type='hidden' name='name1' value='"+game.getPlayer1().getName()+"'/>" +
 							"<input type='hidden' name='name2' value='"+game.getPlayer2().getName()+"'/>" +
 							"<input type='hidden' name= 'vsPC' value='"+game.getPlayer2().diff+"'/>" +
