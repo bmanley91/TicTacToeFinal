@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import java.sql.Connection;
+import models.Database;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +31,9 @@ public class GameServlet extends HttpServlet {
 		HttpSession session = request.getSession(); 
 		String url = "/views/gameBoard.jsp"; 
 		String msg = null;
-		Game game = (Game) session.getAttribute("game");
+		Long gameId = Long.parseLong(request.getParameter("gameId"));
+		Game game = Database.findGameById(gameId);
+		String[] move = new String[2];
 		String xChoice, yChoice;
 		PreparedStatement update1 = null;
 		PreparedStatement update2 = null;
@@ -45,6 +47,18 @@ public class GameServlet extends HttpServlet {
 		game.takeTurn(xChoice,yChoice,playersTurn);
 		if(!game.isOver())
 			msg=game.getCurrentPlayer().getName()+ ", its your turn";
+<<<<<<< HEAD
+		else if(game.isWinner())
+			msg=game.getWinner().getName()+ " Wins!";
+			// update getWinner().getName() win count and game count
+			// UPDATE Player SET p_wins = p_wins + 1 
+			// WHERE p_username = 
+		else
+			msg="It's a Tie!";
+		request.setAttribute("msg", msg);
+		// update both players game count
+		
+=======
 		
 		else if(game.isWinner() || game.isTie){
 			if(game.isWinner())
@@ -110,9 +124,26 @@ public class GameServlet extends HttpServlet {
 			
 		}
 		request.setAttribute("msg", msg);
+		request.setAttribute("game", game);
+>>>>>>> FETCH_HEAD
+		/*if (name == null || name.isEmpty()) 
+			msg="Goodjob";
+		else {
+			session.setAttribute("user", name);
+			session.setAttribute("gameBoard", new GameBoard());
+			msg="New Game! "+ name+ ", its your turn";
+		}
 		
+		
+		Database.updateGame(game);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url); 
 			dispatcher.forward(request, response);
+		try {
+			Database.DB_Close();
+		} catch (Throwable e) {
+			System.out.println("error closing connection");
+			e.printStackTrace();
+		}
 		
 		
 	}

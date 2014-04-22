@@ -1,10 +1,12 @@
 package models;
+import javax.persistence.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import models.Game;
 
+@Entity
 public class Player {
 
 	public List<Game> games;
@@ -23,6 +25,7 @@ public class Player {
 		this.setId(id);
 		games = new ArrayList<Game>();
 	}
+	
 	
 	public Player(String name, int id) {
 		this.username = name;
@@ -44,6 +47,14 @@ public class Player {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public long getId() {
@@ -73,5 +84,20 @@ public class Player {
 	public boolean isComputer() {
 		return this instanceof Computer;
 	}
+lic List<Game> getAllGames() {
+		return Database.getAllOfPlayersGames(id);
+	}
 	
+	@Override
+	public String toString() {
+		return this.username;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		System.out.println("my .equals");
+		if(o instanceof Player)
+			return ((Player)o).getId() == this.getId();
+		return false;
+	}
 }
