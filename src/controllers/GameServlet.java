@@ -25,7 +25,6 @@ import models.*;
 @WebServlet("/GameServlet")
 public class GameServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -42,9 +41,8 @@ public class GameServlet extends HttpServlet {
 		Connection con = null;
 		Player player1 = game.getPlayer1();
 		Player player2 = game.getPlayer2();
-		
-			xChoice =  request.getParameter("xChoice");
-			yChoice =  request.getParameter("yChoice");
+		xChoice =  request.getParameter("xChoice");
+		yChoice =  request.getParameter("yChoice");
 		int playersTurn = Integer.valueOf(request.getParameter("playersTurn"));	
 		game.takeTurn(xChoice,yChoice,playersTurn);
 		if(!game.isOver())
@@ -90,16 +88,6 @@ public class GameServlet extends HttpServlet {
 	    		
 	    		update1.executeUpdate();					// execute statement
 	    		update2.executeUpdate();					// execute statement
-	    		
-	    		//findPlayer.addBatch(selectStatement2);		//add second update
-	    		//findPlayer.setString(2, player2.username); 		// set input parameter 2
-	    		//findPlayer.set
-	    		//findPlayer.executeBatch();					// execute statement
-	    		
-	           
-				//while(rs.next()) {
-					//player  = new Player(rs.getString("p_username"), rs.getString("p_password"),rs.getLong("p_id"));
-				//}
 	       }
 	       catch (SQLException | ClassNotFoundException s){
 	           	System.out.println("SQL statement is not executed:");
@@ -112,8 +100,6 @@ public class GameServlet extends HttpServlet {
 	           if (update1 != null) { 
 	           	try {
 	           		con.close();
-	           		//findPlayer.close();
-	           		//findPlayer2.close();
 					} catch (SQLException e) {
 						e.printStackTrace();
 					} 
@@ -123,14 +109,6 @@ public class GameServlet extends HttpServlet {
 		}
 		request.setAttribute("msg", msg);
 		request.setAttribute("game", game);
-		/*if (name == null || name.isEmpty()) 
-			msg="Goodjob";
-		else {
-			session.setAttribute("user", name);
-			session.setAttribute("gameBoard", new GameBoard());
-			msg="New Game! "+ name+ ", its your turn";
-		}*/
-		
 		
 		Database.updateGame(game);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url); 

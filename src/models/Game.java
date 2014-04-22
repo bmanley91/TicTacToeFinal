@@ -100,8 +100,6 @@ public class Game{
 		for(int i=0; i< rows.length; i++){
 			for(int j=0; j<cols.length; j++){
 				
-				//System.out.println("iscorner: "+rows[i]+", "+cols[j]);
-				
 				if( rows[i].equals(m[0]) && cols[j].equals(m[1]) ){
 					return true;
 				}
@@ -118,7 +116,6 @@ public class Game{
 		
 		if(m[0].equals("row2") && m[1].equals("1")){
 			//center square
-			System.out.println("isside center");
 			return false;
 		}
 		
@@ -138,8 +135,6 @@ public class Game{
 				move = sides[rand.nextInt(sides.length)];
 			}
 		}while(!isSide(move) && !board.isValidMove(move[0], move[1]));
-		
-		System.out.println("getSide: "+move[0]+", "+move[1]);
 		return move;
 	}
 	
@@ -227,22 +222,14 @@ public class Game{
 					newBoard.tiles.get(rows[i]).set(Integer.parseInt(cols[j]), player);
 					valid = true;
 				}
-				
 				if(checkForWinner(newBoard)){
 					winnerId = 0;
 					isTie = false;
 					newBoard.tiles.get(rows[i]).set(Integer.parseInt(cols[j]), 0);
-					
-					//System.out.println("Col1, "+ j+ " "+ newBoard.getCol1().get(j) );
-					//System.out.println("Col2, "+ j+ " "+ newBoard.getCol2().get(j) );
-					//System.out.println("Col3, "+ j+ " "+ newBoard.getCol3().get(j) );
 					move[0] = rows[i];
 					move[1] = cols[j];
-					//newBoard.tiles.get(rows[i]).set(Integer.parseInt(cols[j]), 0);
 					return move;
-					
 				}
-				
 				if(valid){
 					newBoard.tiles.get(rows[i]).set(Integer.parseInt(cols[j]), 0);
 					valid = false;
@@ -372,7 +359,6 @@ public class Game{
 	}
 	
 	public Player getCurrentPlayer() {
-		System.out.println(playersTurn );
 		return players.get(playersTurn-1);
 	}
 	

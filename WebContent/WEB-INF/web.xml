@@ -91,13 +91,14 @@
     <url-pattern>/challengeFriend</url-pattern>
     <url-pattern>/views/challengeFriend</url-pattern>
   </servlet-mapping>
+  
   <servlet-mapping>
     <servlet-name>ContinueGameServlet</servlet-name>
     <url-pattern>/continueGameServlet</url-pattern>
     <url-pattern>/views/continueGameServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>FriendServlet</servlet-name>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>FriendServlet</servlet-name>
     <url-pattern>/friends</url-pattern>
     <url-pattern>/views/friends</url-pattern>
   </servlet-mapping>

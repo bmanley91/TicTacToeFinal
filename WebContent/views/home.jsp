@@ -15,11 +15,10 @@
 ServletContext sc = this.getServletContext();
 String path = sc.getContextPath();//This code get the path relative to the root web content directory of the project
 		String msg = request.getParameter("msg");
-		String loggedInString = (String)session.getAttribute("loggedIn");
-		boolean loggedIn = (loggedInString != null && loggedInString.equals("true"));
+		Player user = (Player) session.getAttribute("user");
 		if(msg != null)
 			out.print("<h1>"+msg+"</h1>");
-		if(!loggedIn) {
+		if(user == null) {
 			out.print("You are not logged in. <a href='"+path+"/views/login.jsp'>Login</a>");
 		}
 		else {

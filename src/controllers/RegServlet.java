@@ -47,7 +47,6 @@ public class RegServlet extends HttpServlet {
 			url= "/views/login.jsp"; 							// send back to login page
 		}
 		else{
-			System.out.println("regElse");						
 			PreparedStatement regPlayer = null;					// declare statement to use later
 			ResultSet rs;										// declare result set to use later
 			String stmt =
@@ -81,7 +80,6 @@ public class RegServlet extends HttpServlet {
 				}
 			}
 			request.setAttribute("msg", msg);					
-			System.out.println("**"+newUserId);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url); 
 				dispatcher.forward(request, response);
