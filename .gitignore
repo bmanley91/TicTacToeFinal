@@ -92,3 +92,5 @@ bin/src/models/Database.class
 bin/src/models/Game.class
 
 bin/src/models/Player.class
+
+*.class
