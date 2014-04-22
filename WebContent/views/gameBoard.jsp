@@ -145,6 +145,7 @@
 							"<form action='game' method='post' id='gameChoiceForm'>" +
 								"<input type='text' name='xChoice' id='xChoice'/>" +
 								"<input type='text' name='yChoice' id='yChoice'/>" +
+								"<input type='text' name='playersTurn' value='"+playersTurn+"'/>" +
 								"<input type='hidden' name='gameId' value='"+game.getId()+"'/>" +
 							"</form>" +
 						"</div>"

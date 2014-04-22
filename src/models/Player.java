@@ -84,7 +84,7 @@ public class Player {
 	public boolean isComputer() {
 		return this instanceof Computer;
 	}
-lic List<Game> getAllGames() {
+	public List<Game> getAllGames() {
 		return Database.getAllOfPlayersGames(id);
 	}
 	
@@ -95,9 +95,8 @@ lic List<Game> getAllGames() {
 	
 	@Override
 	public boolean equals(Object o) {
-		System.out.println("my .equals");
 		if(o instanceof Player)
 			return ((Player)o).getId() == this.getId();
-		return false;
+		return super.equals(o);
 	}
 }

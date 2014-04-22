@@ -37,10 +37,8 @@ public class ContinueGameServlet extends HttpServlet {
 			Game g = Database.findGameById(gameId);
 			request.setAttribute("game", g);
 			msg = g.getMsg();
-			System.out.println("GAME MSG: " +g.getMsg());
 		}
 			
-		System.out.println("IN CONTINUE GAME" + gameId);
 		request.setAttribute("msg", msg);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url); 
 		dispatcher.forward(request, response);

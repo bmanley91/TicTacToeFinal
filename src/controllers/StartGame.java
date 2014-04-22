@@ -33,8 +33,6 @@ public class StartGame extends HttpServlet {
 		Player player1 = new Player();
 		Player player2 = new Player();
 		
-		System.out.println("vspc "+difficulty+" "+request.getParameter("compDifficulty"));
-
 		String url = "/views/gameBoard.jsp"; 
 		String msg = null;
 		if (name1 == null || name1.isEmpty() || name2 == null || name2.isEmpty()) 
@@ -44,7 +42,6 @@ public class StartGame extends HttpServlet {
 			player1.setId(1);
 			player2.username = name2;
 			player1.setId(2);
-			//Player comp = new Player("Computer", 2);
 			List<Player> players = new ArrayList<Player>();
 			Game game = new Game();
 			
@@ -57,7 +54,6 @@ public class StartGame extends HttpServlet {
 				if(game.getCurrentPlayer().isComputer() ){
 					String m[] = game.comp.compTurn();
 					game.takeTurn(null, null, game.playersTurn);
-					
 				}
 			}
 			else{
@@ -67,13 +63,7 @@ public class StartGame extends HttpServlet {
 				
 			}
 			
-<<<<<<< HEAD
-			Game game = new Game(players);
 			request.setAttribute("game", game);
-			game.comp.game = game;
-=======
-			session.setAttribute("game", game);
->>>>>>> c5a1693396e575e309d6cc1a5aa99ba25c47d79a
 			msg="New Game! "+ game.getCurrentPlayer().getName()+ ", its your turn";
 		}
 		request.setAttribute("msg", msg);

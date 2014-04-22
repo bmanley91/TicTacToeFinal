@@ -37,7 +37,6 @@ public class FindFriendServlet extends HttpServlet {
 		
 		if(loggedIn){
 			String friendSearch = (String)request.getParameter("friendSearch");
-			System.out.println("Search: "+friendSearch);
 			if(friendSearch.length()==0){
 				msg = "Please fill in search field.";
 				url = "/views/findfriends.jsp";
