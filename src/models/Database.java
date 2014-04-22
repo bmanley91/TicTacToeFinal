@@ -12,8 +12,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+//import org.hibernate.SessionFactory;
+//import org.hibernate.cfg.Configuration;
 
 public class Database {
 	private static Connection conn;
@@ -84,7 +84,9 @@ public class Database {
     		rs = findPlayer.executeQuery(); 					// execute statement
            
 			while(rs.next()) {
-				player  = new Player(rs.getString("p_username"), rs.getString("p_password"),rs.getLong("p_id"));
+				player  = new Player(rs.getString("p_username"), rs.getString("p_password"),rs.getLong("p_id"),
+						rs.getInt("p_wins"), rs.getInt("p_loss"), rs.getInt("p_tie"));
+				//System.out.println("here "+rs.getInt("p_loss"));
 			}
        }
        catch (SQLException | ClassNotFoundException s){
@@ -119,7 +121,9 @@ public class Database {
     		rs = findPlayer.executeQuery(); 					// execute statement
            
 			while(rs.next()) {
-				player  = new Player(rs.getString("p_username"), rs.getString("p_password"),rs.getLong("p_id"));
+				player  = new Player(rs.getString("p_username"), rs.getString("p_password"),rs.getLong("p_id"),
+						rs.getInt("p_wins"), rs.getInt("p_loss"), rs.getInt("p_tie"));
+				//System.out.println("here "+rs.getInt("p_loss"));
 			}
        }
        catch (SQLException | ClassNotFoundException s){

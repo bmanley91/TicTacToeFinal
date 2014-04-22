@@ -82,6 +82,7 @@ public class GameBoard{
 		column.add(getRow3().get(2));
 		return column;
 	}
+	
 
 	//public boolean checkForWinner(ArrayList<Integer> row) {
 		

@@ -146,6 +146,7 @@
 								"<input type='text' name='xChoice' id='xChoice'/>" +
 								"<input type='text' name='yChoice' id='yChoice'/>" +
 								"<input type='hidden' name='gameId' value='"+game.getId()+"'/>" +
+								"<input type = 'hidden' name='playersTurn' value='"+playersTurn+"'/>"+
 							"</form>" +
 						"</div>"
 						);

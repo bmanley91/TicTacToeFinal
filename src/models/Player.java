@@ -1,12 +1,10 @@
 package models;
-import javax.persistence.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import models.Game;
 
-@Entity
 public class Player {
 
 	public List<Game> games;
@@ -26,6 +24,18 @@ public class Player {
 		games = new ArrayList<Game>();
 	}
 	
+	public Player(String username, String password, long id, int wins,
+			int losses, int ties) {
+		this(username, password, id);
+		this.wins = wins;
+		this.draws = ties;
+		this.losses = losses;
+		
+		
+		
+		// TODO Auto-generated constructor stub
+	}
+	
 	
 	public Player(String name, int id) {
 		this.username = name;
@@ -36,7 +46,8 @@ public class Player {
 		username = null;
 		this.setId(0);
 	}
-	
+
+
 	public String getName() {
 		return username;
 	}
@@ -84,7 +95,7 @@ public class Player {
 	public boolean isComputer() {
 		return this instanceof Computer;
 	}
-lic List<Game> getAllGames() {
+	public List<Game> getAllGames() {
 		return Database.getAllOfPlayersGames(id);
 	}
 	

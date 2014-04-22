@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import models.Database;
+
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,7 +49,6 @@ public class GameServlet extends HttpServlet {
 		game.takeTurn(xChoice,yChoice,playersTurn);
 		if(!game.isOver())
 			msg=game.getCurrentPlayer().getName()+ ", its your turn";
-<<<<<<< HEAD
 		else if(game.isWinner())
 			msg=game.getWinner().getName()+ " Wins!";
 			// update getWinner().getName() win count and game count
@@ -57,10 +58,7 @@ public class GameServlet extends HttpServlet {
 			msg="It's a Tie!";
 		request.setAttribute("msg", msg);
 		// update both players game count
-		
-=======
-		
-		else if(game.isWinner() || game.isTie){
+		if(game.isWinner() || game.isTie){
 			if(game.isWinner())
 				msg=game.getWinner().getName()+ " Wins!";
 			else{
@@ -125,14 +123,13 @@ public class GameServlet extends HttpServlet {
 		}
 		request.setAttribute("msg", msg);
 		request.setAttribute("game", game);
->>>>>>> FETCH_HEAD
 		/*if (name == null || name.isEmpty()) 
 			msg="Goodjob";
 		else {
 			session.setAttribute("user", name);
 			session.setAttribute("gameBoard", new GameBoard());
 			msg="New Game! "+ name+ ", its your turn";
-		}
+		}*/
 		
 		
 		Database.updateGame(game);
