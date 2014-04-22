@@ -1,10 +1,40 @@
 .classpath
 .project
 <<<<<<< HEAD
+<<<<<<< HEAD
 /bin
 =======
 .class
 
 
 *.class
+>>>>>>> FETCH_HEAD
+=======
+/WebContent/WEB-INF/lib/antlr-2.7.7 - Copy.jar
+/WebContent/WEB-INF/lib/dom4j-1.6.1 - Copy.jar
+/WebContent/WEB-INF/lib/hibernate-commons-annotations-4.0.4.Final - Copy.jar
+/WebContent/WEB-INF/lib/hibernate-core-4.3.4.Final - Copy.jar
+/WebContent/WEB-INF/lib/hibernate-jpa-2.1-api-1.0.0.Final - Copy.jar
+/WebContent/WEB-INF/lib/jandex-1.1.0.Final - Copy.jar
+/WebContent/WEB-INF/lib/javassist-3.18.1-GA - Copy.jar
+/WebContent/WEB-INF/lib/jboss-logging-3.1.3.GA - Copy.jar
+/WebContent/WEB-INF/lib/jboss-logging-annotations-1.2.0.Beta1 - Copy.jar
+/WebContent/WEB-INF/lib/jboss-transaction-api_1.2_spec-1.0.0.Final - Copy.jar
+/bin/
+/build/classes/controllers/ChallengeFriend.class
+/build/classes/controllers/RegServlet.class
+/build/classes/models/Computer.class
+/build/classes/.gitignore
+/build
+/build
+/build/classes
+/.gitignore
+/build/classes/controllers/LoginServlet.class
+/build/classes/controllers/LogoutServlet.class
+/build/classes/controllers/StartGame.class
+/build/classes/controllers/GameServlet.class
+/build/classes/models/Player.class
+/build/classes/models/Database.class
+/build/classes/models/Game.class
+/build/classes/models/GameBoard.class
 >>>>>>> FETCH_HEAD

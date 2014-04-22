@@ -1,10 +1,12 @@
 package models;
+import javax.persistence.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import models.Game;
 
+@Entity
 public class Player {
 
 	public List<Game> games;
@@ -12,7 +14,6 @@ public class Player {
 	public String username;
 	private String password;
 	public int wins, losses, draws;
-	//public String[] lastMove = new String[2];
 	public List<String[]> moveList = new ArrayList<>();
 	public int diff;
 	
@@ -24,11 +25,7 @@ public class Player {
 		this.setId(id);
 		games = new ArrayList<Game>();
 	}
-/*
-	public Player(User user, int id) {
-		this.user = user;
-		this.id = id;
-	}*/
+	
 	
 	public Player(String name, int id) {
 		this.username = name;
@@ -39,10 +36,6 @@ public class Player {
 		username = null;
 		this.setId(0);
 	}
-	
-	/*public boolean isComp(){
-		return isComp.equals("on");
-	}*/
 	
 	public String getName() {
 		return username;
@@ -55,6 +48,14 @@ public class Player {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public String getUsername() {
+		return username;
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
 	public long getId() {
 		return id;
@@ -65,20 +66,38 @@ public class Player {
 	}
 	
 	public void setLastMove(String row, String col){
-		String m[] = {row, col};
-		//lastMove = m;
-		moveList.add(m);
+		moveList.add(new String[] {row, col});
 	}
 	
 	public String[] getLastMove(){
-		if(this.moveList.size() > 0)
-			return this.moveList.get(this.moveList.size()-1);
-		return new String[2];
+		return this.moveList.size() > 0 ? this.moveList.get(this.moveList.size()-1) : new String[2];
+	}
+	
+	public String[] getFirstMove(){
+		return this.moveList.size() > 0 ? this.moveList.get(0) : new String[2];
+	}
+	
+	public int getNumOfGames(){
+		return this.wins + this.losses + this.draws;
 	}
 
 	public boolean isComputer() {
-		System.out.println("NOT Overriding");
 		return this instanceof Computer;
 	}
+lic List<Game> getAllGames() {
+		return Database.getAllOfPlayersGames(id);
+	}
 	
+	@Override
+	public String toString() {
+		return this.username;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		System.out.println("my .equals");
+		if(o instanceof Player)
+			return ((Player)o).getId() == this.getId();
+		return false;
+	}
 }

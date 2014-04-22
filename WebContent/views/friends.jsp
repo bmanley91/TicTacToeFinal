@@ -21,6 +21,7 @@
 		String loggedInString = (String)session.getAttribute("loggedIn");
 		Player player = (Player)session.getAttribute("user");
 		ArrayList friends = (ArrayList)session.getAttribute("friendList");
+		ArrayList friendWins = (ArrayList)session.getAttribute("friendWins");
 		boolean loggedIn = (loggedInString != null && loggedInString.equals("true"));
 		if(msg != null)
 			out.print("<h1>"+msg+"</h1>");
@@ -29,7 +30,7 @@
 		}
 		else{
 			for(int i=0; i< friends.size(); i++){
-				out.print("<p>"+friends.get(i)+"</p>");
+				out.print("<p>"+friends.get(i)+ " Wins: "+friendWins.get(i)+"</p>");
 			}
 			
 		}

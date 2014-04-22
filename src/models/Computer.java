@@ -30,27 +30,25 @@ public class Computer extends Player {
 	
 	public String[] compTurn(){
 		
-		Random rand = new Random();
-		Player human = game.getOtherPlayer();
-		//int x;
+		/*String[] rows = {"row1", "row2", "row3"};
+		String[] cols = {"0", "1", "2"};
+		String[] x = new String[2];
 		
-		if(diff >= 2){
-			//set up the first couple of moves
-			//if(diff == 2)
-				//return this.medTurn();
-			String m[] = new String[2];
-			for(int i =0; i< human.moveList.size(); i++){
-				m = human.moveList.get(i);
-				System.out.println("move list!!!: "+m[0]+", "+m[1]+": "+m.toString());
+		for(int i=0; i<rows.length; i++){
+			for(int j=0; j<cols.length; j++){
+				x[0] = rows[i];
+				x[1] = cols[j];
+				System.out.println(x[0]+", "+x[1]+" is a corner "+game.isCorner(x));
+				System.out.println(x[0]+", "+x[1]+" is a side "+game.isSide(x));
+				System.out.println();
 			}
-			
-			
-			if(diff == 3)
-				return this.hardTurn();
-			
+		}*/
+		
+		if(diff == 3)
+			return this.hardTurn();
+		
+		else if(diff == 2)
 			return this.medTurn();
-			
-		}
 		
 		
 		return this.easyTurn();
@@ -62,9 +60,17 @@ public class Computer extends Player {
 	
 	private String[] easyTurn(){
 		
+		System.out.println("easy diff");
 		Random rand = new Random();
 		
-		//easy computer
+		move = this.winMove();
+		//block opponent's winning move
+		//or make the winning move
+		if(board.isValidMove(move)){
+			return move;
+		}
+		
+		
 		for(int i=0; i<25; i++){
 			do{
 				//move[0] = "row";
@@ -73,9 +79,6 @@ public class Computer extends Player {
 				//System.out.println("compturn "+move[0]+", "+move[1]);
 			}while( !board.isValidMove(move[0], move[1]));
 		}
-		//System.out.println("win "+(board.getWinner()==null));
-		
-		//System.out.println("compturn "+move[0]+", "+move[1]);
 		
 		
 		return move;
@@ -83,7 +86,8 @@ public class Computer extends Player {
 	}
 	
 	private String[] medTurn(){
-		//move = game.getWinningMove(1);
+		System.out.println("med turn");
+		
 		Player human = game.getOtherPlayer();
 		
 		move = this.winMove();
@@ -122,15 +126,16 @@ public class Computer extends Player {
 	
 	private String[] hardTurn(){
 		
+		System.out.println("Hard diff");
+		
 		Player human = game.getOtherPlayer();
 		
 		move = this.winMove();
 		//block opponent's winning move
 		//or make the winning move
-		if(move[0] != null){
+		if(board.isValidMove(move)){
 			return move;
 		}
-		
 		
 		
 		if(game.numTurn()%2 == 0){//computer went first
@@ -138,19 +143,16 @@ public class Computer extends Player {
 				return game.getCorner();
 			else if(game.isCorner(human.moveList.get(0))){
 				//their first move was a corner
-				System.out.println("you played a corner lol");
 				return game.getCorner();
 			}
 			else if(game.isSide(human.moveList.get(0))){
 				//their first move was a side
-				System.out.println("you played a side lol");
 				if(board.isValidMove("row2", "1")){
 					move[0] = "row2";
 					move[1] = "1";
 					return move;
 				}
 				else if(game.numTurn() <= 4){
-					System.out.println("watata");
 					return game.getCorner(human.moveList.get(0));
 				}
 				else return game.getCorner();
@@ -158,7 +160,6 @@ public class Computer extends Player {
 			}
 			else{
 				//their first move was the center
-				System.out.println("you played the center lol");
 				if(game.numTurn() == 2)
 					return game.getOppositeCorner(this.moveList.get(0));
 				else if(game.isCorner(human.getLastMove()))
@@ -167,21 +168,11 @@ public class Computer extends Player {
 		}
 		
 		else{//other player went first
-			move = game.twoSides(game.getOtherPlayer());
-			//System.out.println("play in corner: "+move[0]+", "+move[1]);
 			
+			move = this.blockFork(human);
 			if(board.isValidMove(move))
 				return move;
-			else if(move[0] != null){
-				move = game.getSide();
-				if(move[0] != null && board.isValidMove(move))
-					return move;
-			}
 			
-			move = game.twoCorners(game.getOtherPlayer());
-			
-			if(board.isValidMove(move))
-				return move;
 			
 			if(board.isValidMove("row2", "1")){
 				//take the center if it's free
@@ -218,10 +209,40 @@ public class Computer extends Player {
 		return m;
 	}
 	
+	private String[] blockFork(Player player){
+		String m[] = new String[2];
+		
+		m = game.twoSides(player);
+		
+		if(board.isValidMove(m))
+			return m;
+		else if(m[0] != null){
+			m = game.getSide();
+			if(m[0] != null && board.isValidMove(m))
+				return m;
+		}
+		
+		m = game.twoCorners(player);
+		
+		if(board.isValidMove(m))
+			return m;
+		
+		if(player.moveList.size() ==2 && (game.isSide(player.moveList.get(0)) || game.isSide(player.moveList.get(1))) ){
+			if( game.isCorner(player.moveList.get(0)) || game.isCorner(player.moveList.get(1)) ){
+				do{
+					m = game.getSide();
+				}while(m[0].equals(player.getLastMove()[0]) || m[0].equals(player.moveList.get(0)[0]) );
+				if(board.isValidMove(m))
+					return m;
+			}
+		}
+		
+		return new String[2];
+	}
+	
 	
 	@Override
 	public boolean isComputer() {
-		System.out.println("Overriding");
 		return this instanceof Computer;
 	}
 	

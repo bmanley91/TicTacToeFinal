@@ -10,11 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import models.Database;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
-import models.GameBoard;
-import models.Game;
-import models.Computer;
-
+import models.*;
 /**
  * Servlet implementation class GameServlet
  */
@@ -29,31 +31,23 @@ public class GameServlet extends HttpServlet {
 		HttpSession session = request.getSession(); 
 		String url = "/views/gameBoard.jsp"; 
 		String msg = null;
-		Game game = (Game) session.getAttribute("game");
-		//Computer comp = game.comp;
-		//String[] move = new String[2];
+		Long gameId = Long.parseLong(request.getParameter("gameId"));
+		Game game = Database.findGameById(gameId);
+		String[] move = new String[2];
 		String xChoice, yChoice;
+		PreparedStatement update1 = null;
+		PreparedStatement update2 = null;
+		Connection con = null;
+		Player player1 = game.getPlayer1();
+		Player player2 = game.getPlayer2();
 		
-		//response.setIntHeader("Refresh", 5);
-		
-		/*if(game.isComputer()){
-			//comp.difficulty = game.getPlayer2().diff;
-			move = comp.compTurn();
-			
-			//while( game.board.isValidMove(move[0], move[1]) )
-			
-			System.out.println("game servlet compturn "+move[0]+", "+move[1]);
-			xChoice = move[0];
-			yChoice = move[1];
-		}
-		else{*/
 			xChoice =  request.getParameter("xChoice");
 			yChoice =  request.getParameter("yChoice");
-		//}
 		int playersTurn = Integer.valueOf(request.getParameter("playersTurn"));	
 		game.takeTurn(xChoice,yChoice,playersTurn);
 		if(!game.isOver())
 			msg=game.getCurrentPlayer().getName()+ ", its your turn";
+<<<<<<< HEAD
 		else if(game.isWinner())
 			msg=game.getWinner().getName()+ " Wins!";
 			// update getWinner().getName() win count and game count
@@ -64,6 +58,74 @@ public class GameServlet extends HttpServlet {
 		request.setAttribute("msg", msg);
 		// update both players game count
 		
+=======
+		
+		else if(game.isWinner() || game.isTie){
+			if(game.isWinner())
+				msg=game.getWinner().getName()+ " Wins!";
+			else{
+				msg="It's a Tie!";
+			}
+			
+	    	ResultSet rs = null;
+	    	String selectStatement =			//logic for prepared statement
+					 "UPDATE Player SET p_wins = p_wins + 1 WHERE p_username = ?;";
+	    	String selectStatement2 =			//logic for prepared statement
+	    			"UPDATE Player SET p_loss = p_loss + 1 WHERE p_username = ?;";
+	    	if(game.isTie){
+	    		selectStatement = "UPDATE Player SET p_tie = p_tie + 1 WHERE p_username = ?;";
+	    		selectStatement2 = "UPDATE Player SET p_tie = p_tie + 1 WHERE p_username = ?;";
+	    	}
+	    	else if(!player1.equals(game.getWinner())){
+	    		selectStatement = "UPDATE Player SET p_loss = p_loss + 1 WHERE p_username = ?;";
+	    		selectStatement2 = "UPDATE Player SET p_wins = p_wins + 1 WHERE p_username = ?;";
+	    	}
+	    	
+	    	
+	    	try{
+	    		con = Database.getConnection();
+	    		update1 = con.prepareStatement(selectStatement);	//get connection and declare prepared statement
+	    		update2 = con.prepareStatement(selectStatement2);
+	    		
+	    		update1.setString(1, player1.username); 		// set input parameter 1
+	    		update2.setString(1, player2.username); 		// set input parameter 2
+	    		
+	    		update1.executeUpdate();					// execute statement
+	    		update2.executeUpdate();					// execute statement
+	    		
+	    		//findPlayer.addBatch(selectStatement2);		//add second update
+	    		//findPlayer.setString(2, player2.username); 		// set input parameter 2
+	    		//findPlayer.set
+	    		//findPlayer.executeBatch();					// execute statement
+	    		
+	           
+				//while(rs.next()) {
+					//player  = new Player(rs.getString("p_username"), rs.getString("p_password"),rs.getLong("p_id"));
+				//}
+	       }
+	       catch (SQLException | ClassNotFoundException s){
+	           	System.out.println("SQL statement is not executed:");
+	           	System.out.println(s);
+	           	if (s instanceof SQLIntegrityConstraintViolationException) {
+	           		System.out.println("error creating user");
+	           	}
+	       }
+	       finally {
+	           if (update1 != null) { 
+	           	try {
+	           		con.close();
+	           		//findPlayer.close();
+	           		//findPlayer2.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					} 
+	           }
+	       }
+			
+		}
+		request.setAttribute("msg", msg);
+		request.setAttribute("game", game);
+>>>>>>> FETCH_HEAD
 		/*if (name == null || name.isEmpty()) 
 			msg="Goodjob";
 		else {
@@ -72,9 +134,16 @@ public class GameServlet extends HttpServlet {
 			msg="New Game! "+ name+ ", its your turn";
 		}
 		
-		*/
+		
+		Database.updateGame(game);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url); 
 			dispatcher.forward(request, response);
+		try {
+			Database.DB_Close();
+		} catch (Throwable e) {
+			System.out.println("error closing connection");
+			e.printStackTrace();
+		}
 		
 		
 	}

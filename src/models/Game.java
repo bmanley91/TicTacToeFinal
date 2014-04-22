@@ -1,9 +1,11 @@
 package models;
 
 import java.util.*;
+import java.util.Map;
 
 public class Game{
 
+	private long id;
 	public GameBoard board;
 	public int playersTurn = 1 + (int)(Math.random() * ((2 - 1) + 1));
 	public List<Player> players = new ArrayList<Player>();
@@ -30,6 +32,25 @@ public class Game{
 	
 	public Game() {
 		//this is the new contstructor thats on dans laptop
+	}
+
+	public Game(Player user, Player friend) {
+		this.board = new GameBoard();
+		this.players = new ArrayList<Player>();
+		this.players.add(user);
+		this.players.add(friend);
+		//this.comp = new Computer(1, board);
+	}
+	
+	
+
+	public Game(Player p1, Player p2, Map<String, ArrayList<Integer>> tiles, int playersTurn, long gameId) {
+		this.players = new ArrayList<Player>();
+		this.players.add(p1);
+		this.players.add(p2);
+		this.board = new GameBoard(tiles);
+		this.playersTurn = playersTurn;
+		this.id = gameId;
 	}
 
 	public void takeTurn(String xChoice, String yChoice, int playersTurn2) {
@@ -79,6 +100,8 @@ public class Game{
 		for(int i=0; i< rows.length; i++){
 			for(int j=0; j<cols.length; j++){
 				
+				//System.out.println("iscorner: "+rows[i]+", "+cols[j]);
+				
 				if( rows[i].equals(m[0]) && cols[j].equals(m[1]) ){
 					return true;
 				}
@@ -95,6 +118,7 @@ public class Game{
 		
 		if(m[0].equals("row2") && m[1].equals("1")){
 			//center square
+			System.out.println("isside center");
 			return false;
 		}
 		
@@ -103,19 +127,19 @@ public class Game{
 	
 	public String[] getSide(){
 		String move[] = new String[2];
-		String[] rows = {"row1", "row2", "row3"};
-		String[] cols = {"0", "1", "2"};
+		String sides[][] = { {"row1", "1"}, {"row2", "0"},
+						{"row2", "2"}, {"row3", "1"} };
+		
 		Random rand = new Random();
 		
 		do{
 			for(int x=0; x<10; x++){
 				
-				move[0] = rows[(rand.nextInt(rows.length))];
-				move[1] = cols[(rand.nextInt(cols.length))];
+				move = sides[rand.nextInt(sides.length)];
 			}
-		}while(!board.isValidMove(move[0], move[1]) && !isSide(move));
+		}while(!isSide(move) && !board.isValidMove(move[0], move[1]));
 		
-		
+		System.out.println("getSide: "+move[0]+", "+move[1]);
 		return move;
 	}
 	
@@ -171,12 +195,12 @@ public class Game{
 		
 		int turn = 0;
 		String[] rows = {"row1", "row2", "row3"};
-		String[] cols = {"0", "1", "2"};
+		//String[] cols = {"0", "1", "2"};
 		
 		for(int i=0; i<rows.length; i++){
-			for(int j=0; j<cols.length; j++){
+			for(int j=0; j<rows.length; j++){
 				
-				if( board.tiles.get(rows[i]).get(Integer.parseInt(cols[j])) != 0){
+				if( board.tiles.get(rows[i]).get(j) != 0){
 					turn++;
 				}
 				
@@ -185,6 +209,7 @@ public class Game{
 		
 		return turn;
 	}
+	
 	
 	public String[] getWinningMove(int player){
 		
@@ -276,6 +301,8 @@ public class Game{
 			move[1] = side1[1];
 		}
 		
+		//move[0] = this.getOppositeCorner(move)[0];
+		
 		/*if(board.tiles.get("row2").get(0) == 1){
 			move[1] = "0";
 			if(board.tiles.get("row1").get(1) == 1)
@@ -345,6 +372,7 @@ public class Game{
 	}
 	
 	public Player getCurrentPlayer() {
+		System.out.println(playersTurn );
 		return players.get(playersTurn-1);
 	}
 	
@@ -459,6 +487,30 @@ public class Game{
 	
 	public boolean isOver() {
 		return isWinner() || isTie;
+	}
+
+	public long getId() {
+		return this.id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Long getWinnerId() {
+		Player winner = getWinner();
+		if (winner != null)
+			return winner.getId();
+		return null;
+	}
+
+	public String getMsg() {
+		if(!this.isOver())
+			return "It's " +this.getCurrentPlayer().getName() + "'s turn";
+		else if(this.isWinner())
+			return this.getWinner().getName()+ " Wins!";
+		else
+			return "It's a Tie!";
 	}
 	
 }

@@ -17,17 +17,17 @@
 			ServletContext sc = this.getServletContext();
 			String path = sc.getContextPath();//This code get the path relative to the root web content directory of the project
 			Player user = (Player)session.getAttribute("user");
-			Game game = (Game)session.getAttribute("game");
-			//String isPC = null;
+			Game game = (Game)request.getAttribute("game");
 			
+			//String isPC = null;
 			
 			String msg = (String)request.getAttribute("msg");
 			if(msg != null)
 				out.print("<span class='center'><h1>"+msg+"</h1></span>");
 			
 			
-			if(game != null) {
-				
+			if(game != null && user != null) {
+				out.print("<h1>"+game.playersTurn+"</h1>");
 				GameBoard board = game.board;
 				int playersTurn = game.playersTurn;
 				
@@ -123,13 +123,18 @@
 						
 
 						"<form action='startGame' method='post'>"+
-							"<div class='center'><input type='submit' value='New Game'/></div>" +
-								"<label>Computer Opponent<label><select name='vsPC'><option value ='"+game.getPlayer2().diff+"'>Same</option>"+
-								"<option value='0'>None</option><option value='1'>Easy</option>"+
-								"<option value='2'>Med</option><option value='3'>Hard</option>"+
+							"<div class='center'><input type='submit' value='New Game'/><br/>" +
+
+							"<label>Computer Opponent</label><select name='compDifficulty'>"+
+							"<option value ='"+game.getPlayer2().diff+"'>Same</option>"+
+							"<option value='0'>None</option>"+
+							"<option value='1'>Easy</option>"+
+							"<option value='2'>Med</option>"+
+							"<option value='3'>Hard</option></select></div>"+
+							
 							"<input type='hidden' name='name1' value='"+game.getPlayer1().getName()+"'/>" +
 							"<input type='hidden' name='name2' value='"+game.getPlayer2().getName()+"'/>" +
-							"<input type='hidden' name= 'vsPC' value='"+game.getPlayer2().diff+"'/>" +
+							"<input type='hidden' name= 'compDifficulty' value='"+game.getPlayer2().diff+"'/>" +
 						"</form>"
 						);
 				
@@ -140,7 +145,7 @@
 							"<form action='game' method='post' id='gameChoiceForm'>" +
 								"<input type='text' name='xChoice' id='xChoice'/>" +
 								"<input type='text' name='yChoice' id='yChoice'/>" +
-								"<input type='text' name='playersTurn' value='"+playersTurn+"'/>" +
+								"<input type='hidden' name='gameId' value='"+game.getId()+"'/>" +
 							"</form>" +
 						"</div>"
 						);
@@ -154,11 +159,7 @@
 				out.print("<input type='text' name='name2'/>");
 				out.print("<input type='submit' value='Start Game'/> <br>");
 				out.print("<label>Computer Opponent<label>");
-				//out.print("<input type= 'checkbox' name='vsPC'/><br><br>");
-				//out.print("</form>");
-				
-				//out.print("<form method='post' action='select.jsp'>");
-				out.print("<select name='vsPC'>");
+				out.print("<select name='compDifficulty'>");
 				out.print("<option value='0'>None</option>");
 				out.print("<option value='1'>Easy</option>");
 				out.print("<option value='2'>Med</option>");
@@ -167,6 +168,14 @@
 				out.print("<br>");
 				
 				out.print("</form>");
+				
+				out.print(
+						
+						"<form action='challengeFriend' id='challengeForm' method='post'/>" +
+						"<input type='hidden' value='2' name='friendId'>" +
+						"<input type='submit' value='challenge!'/>" +
+						"</form>"
+				);
 			}
 			else {
 				out.print("You are not logged in. <a href='"+path+"/views/login.jsp'>Home</a>");
