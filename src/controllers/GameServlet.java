@@ -47,6 +47,18 @@ public class GameServlet extends HttpServlet {
 		game.takeTurn(xChoice,yChoice,playersTurn);
 		if(!game.isOver())
 			msg=game.getCurrentPlayer().getName()+ ", its your turn";
+<<<<<<< HEAD
+		else if(game.isWinner())
+			msg=game.getWinner().getName()+ " Wins!";
+			// update getWinner().getName() win count and game count
+			// UPDATE Player SET p_wins = p_wins + 1 
+			// WHERE p_username = 
+		else
+			msg="It's a Tie!";
+		request.setAttribute("msg", msg);
+		// update both players game count
+		
+=======
 		
 		else if(game.isWinner() || game.isTie){
 			if(game.isWinner())
