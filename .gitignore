@@ -78,3 +78,17 @@ bin/src/models/Database.class
 bin/src/models/Game.class
 
 bin/src/models/Player.class
+
+bin/src/controllers/GameServlet.class
+
+bin/src/controllers/LoginServlet.class
+
+bin/src/controllers/StartGame.class
+
+bin/src/models/Computer.class
+
+bin/src/models/Database.class
+
+bin/src/models/Game.class
+
+bin/src/models/Player.class
