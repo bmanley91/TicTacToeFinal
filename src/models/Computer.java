@@ -4,39 +4,73 @@ import java.util.*;
 
 public class Computer extends Player {
 	
-	public int difficulty = super.diff;
+	//public int difficulty = super.diff;
 	String str;
-	private GameBoard board;
+	public GameBoard board;
 	public Game game;
 	private String[] move = new String[2];
 	private String[] rows = {"row1", "row2", "row3"};
 	private String[] cols = {"0", "1", "2"};
 
 	
-	public Computer(int diff, GameBoard gb){
-		this.difficulty = diff;
+	public Computer(int d, GameBoard gb, Game g){
+		//this.difficulty = diff;
+		diff = d;
+		this.game = g;
 		this.board = gb;
+		super.username = "Computer";
+		super.setId(2);
+	}
+	
+	public Computer(int d){
+		diff = d;
+		super.username = "Computer";
+		super.setId(2);
 	}
 	
 	public String[] compTurn(){
 		
+		/*String[] rows = {"row1", "row2", "row3"};
+		String[] cols = {"0", "1", "2"};
+		String[] x = new String[2];
+		
+		for(int i=0; i<rows.length; i++){
+			for(int j=0; j<cols.length; j++){
+				x[0] = rows[i];
+				x[1] = cols[j];
+				System.out.println(x[0]+", "+x[1]+" is a corner "+game.isCorner(x));
+				System.out.println(x[0]+", "+x[1]+" is a side "+game.isSide(x));
+				System.out.println();
+			}
+		}*/
+		
+		if(diff == 3)
+			return this.hardTurn();
+		
+		else if(diff == 2)
+			return this.medTurn();
+		
+		
+		return this.easyTurn();
+	}
+	
+	public void gameMap(){
+		////////////////////////////////////////////////////////////////////////////////////////////////////////
+	}
+	
+	private String[] easyTurn(){
+		
+		System.out.println("easy diff");
 		Random rand = new Random();
-		//int x;
 		
-		if(difficulty >= 2){
-			String[] m = new String[2];
-			//hard comp
-			//move = hardMove();
-			//System.out.println("Tough computer move "+move[0]+" "+move[1]);
-			//m = game.getWinningMove();
-			//System.out.println("move = "+m[0]+" "+m[1]);
-		}
-		
-		if(board.isValidMove("row2", "1")){
-			move[0] = "row2";
-			move[1] = "1";
+		move = this.winMove();
+		//block opponent's winning move
+		//or make the winning move
+		if(board.isValidMove(move)){
 			return move;
 		}
+		
+		
 		for(int i=0; i<25; i++){
 			do{
 				//move[0] = "row";
@@ -45,81 +79,171 @@ public class Computer extends Player {
 				//System.out.println("compturn "+move[0]+", "+move[1]);
 			}while( !board.isValidMove(move[0], move[1]));
 		}
-		//System.out.println("win "+(board.getWinner()==null));
-		
-		//System.out.println("compturn "+move[0]+", "+move[1]);
 		
 		
 		return move;
-	}
-	
-	private boolean getPlayer(String x, String y){
-		return board.tiles.get(x).get(Integer.parseInt(y)) == 2;
-	}
-	
-	private boolean winMove(){
-		
-		
-		for(int x = 0; x < 3; x++){
-			for(int y = 0; y < 3; y++){
-				if(board.isValidMove(rows[x], cols[y])){
-					board.tiles.get(rows[x]).set(y, 2);
-					System.out.println("win move "+move[0]+", "+move[1]);
-					if(game.checkForWinner()){
-							if( (game.getWinner() != null) && (game.getWinner().isComp) ){
-								board.tiles.get(rows[x]).set(y, 0);
-								move[0] = rows[x];
-								move[1] = cols[y];
-								System.out.println("win move2 "+move[0]+", "+move[1]);
-								return true;
-							}
-					}//*/
-					board.tiles.get(rows[x]).set(y, 0);
-				}
-			}
-		}
-		return false;
 		
 	}
 	
-	private boolean blockMove(){
+	private String[] medTurn(){
+		System.out.println("med turn");
 		
-		//System.out.println("compturn "+move[0]+", "+move[1]);
-		for(int x = 0; x < 3; x++){
-			for(int y = 0; y < 3; y++){
-				if(board.isValidMove(rows[x], cols[y])){
-					board.tiles.get(rows[x]).set(y, 1);
-					if( (game.checkForWinner()) && !(game.getWinner().isComp) ){
-						board.tiles.get(rows[x]).set(y, 0);
-						move[0] = rows[x];
-						move[1] = cols[y];
-						return true;
-					}
-					board.tiles.get(rows[x]).set(y, 0);
-				}
-			}
-		}
-		return false;
+		Player human = game.getOtherPlayer();
 		
-	}
-	
-	private String[] hardMove(){
-		
-		
-		if(winMove()){
-			
+		move = this.winMove();
+		System.out.println("winmove: "+move[0]+", "+move[1]);
+		if(move[0] != null){
 			return move;
 		}
 		
+		/*move = game.getWinningMove(2);
+		if(move[0] == null){
+			move = game.getWinningMove(1);
+		}
+		System.out.println("move = "+move[0]+" "+move[1]);
+		if(move[0] != null && board.isValidMove(move[0], move[1])){
+			return move;
+		}*/
+		
 		if(board.isValidMove("row2", "1")){
-			//always take the center if it's available
+			//always take the center if it's free
 			move[0] = "row2";
 			move[1] = "1";
 			return move;
 		}
 		
-		return move;
+		else if (board.tiles.get("row2").get(1) == 1 && game.numTurn() <= 1){
+			//opponent has the center
+			return game.getCorner();
+		}
+		
+		if( game.numTurn() == 3 && game.isSide(human.getLastMove())){
+			return game.getCorner(human.getLastMove());
+		}
+		
+		return this.easyTurn();
 	}
 	
+	private String[] hardTurn(){
+		
+		System.out.println("Hard diff");
+		
+		Player human = game.getOtherPlayer();
+		
+		move = this.winMove();
+		//block opponent's winning move
+		//or make the winning move
+		if(board.isValidMove(move)){
+			return move;
+		}
+		
+		
+		if(game.numTurn()%2 == 0){//computer went first
+			if(game.numTurn() == 0)
+				return game.getCorner();
+			else if(game.isCorner(human.moveList.get(0))){
+				//their first move was a corner
+				return game.getCorner();
+			}
+			else if(game.isSide(human.moveList.get(0))){
+				//their first move was a side
+				if(board.isValidMove("row2", "1")){
+					move[0] = "row2";
+					move[1] = "1";
+					return move;
+				}
+				else if(game.numTurn() <= 4){
+					return game.getCorner(human.moveList.get(0));
+				}
+				else return game.getCorner();
+					
+			}
+			else{
+				//their first move was the center
+				if(game.numTurn() == 2)
+					return game.getOppositeCorner(this.moveList.get(0));
+				else if(game.isCorner(human.getLastMove()))
+					return game.getCorner();
+			}
+		}
+		
+		else{//other player went first
+			
+			move = this.blockFork(human);
+			if(board.isValidMove(move))
+				return move;
+			
+			
+			if(board.isValidMove("row2", "1")){
+				//take the center if it's free
+				move[0] = "row2";
+				move[1] = "1";
+				return move;
+			}
+			else if(game.isCorner(human.moveList.get(0)) && game.numTurn() >= 1)
+				return game.getOppositeCorner(human.moveList.get(0));
+				//block the possibility of them creating a fork
+				//going for the tie here
+			
+			
+			
+		}
+		
+		
+		
+		return this.medTurn();
+	}
+	
+	private String[] winMove(){
+		String m[] = new String[2];
+		
+		m = game.getWinningMove(2);//winning move for comp
+		if(m[0] == null){
+			//block opponent's winning move
+			m = game.getWinningMove(1);
+		}
+		//System.out.println("move = "+move[0]+" "+move[1]);
+		if(m[0] != null && board.isValidMove(m[0], m[1])){
+			return m;
+		}
+		return m;
+	}
+	
+	private String[] blockFork(Player player){
+		String m[] = new String[2];
+		
+		m = game.twoSides(player);
+		
+		if(board.isValidMove(m))
+			return m;
+		else if(m[0] != null){
+			m = game.getSide();
+			if(m[0] != null && board.isValidMove(m))
+				return m;
+		}
+		
+		m = game.twoCorners(player);
+		
+		if(board.isValidMove(m))
+			return m;
+		
+		if(player.moveList.size() ==2 && (game.isSide(player.moveList.get(0)) || game.isSide(player.moveList.get(1))) ){
+			if( game.isCorner(player.moveList.get(0)) || game.isCorner(player.moveList.get(1)) ){
+				do{
+					m = game.getSide();
+				}while(m[0].equals(player.getLastMove()[0]) || m[0].equals(player.moveList.get(0)[0]) );
+				if(board.isValidMove(m))
+					return m;
+			}
+		}
+		
+		return new String[2];
+	}
+	
+	
+	@Override
+	public boolean isComputer() {
+		return this instanceof Computer;
+	}
 	
 }

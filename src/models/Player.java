@@ -10,12 +10,11 @@ import models.Game;
 public class Player {
 
 	public List<Game> games;
-	public List<Player> friends;
 	private long id;
 	public String username;
 	private String password;
 	public int wins, losses, draws;
-	public boolean isComp;
+	public List<String[]> moveList = new ArrayList<>();
 	public int diff;
 	
 	public Player(String username, String password,  long id) {
@@ -26,11 +25,6 @@ public class Player {
 		this.setId(id);
 		games = new ArrayList<Game>();
 	}
-/*
-	public Player(User user, int id) {
-		this.user = user;
-		this.id = id;
-	}*/
 	
 	
 	public Player(String name, int id) {
@@ -42,10 +36,6 @@ public class Player {
 		username = null;
 		this.setId(0);
 	}
-	
-	/*public boolean isComp(){
-		return isComp.equals("on");
-	}*/
 	
 	public String getName() {
 		return username;
@@ -75,7 +65,26 @@ public class Player {
 		this.id = id;
 	}
 	
-	public List<Game> getAllGames() {
+	public void setLastMove(String row, String col){
+		moveList.add(new String[] {row, col});
+	}
+	
+	public String[] getLastMove(){
+		return this.moveList.size() > 0 ? this.moveList.get(this.moveList.size()-1) : new String[2];
+	}
+	
+	public String[] getFirstMove(){
+		return this.moveList.size() > 0 ? this.moveList.get(0) : new String[2];
+	}
+	
+	public int getNumOfGames(){
+		return this.wins + this.losses + this.draws;
+	}
+
+	public boolean isComputer() {
+		return this instanceof Computer;
+	}
+lic List<Game> getAllGames() {
 		return Database.getAllOfPlayersGames(id);
 	}
 	

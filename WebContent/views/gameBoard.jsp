@@ -123,10 +123,18 @@
 						
 
 						"<form action='startGame' method='post'>"+
-							"<div class='center'><input type='submit' value='New Game'/></div>" +
+							"<div class='center'><input type='submit' value='New Game'/><br/>" +
+
+							"<label>Computer Opponent</label><select name='compDifficulty'>"+
+							"<option value ='"+game.getPlayer2().diff+"'>Same</option>"+
+							"<option value='0'>None</option>"+
+							"<option value='1'>Easy</option>"+
+							"<option value='2'>Med</option>"+
+							"<option value='3'>Hard</option></select></div>"+
+							
 							"<input type='hidden' name='name1' value='"+game.getPlayer1().getName()+"'/>" +
 							"<input type='hidden' name='name2' value='"+game.getPlayer2().getName()+"'/>" +
-							"<input type='hidden' name= 'vsPC' value='"+game.getPlayer2().diff+"'/>" +
+							"<input type='hidden' name= 'compDifficulty' value='"+game.getPlayer2().diff+"'/>" +
 						"</form>"
 						);
 				
@@ -151,11 +159,7 @@
 				out.print("<input type='text' name='name2'/>");
 				out.print("<input type='submit' value='Start Game'/> <br>");
 				out.print("<label>Computer Opponent<label>");
-				//out.print("<input type= 'checkbox' name='vsPC'/><br><br>");
-				//out.print("</form>");
-				
-				//out.print("<form method='post' action='select.jsp'>");
-				out.print("<select name='vsPC'>");
+				out.print("<select name='compDifficulty'>");
 				out.print("<option value='0'>None</option>");
 				out.print("<option value='1'>Easy</option>");
 				out.print("<option value='2'>Med</option>");

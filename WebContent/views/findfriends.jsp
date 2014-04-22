@@ -12,15 +12,23 @@
 	<jsp:include page="/views/header.jsp" />
 	<div class='innerContent'>
 	<%
+	ServletContext sc = this.getServletContext();
+	String path = sc.getContextPath();//This code get the path relative to the root web content directory of the project
+	String msg = (String)request.getAttribute("msg");
+	if(msg!=null){
+		out.print(
+				"<p>"+msg+"</p>"
+				);
+		
+	}
 	out.print(
-			"<form action='search' id='friendsearch' method=post>"+
+			"<form action='findfriends' id='friendsearch' method=post>"+
 			"<div>"+
 			"<label> Username </label>"+
-			"<input type='text' name='friend'/>"+
+			"<input type='text' name='friendSearch'/>"+
 			"</div>"+
 			"<div class='center'>"+
 			"<input type='submit' value='Search'/>"
-			
 			);
 	
 	%>

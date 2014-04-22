@@ -16,7 +16,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 public class Database {
-
 	private static Connection conn;
     
     public static Connection getConnection() throws ClassNotFoundException, SQLException {

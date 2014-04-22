@@ -46,7 +46,6 @@ public class LoginServlet extends HttpServlet {
 			url = "/views/login.jsp"; 
 		}
 		else {
-			System.out.println("eklse");
 			player = Database.findPlayer(username, password);
 		}
 		if(player != null) {

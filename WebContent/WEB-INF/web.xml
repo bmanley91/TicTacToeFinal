@@ -49,6 +49,18 @@
     <servlet-name>RegServlet</servlet-name>
     <servlet-class>controllers.RegServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>FriendServlet</display-name>
+    <servlet-name>FriendServlet</servlet-name>
+    <servlet-class>controllers.FriendServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<description></description>
+  	<display-name>FindFriendServlet</display-name>
+  	<servlet-name>FindFriendServlet</servlet-name>
+  	<servlet-class>controllers.FindFriendServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>GameServlet</servlet-name>
     <url-pattern>/game</url-pattern>
@@ -75,6 +87,7 @@
     <url-pattern>/views/register</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
+<<<<<<< HEAD
     <servlet-name>ChallengeFriend</servlet-name>
     <url-pattern>/challengeFriend</url-pattern>
     <url-pattern>/views/challengeFriend</url-pattern>
@@ -83,5 +96,15 @@
     <servlet-name>ContinueGameServlet</servlet-name>
     <url-pattern>/continueGameServlet</url-pattern>
     <url-pattern>/views/continueGameServlet</url-pattern>
+=======
+    <servlet-name>FriendServlet</servlet-name>
+    <url-pattern>/friends</url-pattern>
+    <url-pattern>/views/friends</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>FindFriendServlet</servlet-name>
+  	<url-pattern>/findfriends</url-pattern>
+  	<url-pattern>/views/findfriends</url-pattern>
+>>>>>>> c5a1693396e575e309d6cc1a5aa99ba25c47d79a
   </servlet-mapping>
 </web-app>
