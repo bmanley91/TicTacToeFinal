@@ -108,6 +108,57 @@ public class Database {
 		return player;
     }
     
+    public static void updateWins(Game game){
+    	PreparedStatement update1 = null;
+		PreparedStatement update2 = null;
+		//Connection con = null;
+		Player player1 = game.getPlayer1();
+		Player player2 = game.getPlayer2();
+		
+    	ResultSet rs = null;
+    	String selectStatement =			//logic for prepared statement
+				 "UPDATE Player SET p_wins = p_wins + 1 WHERE p_username = ?;";
+    	String selectStatement2 =			//logic for prepared statement
+    			"UPDATE Player SET p_loss = p_loss + 1 WHERE p_username = ?;";
+    	if(game.isTie){
+    		selectStatement = "UPDATE Player SET p_tie = p_tie + 1 WHERE p_username = ?;";
+    		selectStatement2 = "UPDATE Player SET p_tie = p_tie + 1 WHERE p_username = ?;";
+    	}
+    	else if(!player1.equals(game.getWinner())){
+    		selectStatement = "UPDATE Player SET p_loss = p_loss + 1 WHERE p_username = ?;";
+    		selectStatement2 = "UPDATE Player SET p_wins = p_wins + 1 WHERE p_username = ?;";
+    	}
+    	
+    	
+    	try{
+    		conn = Database.getConnection();
+    		update1 = conn.prepareStatement(selectStatement);	//get connection and declare prepared statement
+    		update2 = conn.prepareStatement(selectStatement2);
+    		
+    		update1.setString(1, player1.username); 		// set input parameter 1
+    		update2.setString(1, player2.username); 		// set input parameter 2
+    		
+    		update1.executeUpdate();					// execute statement
+    		update2.executeUpdate();					// execute statement
+       }
+       catch (SQLException | ClassNotFoundException s){
+           	System.out.println("SQL statement is not executed:");
+           	System.out.println(s);
+           	if (s instanceof SQLIntegrityConstraintViolationException) {
+           		System.out.println("error creating user");
+           	}
+       }
+       finally {
+           if (update1 != null || update2 != null) { 
+           	try {
+           		conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} 
+           }
+       }
+    }
+    
     public static Player findPlayerById(long id) {
     	Player player = null;
     	PreparedStatement findPlayer = null;

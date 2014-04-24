@@ -52,7 +52,7 @@ public class StartGame extends HttpServlet {
 				players.add(game.comp);
 				
 				if(game.getCurrentPlayer().isComputer() ){
-					String m[] = game.comp.compTurn();
+					//String m[] = game.comp.compTurn();
 					game.takeTurn(null, null, game.playersTurn);
 				}
 			}
@@ -63,12 +63,8 @@ public class StartGame extends HttpServlet {
 				
 			}
 			
-<<<<<<< HEAD
 
 			session.setAttribute("game", game);
-=======
-			request.setAttribute("game", game);
->>>>>>> f4852e6e38dcc492433e06b4f572fc8b4d41a335
 			msg="New Game! "+ game.getCurrentPlayer().getName()+ ", its your turn";
 		}
 		request.setAttribute("msg", msg);
