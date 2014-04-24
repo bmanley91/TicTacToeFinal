@@ -15,11 +15,10 @@
 ServletContext sc = this.getServletContext();
 String path = sc.getContextPath();//This code get the path relative to the root web content directory of the project
 		String msg = request.getParameter("msg");
-		String loggedInString = (String)session.getAttribute("loggedIn");
-		boolean loggedIn = (loggedInString != null && loggedInString.equals("true"));
+		Player user = (Player) session.getAttribute("user");
 		if(msg != null)
 			out.print("<h1>"+msg+"</h1>");
-		if(!loggedIn) {
+		if(user == null) {
 			out.print("You are not logged in. <a href='"+path+"/views/login.jsp'>Login</a>");
 		}
 		else {
@@ -28,8 +27,7 @@ String path = sc.getContextPath();//This code get the path relative to the root 
 			out.print(
 					"<h1>"+player.getName()+", you have played "+player.getNumOfGames()+" games:</h1>" +
 					"<h3>"+player.wins+" wins, "+player.losses+" losses, and "+player.draws+" ties.</h3>"+
-					"<a href='"+path+"/views/gameBoard.jsp'>Start a game</a>"
-					
+					"<a href='"+path+"/views/gameBoard.jsp'>Start a game</a>" 
 					);
 		}
 		 %>		

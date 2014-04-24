@@ -17,17 +17,17 @@
 			ServletContext sc = this.getServletContext();
 			String path = sc.getContextPath();//This code get the path relative to the root web content directory of the project
 			Player user = (Player)session.getAttribute("user");
-			Game game = (Game)session.getAttribute("game");
-			//String isPC = null;
+			Game game = (Game)request.getAttribute("game");
 			
+			//String isPC = null;
 			
 			String msg = (String)request.getAttribute("msg");
 			if(msg != null)
 				out.print("<span class='center'><h1>"+msg+"</h1></span>");
 			
 			
-			if(game != null) {
-				
+			if(game != null && user != null) {
+				out.print("<h1>"+game.playersTurn+"</h1>");
 				GameBoard board = game.board;
 				int playersTurn = game.playersTurn;
 				
@@ -146,6 +146,8 @@
 								"<input type='text' name='xChoice' id='xChoice'/>" +
 								"<input type='text' name='yChoice' id='yChoice'/>" +
 								"<input type='text' name='playersTurn' value='"+playersTurn+"'/>" +
+								"<input type='hidden' name='gameId' value='"+game.getId()+"'/>" +
+								"<input type = 'hidden' name='playersTurn' value='"+playersTurn+"'/>"+
 							"</form>" +
 						"</div>"
 						);
@@ -168,6 +170,14 @@
 				out.print("<br>");
 				
 				out.print("</form>");
+				
+				out.print(
+						
+						"<form action='challengeFriend' id='challengeForm' method='post'/>" +
+						"<input type='hidden' value='2' name='friendId'>" +
+						"<input type='submit' value='challenge!'/>" +
+						"</form>"
+				);
 			}
 			else {
 				out.print("You are not logged in. <a href='"+path+"/views/login.jsp'>Home</a>");

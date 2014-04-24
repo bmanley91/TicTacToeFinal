@@ -1,13 +1,13 @@
 Project Backlog
 
-multiple computer difficulties (ryan)
-count number of wins in DB
-user profile page
+multiple computer difficulties (done)
+count number of wins in DB (done)
+user profile page 
 public profile page
 update profile functions
-leaderboard for number of wins (nayab)
-online play (dan)
-friends list (brian)
-put on website? (done!)
+leaderboard for number of wins
+friends list (done)
+put on website? (on amazon web services now images not appearing)
 password recovery function
-user settings (Etem)
+	-security question
+	-correct answer: edit pw

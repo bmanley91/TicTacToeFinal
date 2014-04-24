@@ -26,6 +26,19 @@ public class Player {
 		games = new ArrayList<Game>();
 	}
 	
+	public Player(String username, String password, long id, int wins,
+			int losses, int ties) {
+		this(username, password, id);
+		this.wins = wins;
+		this.draws = ties;
+		this.losses = losses;
+		
+		
+		
+		// TODO Auto-generated constructor stub
+	}
+	
+	
 	public Player(String name, int id) {
 		this.username = name;
 		this.setId(id);
@@ -35,6 +48,7 @@ public class Player {
 		username = null;
 		this.setId(0);
 	}
+<<<<<<< HEAD
 	
 	public void setPlayerFriends(ArrayList<Player> friends){
 		this.friendsList = friends;
@@ -52,6 +66,10 @@ public class Player {
 		return friendSearch;
 	}
 	
+=======
+
+
+>>>>>>> FETCH_HEAD
 	public String getName() {
 		return username;
 	}
@@ -65,6 +83,14 @@ public class Player {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public void setWins(int win){
@@ -120,5 +146,19 @@ public class Player {
 	public boolean isComputer() {
 		return this instanceof Computer;
 	}
+	public List<Game> getAllGames() {
+		return Database.getAllOfPlayersGames(id);
+	}
 	
+	@Override
+	public String toString() {
+		return this.username;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof Player)
+			return ((Player)o).getId() == this.getId();
+		return super.equals(o);
+	}
 }
