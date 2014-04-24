@@ -9,3 +9,7 @@
 .settings/org.eclipse.wst.common.project.facet.core.xml
 
 .settings/org.eclipse.wst.common.project.facet.core.xml
+
+build/classes/models/Database.class
+
+build/classes/models/Player.class

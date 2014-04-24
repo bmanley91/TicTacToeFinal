@@ -44,10 +44,15 @@
     <servlet-class>controllers.FriendServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description></description>
-  	<display-name>FindFriendServlet</display-name>
-  	<servlet-name>FindFriendServlet</servlet-name>
-  	<servlet-class>controllers.FindFriendServlet</servlet-class>
+    <description></description>
+    <display-name>FindFriendServlet</display-name>
+    <servlet-name>FindFriendServlet</servlet-name>
+    <servlet-class>controllers.FindFriendServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<display-name>AddFriendServlet</display-name>
+  	<servlet-name>AddFriendServlet</servlet-name>
+  	<servlet-class>controllers.AddFriendServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>GameServlet</servlet-name>
@@ -80,8 +85,13 @@
     <url-pattern>/views/friends</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>FindFriendServlet</servlet-name>
-  	<url-pattern>/findfriends</url-pattern>
-  	<url-pattern>/views/findfriends</url-pattern>
+    <servlet-name>FindFriendServlet</servlet-name>
+    <url-pattern>/findfriends</url-pattern>
+    <url-pattern>/views/findfriends</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>AddFriendServlet</servlet-name>
+  	<url-pattern>/addFriend</url-pattern>
+  	<url-pattern>/views/addFriend</url-pattern>
   </servlet-mapping>
 </web-app>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=US-ASCII"
     pageEncoding="US-ASCII"%>
+    <%@ page import="models.Player" %>
     <%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -14,14 +15,17 @@
 	<%
 	ServletContext sc = this.getServletContext();
 	String path = sc.getContextPath();
-	ArrayList searchNames = (ArrayList)session.getAttribute("searchNames");
-	ArrayList searchWins = (ArrayList)session.getAttribute("searchWins");
-	if(searchNames==null){
-		out.print("No results found.");
+	ArrayList<Player> searchResults = (ArrayList<Player>)request.getAttribute("playerSearch");
+	if(searchResults.size()==0){
+		out.print("<p>No results found.</p>");
 	}
 	else{
-		for(int i=0; i < searchNames.size(); i++){
-			out.print("<p>"+searchNames.get(i)+ " Wins: "+searchWins.get(i)+"</p>");
+		for(int i=0; i < searchResults.size(); i++){
+			out.print("<p>"+searchResults.get(i).getName()+ " Wins: "+searchResults.get(i).getWins()+
+					"<form action='addFriend' method='post'>"+
+					"<input type='submit' name='button' value='Add Friend' />"+
+					"</form>"+
+					"</p>");
 		}
 	}
 	out.print("<a href='"+path+"/views/findfriends.jsp'>Search Again</a>");
