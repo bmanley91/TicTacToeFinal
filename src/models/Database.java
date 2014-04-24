@@ -8,15 +8,14 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.ArrayList;
-<<<<<<< HEAD
-=======
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 //import org.hibernate.SessionFactory;
 //import org.hibernate.cfg.Configuration;
->>>>>>> FETCH_HEAD
+
 
 public class Database {
 	private static Connection conn;
@@ -120,19 +119,21 @@ public class Database {
     	ArrayList<Integer> friendIds = new ArrayList<Integer>();
     	PreparedStatement getIds = null;
     	PreparedStatement showFriend = null;
+    	Player player = null;
     	Connection con = null;
     	ResultSet ids = null;
     	ResultSet rs = null;
     	String firstStatement=		// statement to return all friendIds linked to the player's id
-    			"SELECT friendId  FROM Player AS P2 INNER JOIN Player_Friend AS F2 ON P2.p_id = F2.playerId WHERE P2.p_id = ?";
+    			"SELECT p.* FROM Player p INNER JOIN Player_Friend F2 ON p.p_id = F2.friendId WHERE F2.playerId = ?";
     	try{
     		con = Database.getConnection();
     		getIds =con.prepareStatement(firstStatement);
     		getIds.setLong(1,user.getId());
     		rs = getIds.executeQuery();
     		while(rs.next()){
-    			int friendId = rs.getInt("friendId");
-    			friendIds.add(friendId);
+    			player  = new Player(rs.getString("p_username"), rs.getString("p_password"),rs.getLong("p_id"),
+						rs.getInt("p_wins"), rs.getInt("p_loss"), rs.getInt("p_tie"));
+    			friendList.add(player);
     		}
     	}
     	catch(SQLException | ClassNotFoundException e){
@@ -147,45 +148,6 @@ public class Database {
     			catch(SQLException s){
     				s.printStackTrace();
     			}
-    		}
-    	}
-    	for(int i = 0; i< friendIds.size(); i++){
-    		String statement=	// big ol' SQL statement
-    			"SELECT P.p_username, P.p_wins, P.p_id, P.p_tie, P.p_loss  FROM Player AS P INNER JOIN Player_Friend AS F ON P.p_id = F.playerId WHERE P.p_id = ?";
-    		try{
-    		showFriend = con.prepareStatement(statement);
-    		showFriend.setLong(1, friendIds.get(i));
-    		rs = showFriend.executeQuery();
-    		while(rs.next()){
-    			Player friend = new Player();
-    			friend.setId(rs.getLong("p_id"));
-    			friend.setName(rs.getString("p_username"));
-    			friend.setWins(rs.getInt("p_wins"));
-    			friend.setTies(rs.getInt("p_tie"));
-    			friend.setLosses(rs.getInt("p_loss"));
-    			friendList.add(friend);
-    			}
-    		}
-    		catch(SQLException e){
-    			System.out.println("Return friends not executed:");
-    			System.out.println(e);
-    		}
-    		finally{
-    			if(showFriend!=null){
-    				try{
-    					showFriend.close();
-    					System.out.println("close");
-    				}
-    				catch(SQLException s){
-    					s.printStackTrace();
-    				}
-    			}
-    		}
-    		try{
-    			con.close();
-    		}
-    		catch(SQLException s){
-    			s.printStackTrace();
     		}
     	}
     	return friendList;

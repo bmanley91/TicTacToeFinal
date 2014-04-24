@@ -26,9 +26,12 @@
 			out.print("You are not logged in. <a href='"+path+"/views/login.jsp'>Login</a>");
 		}
 		else{
-			for(int i=0; i< playerList.size(); i++){
-				out.print("<p>"+playerList.get(i).getName()+ " Wins: "+playerList.get(i).getWins()+"</p>");
-			}
+			if(playerList != null)
+				for(Player p: playerList){
+					out.print("<p>"+p.getName()+ " Wins: "+p.getWins()+"</p>");
+				}
+			else
+				out.print("The list is null");
 			
 		}
 		

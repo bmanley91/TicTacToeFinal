@@ -34,21 +34,27 @@ public class FindFriendServlet extends HttpServlet {
 			if(friendSearch.length()==0){
 				msg = "Please fill in search field.";
 				url = "/views/findfriends.jsp";
-				request.setAttribute("msg", msg);
-				request.getRequestDispatcher(url).forward(request, response);
 			}
 			else{
 				ArrayList<Player> searchResults = Database.searchFriends(friendSearch);
 				request.setAttribute("playerSearch", searchResults);
 				user.setFriendsSearch(searchResults);
 				url = "/views/searchResults.jsp";
-				request.getRequestDispatcher(url).forward(request, response);
 			}
 		}
 		else{
 			msg = "You are not logged in!";
 			request.setAttribute("msg", msg);
-			request.getRequestDispatcher("/views/login.jsp").forward(request, response);	// If not logged in send back to login page
+			url = "/views/login.jsp";
+		}
+		request.setAttribute("msg", msg);
+		request.getRequestDispatcher(url).forward(request, response);
+		
+		try {
+			Database.DB_Close();
+		} catch (Throwable e) {
+			System.out.println("error closing connection");
+			e.printStackTrace();
 		}
 	}
 

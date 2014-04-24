@@ -32,9 +32,11 @@ public class FriendServlet extends HttpServlet {
 		Player user = (Player)session.getAttribute("user");
 		String msg = null;
 		String url = "/views/friends.jsp";
-		
+		System.out.println("test");
 		if(user!=null){		// Check if user is logged in
+			System.out.println("user is not null");
 			ArrayList<Player> friendList = Database.showFriends(user);
+			System.out.println(friendList);
 			request.setAttribute("playerList", friendList);
 		}
 	else{
@@ -42,6 +44,13 @@ public class FriendServlet extends HttpServlet {
 		url = "/views/login.jsp";
 		request.setAttribute("msg", msg);
 		}
+		
 		request.getRequestDispatcher(url).forward(request, response);
+		try {
+			Database.DB_Close();
+		} catch (Throwable e) {
+			System.out.println("error closing connection");
+			e.printStackTrace();
+		}
 	}
 }

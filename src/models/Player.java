@@ -48,7 +48,7 @@ public class Player {
 		username = null;
 		this.setId(0);
 	}
-<<<<<<< HEAD
+
 	
 	public void setPlayerFriends(ArrayList<Player> friends){
 		this.friendsList = friends;
@@ -66,10 +66,7 @@ public class Player {
 		return friendSearch;
 	}
 	
-=======
 
-
->>>>>>> FETCH_HEAD
 	public String getName() {
 		return username;
 	}
