@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import models.Database;
+import models.Player;
 
 /**
  * Servlet implementation class FindFriendServlet
@@ -24,64 +25,36 @@ public class FindFriendServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String loggedInString = (String)session.getAttribute("loggedIn");
-		boolean loggedIn = (loggedInString != null && loggedInString.equals("true"));
-		PreparedStatement Search = null;
-		ArrayList<String> searchResultNames = new ArrayList<String>(); 
-		ArrayList<Integer> searchResultWins = new ArrayList<Integer>();
-		String searchName = null;
-		int searchWins;
-		ResultSet rs = null;
+		Player user = (Player) session.getAttribute("user");
 		String msg = null;
 		String url = null;
 		
-		if(loggedIn){
+		if(user!=null){
 			String friendSearch = (String)request.getParameter("friendSearch");
 			if(friendSearch.length()==0){
 				msg = "Please fill in search field.";
 				url = "/views/findfriends.jsp";
-				request.setAttribute("msg", msg);
-				request.getRequestDispatcher(url).forward(request, response);
 			}
 			else{
-				String SearchStatement = 
-						"SELECT p_username, p_wins FROM Player WHERE p_username LIKE ?";
-				try{
-					Search = Database.getConnection().prepareStatement(SearchStatement);
-					Search.setString(1,friendSearch);
-					rs = Search.executeQuery();
-					while(rs.next()){
-						searchName = rs.getString("p_username");
-						searchWins = rs.getInt("p_wins");
-						searchResultNames.add(searchName);
-						searchResultWins.add(searchWins);
-					}
-					url = "/views/searchResults.jsp";
-				}
-				catch(SQLException | ClassNotFoundException e){
-					System.out.println("SQL statement not executed:");
-					System.out.println(e);
-				}
-				finally{
-					if(Search!=null){
-						try{
-							Search.close();
-						}
-						catch(SQLException e){
-							e.printStackTrace();
-						}
-					}
-				}
-				session.setAttribute("searchNames", searchResultNames);
-				session.setAttribute("searchWins", searchResultWins);
-				
-				request.getRequestDispatcher(url).forward(request, response);
+				ArrayList<Player> searchResults = Database.searchFriends(friendSearch);
+				request.setAttribute("playerSearch", searchResults);
+				user.setFriendsSearch(searchResults);
+				url = "/views/searchResults.jsp";
 			}
 		}
 		else{
 			msg = "You are not logged in!";
 			request.setAttribute("msg", msg);
-			request.getRequestDispatcher("/views/login.jsp").forward(request, response);	// If not logged in send back to login page
+			url = "/views/login.jsp";
+		}
+		request.setAttribute("msg", msg);
+		request.getRequestDispatcher(url).forward(request, response);
+		
+		try {
+			Database.DB_Close();
+		} catch (Throwable e) {
+			System.out.println("error closing connection");
+			e.printStackTrace();
 		}
 	}
 

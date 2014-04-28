@@ -8,12 +8,14 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 //import org.hibernate.SessionFactory;
 //import org.hibernate.cfg.Configuration;
+
 
 public class Database {
 	private static Connection conn;
@@ -31,6 +33,124 @@ public class Database {
 	    	System.out.println("c");	
     	}
     	return conn;
+    }
+    
+    public static boolean addFriend(long pId, String newFriend){
+    	boolean worked = false;			// return value for function
+    	PreparedStatement add = null;	
+    	ResultSet rs = null;
+    	Connection con = null;
+    	String statement =				// insert statement to update friends table
+    			"INSERT INTO Player_Friend (playerId, friendId) VALUES(?,(SELECT p_id FROM Player WHERE p_username = ?))";
+    	try{
+    		con = Database.getConnection();
+    		add = con.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS);
+    		add.setLong(1, pId);			// put player's id into the statement
+    		add.setString(2, newFriend);	// put new friend's username into the statement
+    		add.executeUpdate();			// execute the statement
+    		rs = add.getGeneratedKeys();	// get result set
+    		if(rs!=null && rs.next()){		// check statement was executed correctly
+    			worked = true;
+    		}
+    		else{
+    			worked = false;
+    			System.out.println("Friend not successfully added");
+    		}
+    	}
+    	catch(SQLException | ClassNotFoundException e){
+    		System.out.println("Add friend not executed:");
+    		System.out.println(e);
+    	}
+    	finally{							// close connection
+    		if(add!=null){
+    			try{
+    				con.close();
+    				add.close();
+    			}
+    			catch(SQLException s){
+    				s.printStackTrace();
+    			}
+    		}
+    	}
+    	return worked;						// return true if update worked, false if not
+    }
+    
+    public static ArrayList<Player> searchFriends(String searchEntry){
+    	ArrayList<Player> searchResults = new ArrayList<Player>();		// arraylist of players to store search results
+    	PreparedStatement search = null;
+    	ResultSet rs = null; 
+    	Connection con = null;
+    	String statement =												// statement to return player parameters from database based on search
+    			"SELECT p_id, p_username, p_wins, p_tie, p_loss FROM Player WHERE p_username LIKE ?";
+    	try{
+    		con = Database.getConnection();
+    		search = con.prepareStatement(statement);
+    		search.setString(1, "%"+searchEntry+"%");
+    		rs = search.executeQuery();
+    		while(rs.next()){
+    			Player friend = new Player();							// create player object based on returned values from database
+    			friend.setId(rs.getLong("p_id"));
+    			friend.setName(rs.getString("p_username"));
+    			friend.setWins(rs.getInt("p_wins"));
+    			friend.setTies(rs.getInt("p_tie"));
+    			friend.setLosses(rs.getInt("p_loss"));
+    			searchResults.add(friend);								// add new player object to list
+    		}
+    	}
+    	catch(SQLException | ClassNotFoundException e){
+    		System.out.println("Friend search not executed:");
+    		System.out.println(e);
+    	}	
+    	finally{														// close connection
+    		if(search!=null){
+    			try{
+    				search.close();
+    				con.close();
+    			}
+    			catch(SQLException s){
+    				s.printStackTrace();
+    			}
+    		}
+    	}
+    	return searchResults;
+    }
+    public static ArrayList<Player> showFriends(Player user){
+    	ArrayList<Player> friendList = new ArrayList<Player>();
+    	ArrayList<Integer> friendIds = new ArrayList<Integer>();
+    	PreparedStatement getIds = null;
+    	PreparedStatement showFriend = null;
+    	Player player = null;
+    	Connection con = null;
+    	ResultSet ids = null;
+    	ResultSet rs = null;
+    	String firstStatement=		// statement to return all friendIds linked to the player's id
+    			"SELECT p.* FROM Player p INNER JOIN Player_Friend F2 ON p.p_id = F2.friendId WHERE F2.playerId = ?";
+    	try{
+    		con = Database.getConnection();
+    		getIds =con.prepareStatement(firstStatement);
+    		getIds.setLong(1,user.getId());
+    		rs = getIds.executeQuery();
+    		while(rs.next()){
+    			player  = new Player(rs.getString("p_username"), rs.getString("p_password"),rs.getLong("p_id"),
+						rs.getInt("p_wins"), rs.getInt("p_loss"), rs.getInt("p_tie"));
+    			friendList.add(player);
+    		}
+    	}
+    	catch(SQLException | ClassNotFoundException e){
+    		System.out.println("Couldn't select friend ids:");
+    		System.out.println(e);
+    	}
+    	finally{
+    		if(getIds!=null){
+    			try{
+    				getIds.close();
+    			}
+    			catch(SQLException s){
+    				s.printStackTrace();
+    			}
+    		}
+    	}
+    	return friendList;
     }
     
     public static void saveUser(Player player) {

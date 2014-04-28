@@ -18,20 +18,20 @@
 		ServletContext sc = this.getServletContext();
 		String path = sc.getContextPath();
 		String msg = (String)request.getParameter("msg");
-		String loggedInString = (String)session.getAttribute("loggedIn");
-		Player player = (Player)session.getAttribute("user");
-		ArrayList friends = (ArrayList)session.getAttribute("friendList");
-		ArrayList friendWins = (ArrayList)session.getAttribute("friendWins");
-		boolean loggedIn = (loggedInString != null && loggedInString.equals("true"));
+		Player user = (Player)session.getAttribute("user");
+		ArrayList<Player> playerList = (ArrayList)request.getAttribute("playerList");
 		if(msg != null)
 			out.print("<h1>"+msg+"</h1>");
-		if(!loggedIn) {
+		if(user==null) {
 			out.print("You are not logged in. <a href='"+path+"/views/login.jsp'>Login</a>");
 		}
 		else{
-			for(int i=0; i< friends.size(); i++){
-				out.print("<p>"+friends.get(i)+ " Wins: "+friendWins.get(i)+"</p>");
-			}
+			if(playerList != null)
+				for(Player p: playerList){
+					out.print("<p>"+p.getName()+ " Wins: "+p.getWins()+"</p>");
+				}
+			else
+				out.print("The list is null");
 			
 		}
 		

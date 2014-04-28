@@ -13,6 +13,8 @@ public class Player {
 	private String password;
 	public int wins, losses, draws;
 	public List<String[]> moveList = new ArrayList<>();
+	public ArrayList<Player> friendSearch = new ArrayList<Player>();
+	public ArrayList<Player> friendsList = new ArrayList<Player>();
 	public int diff;
 	public boolean isLocal;
 	
@@ -53,9 +55,29 @@ public class Player {
 		this.setId(0);
 	}
 
+	
+	public void setPlayerFriends(ArrayList<Player> friends){
+		this.friendsList = friends;
+	}
+	
+	public ArrayList<Player> getPlayerFriends(){
+		return friendsList;
+	}
+	
+	public void setFriendsSearch(ArrayList<Player> search){
+		this.friendSearch = search;
+	}
+	
+	public ArrayList<Player> getFriendsSearch(){
+		return friendSearch;
+	}
+	
 
 	public String getName() {
 		return username;
+	}
+	public void setName(String name){
+		this.username=name;
 	}
 	
 	public String getPassword() {
@@ -74,9 +96,35 @@ public class Player {
 		this.username = username;
 	}
 
+	public void setWins(int win){
+		this.wins=win;
+	}
+	
+	public int getWins(){
+		return wins;
+	}
+
+	public void setLosses(int lose){
+		this.losses=lose;
+	}
+	
+	public int getLosses(){
+		return losses;
+	}
+	
+	public void setTies(int tie){
+		this.draws=tie;
+	}
+	
+	public int getTies(){
+		return draws;
+	}
+	
 	public long getId() {
 		return id;
 	}
+	
+	
 
 	public void setId(long id) {
 		this.id = id;
