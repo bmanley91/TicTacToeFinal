@@ -1,7 +1,6 @@
 package models;
 
 import java.util.*;
-import java.util.Map;
 
 public class Game{
 
@@ -12,38 +11,27 @@ public class Game{
 	public int winnerId = 0;
 	public boolean isTie = false;
 	public Computer comp;
-	//public String lastMove[] = new String[2];
 	
 	public Game(List<Player> players) {
 		this.board = new GameBoard();
 		this.players = players;
-		//this.comp = new Computer(board);
 	}
 	
 	public Game(Player p, int difficulty) {
 		this.board = new GameBoard();
-		//comp.board = this.board;
 		this.players.add(p);
-		
 		comp = new Computer(difficulty, this.board, this);
 		this.players.add(comp);
-		//comp = (Computer)players.get(1);
 	}
 	
-	public Game() {
-		//this is the new contstructor thats on dans laptop
-	}
 
 	public Game(Player user, Player friend) {
 		this.board = new GameBoard();
 		this.players = new ArrayList<Player>();
 		this.players.add(user);
 		this.players.add(friend);
-		//this.comp = new Computer(1, board);
 	}
 	
-	
-
 	public Game(Player p1, Player p2, Map<String, ArrayList<Integer>> tiles, int playersTurn, long gameId) {
 		this.players = new ArrayList<Player>();
 		this.players.add(p1);
@@ -51,6 +39,14 @@ public class Game{
 		this.board = new GameBoard(tiles);
 		this.playersTurn = playersTurn;
 		this.id = gameId;
+	}
+
+	public Game(Player user, String player2Name) {
+		this.players = new ArrayList<Player>();
+		this.players.add(user);
+		Player tempPlayer = new Player(player2Name);
+		this.players.add(tempPlayer);
+		this.board = new GameBoard();
 	}
 
 	public void takeTurn(String xChoice, String yChoice, int playersTurn2) {
@@ -62,10 +58,6 @@ public class Game{
 			xChoice = move[0];
 			yChoice = move[1];
 		}
-		/*else{
-			lastMove[0] = xChoice;
-			lastMove[1] = yChoice;
-		}*/
 		
 		if(this.playersTurn == playersTurn2) {
 			board.setPlayerChoice(xChoice,yChoice,playersTurn);
@@ -151,7 +143,12 @@ public class Game{
 		return m;
 	}
 	
-	
+	public boolean isLocalGame() {
+		for(Player p: this.players)
+			if(p.isLocal)
+				return true;
+		return false;
+	}
 	public String[] getCorner(){
 		
 		String move[] = new String[2];
@@ -401,7 +398,6 @@ public class Game{
 		return checkRowForWinner(gb.getCol3());
 	}
 	public boolean checkRowForWinner(ArrayList<Integer> row) {
-		//return this.board.checkForWinner(row);
 		
 		Integer currentTileInRow = null;
 		for(Integer i:row) {
@@ -412,6 +408,7 @@ public class Game{
 			else if(currentTileInRow != i)
 				return false;
 		}
+		System.out.println("Setting winner id:" +currentTileInRow);
 		winnerId = currentTileInRow;
 		return true;
 		
@@ -427,6 +424,7 @@ public class Game{
 	}
 	
 	public Player getWinner() {
+		System.out.println("returning winner: "+winnerId);
 		if(winnerId == 0)
 			return null;
 		return players.get(winnerId-1);
@@ -490,6 +488,10 @@ public class Game{
 		return null;
 	}
 
+	public boolean isPlayersTurn(Player p) {
+		return getCurrentPlayer().getId() == p.getId();
+	}
+	
 	public String getMsg() {
 		if(!this.isOver())
 			return "It's " +this.getCurrentPlayer().getName() + "'s turn";

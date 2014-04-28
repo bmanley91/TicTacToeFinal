@@ -1,2 +1,0 @@
-CSI418-TeamTwoTicTacToe
-=======================

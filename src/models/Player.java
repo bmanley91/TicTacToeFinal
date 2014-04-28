@@ -14,6 +14,7 @@ public class Player {
 	public int wins, losses, draws;
 	public List<String[]> moveList = new ArrayList<>();
 	public int diff;
+	public boolean isLocal;
 	
 	public Player(String username, String password,  long id) {
 		
@@ -22,6 +23,11 @@ public class Player {
 		this.username = username;
 		this.setId(id);
 		games = new ArrayList<Game>();
+	}
+	
+	public Player(String username) {
+		this.username = username;
+		this.isLocal = true;
 	}
 	
 	public Player(String username, String password, long id, int wins,

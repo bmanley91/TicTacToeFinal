@@ -1,11 +1,14 @@
 package controllers;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import models.Database;
 
 /**
  * Servlet implementation class LogoutServlet
@@ -23,6 +26,12 @@ public class LogoutServlet extends HttpServlet {
 
 		request.getSession().invalidate();
 		response.sendRedirect(request.getContextPath() + "/views/login.jsp");
+		try {
+			Database.DB_Close();
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

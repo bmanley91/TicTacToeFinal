@@ -19,8 +19,6 @@
 			Player user = (Player)session.getAttribute("user");
 			Game game = (Game)request.getAttribute("game");
 			
-			//String isPC = null;
-			
 			String msg = (String)request.getAttribute("msg");
 			if(msg != null)
 				out.print("<span class='center'><h1>"+msg+"</h1></span>");
@@ -38,7 +36,7 @@
 						);
 				int colCounter = 0;
 				for(String i: game.getRow1Imgs()) {
-					if(i.isEmpty() && !game.isWinner()) {
+					if(i.isEmpty() && !game.isWinner() && (game.isPlayersTurn(user) || game.isLocalGame())) {
 						if(colCounter != 1)
 							out.print("<td class='openPiece' xPos='row1' yPos='"+colCounter+"'>");
 						else
@@ -62,7 +60,7 @@
 						);
 				colCounter = 0;
 				for(String i: game.getRow2Imgs()) {
-					if(i.isEmpty() && !game.isWinner()) {
+					if(i.isEmpty() && !game.isWinner() && (game.isPlayersTurn(user) || game.isLocalGame())) {
 						if(colCounter != 1)
 							out.print("<td class='openPiece' xPos='row2' yPos='"+colCounter+"'>");
 						else
@@ -86,7 +84,7 @@
 						);
 				colCounter = 0;
 				for(String i: game.getRow3Imgs()){
-					if(i.isEmpty() && !game.isWinner()) {
+					if(i.isEmpty() && !game.isWinner() && (game.isPlayersTurn(user) || game.isLocalGame())) {
 						if(colCounter != 1)
 							out.print("<td class='openPiece' xPos='row3' yPos='"+colCounter+"'>");
 						else
@@ -104,10 +102,6 @@
 							);
 					colCounter++;
 				}
-				/*if(game.getPlayer2().isComp){
-					isPC = "on";
-				} */
-				
 				out.print(
 								"</tr>" +
 							"</tbody>" +
@@ -145,6 +139,7 @@
 							"<form action='game' method='post' id='gameChoiceForm'>" +
 								"<input type='text' name='xChoice' id='xChoice'/>" +
 								"<input type='text' name='yChoice' id='yChoice'/>" +
+								"<input type='text' name='isLocalGame' value='"+game.isLocalGame()+"'/>" +
 								"<input type='text' name='playersTurn' value='"+playersTurn+"'/>" +
 								"<input type='hidden' name='gameId' value='"+game.getId()+"'/>" +
 								"<input type = 'hidden' name='playersTurn' value='"+playersTurn+"'/>"+

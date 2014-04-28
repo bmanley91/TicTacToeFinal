@@ -19,6 +19,7 @@ import java.sql.Statement;
 
 
 
+
 import models.Database;
 import models.Player;
 
@@ -83,6 +84,12 @@ public class RegServlet extends HttpServlet {
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url); 
 				dispatcher.forward(request, response);
+			try {
+				Database.DB_Close();
+			} catch (Throwable e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
        

@@ -293,7 +293,6 @@ public class Database {
     		rs = findGame.executeQuery(); 					// execute statement
     		System.out.println("Just executed");
 			while(rs.next()) {
-				System.out.println("IN WHILE");
 				long p1Id = rs.getLong("g_player1");
 				long p2Id = rs.getLong("g_player2");
 				
@@ -301,6 +300,7 @@ public class Database {
 					System.out.println("Error finding players, or I guess p2 can be a computer");
 				
 				int playersTurn = rs.getInt("g_playersTurn");
+				long winnderId = rs.getLong("g_winnerId"); //TODOD
 				Player p1 = findPlayerById(p1Id);
 				Player p2 = findPlayerById(p2Id);
 				Map<String, ArrayList<Integer>> tiles = Database.getTilesForGame(gameId);
@@ -376,9 +376,9 @@ public class Database {
 		System.out.println("updating game");
     	PreparedStatement updateGame = null;
     	String updateStatement;
-    	if(g.isWinner())
+    	if(g.isWinner() || g.isTie)
     		updateStatement =			//logic for prepared statement
-			 "UPDATE Game SET g_winner = ? AND g_playersTurn = ? WHERE g_id = ?";
+			 "UPDATE Game SET g_winner = ?, g_playersTurn = ? WHERE g_id = ?";
     	else
     		updateStatement =			//logic for prepared statement
 			 "UPDATE Game SET g_playersTurn = ? WHERE g_id = ?";
@@ -386,10 +386,10 @@ public class Database {
     		conn = getConnection();
     		updateGame = conn.prepareStatement(updateStatement, Statement.RETURN_GENERATED_KEYS);	//get connection and declare prepared statement
     		int count = 1;
-    		if(g.isWinner()) {
+    		if(g.isWinner() || g.isTie) {
     			updateGame.setLong(count, g.getWinnerId()); 		// set input parameter 1
     			count++;
-    		}
+    		} 
     		updateGame.setInt(count, g.playersTurn); 		// set input parameter 2
     		count++;
     		updateGame.setLong(count, g.getId());
@@ -475,7 +475,6 @@ public class Database {
     		findGame.setLong(2, id); 		// set input parameter 2
     		rs = findGame.executeQuery(); 					// execute statement
 			while(rs.next()) {
-				System.out.println("IN WHILE");
 				long p1Id = rs.getLong("g_player1");
 				long p2Id = rs.getLong("g_player2");
 				long gameId = rs.getLong("g_id");
@@ -486,7 +485,6 @@ public class Database {
 				Player p1 = findPlayerById(p1Id);
 				Player p2 = findPlayerById(p2Id);
 				Map<String, ArrayList<Integer>> tiles = Database.getTilesForGame(gameId);
-				System.out.println("&&&&&"+p1);
 				games.add(new Game(p1, p2, tiles,playersTurn, gameId));
 			}
        }

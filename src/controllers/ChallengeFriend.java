@@ -44,7 +44,7 @@ public class ChallengeFriend extends HttpServlet {
 			g = Database.createGame(g);
 			if(g != null) {
 				request.setAttribute("game", g);
-				msg="New Game! "+ g.getCurrentPlayer().getName()+ ", its your turn";
+				msg="New Game! "+ g.getMsg();
 			}
 			else
 				msg="Error creating game. Please try again";

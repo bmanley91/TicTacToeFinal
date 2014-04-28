@@ -4,7 +4,6 @@ import java.util.*;
 
 public class Computer extends Player {
 	
-	//public int difficulty = super.diff;
 	String str;
 	public GameBoard board;
 	public Game game;
@@ -14,15 +13,16 @@ public class Computer extends Player {
 
 	
 	public Computer(int d, GameBoard gb, Game g){
-		//this.difficulty = diff;
 		diff = d;
 		this.game = g;
 		this.board = gb;
 		super.username = "Computer";
 		super.setId(2);
+		this.isLocal = true;
 	}
 	
 	public Computer(int d){
+		this.isLocal = true;
 		diff = d;
 		super.username = "Computer";
 		super.setId(2);
@@ -30,57 +30,26 @@ public class Computer extends Player {
 	
 	public String[] compTurn(){
 		
-		/*String[] rows = {"row1", "row2", "row3"};
-		String[] cols = {"0", "1", "2"};
-		String[] x = new String[2];
-		
-		for(int i=0; i<rows.length; i++){
-			for(int j=0; j<cols.length; j++){
-				x[0] = rows[i];
-				x[1] = cols[j];
-				System.out.println(x[0]+", "+x[1]+" is a corner "+game.isCorner(x));
-				System.out.println(x[0]+", "+x[1]+" is a side "+game.isSide(x));
-				System.out.println();
-			}
-		}*/
-		
 		if(diff == 3)
 			return this.hardTurn();
-		
 		else if(diff == 2)
 			return this.medTurn();
-		
-		
 		return this.easyTurn();
-	}
-	
-	public void gameMap(){
-		////////////////////////////////////////////////////////////////////////////////////////////////////////
 	}
 	
 	private String[] easyTurn(){
 		
-		System.out.println("easy diff");
 		Random rand = new Random();
 		
 		move = this.winMove();
-		//block opponent's winning move
-		//or make the winning move
-		if(board.isValidMove(move)){
+		if(board.isValidMove(move))
 			return move;
-		}
-		
-		
 		for(int i=0; i<25; i++){
 			do{
-				//move[0] = "row";
 				move[0] = rows[(rand.nextInt(3))];
 				move[1] = cols[(rand.nextInt(3))];
-				//System.out.println("compturn "+move[0]+", "+move[1]);
 			}while( !board.isValidMove(move[0], move[1]));
 		}
-		
-		
 		return move;
 		
 	}
@@ -95,16 +64,6 @@ public class Computer extends Player {
 		if(move[0] != null){
 			return move;
 		}
-		
-		/*move = game.getWinningMove(2);
-		if(move[0] == null){
-			move = game.getWinningMove(1);
-		}
-		System.out.println("move = "+move[0]+" "+move[1]);
-		if(move[0] != null && board.isValidMove(move[0], move[1])){
-			return move;
-		}*/
-		
 		if(board.isValidMove("row2", "1")){
 			//always take the center if it's free
 			move[0] = "row2";

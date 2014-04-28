@@ -32,30 +32,33 @@ public class GameServlet extends HttpServlet {
 		HttpSession session = request.getSession(); 
 		String url = "/views/gameBoard.jsp"; 
 		String msg = null;
-		Long gameId = Long.parseLong(request.getParameter("gameId"));
-		Game game = Database.findGameById(gameId);
-		String[] move = new String[2];
+		String isLocalGame = request.getParameter("isLocalGame");
+		Game game = null;
+		if(isLocalGame != null && isLocalGame.equals("true"))
+			game = (Game)session.getAttribute("localGame");
+		else {
+			Long gameId = Long.parseLong(request.getParameter("gameId"));
+			game = Database.findGameById(gameId);
+		}
 		String xChoice, yChoice;
 		
 		xChoice =  request.getParameter("xChoice");
 		yChoice =  request.getParameter("yChoice");
 		int playersTurn = Integer.valueOf(request.getParameter("playersTurn"));	
 		game.takeTurn(xChoice,yChoice,playersTurn);
-		if(!game.isOver())
-			msg=game.getCurrentPlayer().getName()+ ", its your turn";
-		else if(game.isWinner())
-			msg=game.getWinner().getName()+ " Wins!";
-		else
-			msg="It's a Tie!";
-		request.setAttribute("msg", msg);
-		// update both players game count
-		if(game.isOver()){
-			Database.updateWins(game);
-		}
+		msg=game.getMsg();
+		
 		request.setAttribute("msg", msg);
 		request.setAttribute("game", game);
 		
-		Database.updateGame(game);
+		if(!game.isLocalGame()) {
+			Database.updateGame(game);
+			// update both players game count
+			if(game.isOver() && game.isLocalGame()){
+				Database.updateWins(game);
+			}
+		}
+		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url); 
 			dispatcher.forward(request, response);
 		try {
