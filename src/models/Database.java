@@ -420,7 +420,8 @@ public class Database {
 					System.out.println("Error finding players, or I guess p2 can be a computer");
 				
 				int playersTurn = rs.getInt("g_playersTurn");
-				long winnderId = rs.getLong("g_winnerId"); //TODOD
+				long winnerId = rs.getLong("g_winner"); //TODOD
+				System.out.println(winnerId);
 				Player p1 = findPlayerById(p1Id);
 				Player p2 = findPlayerById(p2Id);
 				Map<String, ArrayList<Integer>> tiles = Database.getTilesForGame(gameId);

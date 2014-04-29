@@ -29,9 +29,15 @@
 			if(playerList != null)
 				for(Player p: playerList){
 					out.print("<p>"+p.getName()+ " Wins: "+p.getWins()+"</p>");
+					out.print(
+							"<form action='challengeFriend' id='challengeForm' method='post'/>" +
+							"<input type='hidden' value='"+p.getId()+"' name='friendId'>" +
+							"<input type='submit' value='challenge!'/>" +
+							"</form>"
+					);
 				}
 			else
-				out.print("The list is null");
+				out.print("You have no Friends yet!");
 			
 		}
 		
