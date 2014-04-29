@@ -36,6 +36,12 @@ public class AddFriendServlet extends HttpServlet {
 			msg = "Friend added successfully!";
 			request.setAttribute("msg", msg);
 			request.getRequestDispatcher(url).forward(request, response);
+			try {
+				Database.DB_Close();
+			} catch (Throwable e) {
+				System.out.println("error closing connection");
+				e.printStackTrace();
+			}
 		}
 	}
 
