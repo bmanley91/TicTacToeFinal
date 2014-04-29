@@ -13,9 +13,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-//import org.hibernate.SessionFactory;
-//import org.hibernate.cfg.Configuration;
-
 
 public class Database {
 	private static Connection conn;
