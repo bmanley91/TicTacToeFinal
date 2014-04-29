@@ -22,6 +22,7 @@ public class AddFriendServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+<<<<<<< HEAD
 		Player user = (Player) session.getAttribute("user");			// Get player from session
 		ArrayList<Player> searchResults = user.getFriendsSearch();		// Get friend search results from player object
 		String friendName = searchResults.get(0).getName();
@@ -42,6 +43,32 @@ public class AddFriendServlet extends HttpServlet {
 				System.out.println("error closing connection");
 				e.printStackTrace();
 			}
+=======
+		Player user = (Player) session.getAttribute("user");
+		ArrayList<Player> searchResults = user.getFriendsSearch();
+		long friendId = Long.parseLong(request.getParameter("friendId"));
+		String url = "friendAdded.jsp";
+		String msg = "Friend added successfully!";
+		
+		if(user == null) {
+			msg = "You must be logged in to perform this action";
+			url = "login.jsp";
+		}
+		else if(friendId == 0) {
+			msg = "Error finding friend, please try again";
+			url = "findFriends.jsp";
+		} 
+		else if(!Database.addFriend(user.getId(), friendId)) 
+			msg = "Error adding friend, please try again";
+		
+		request.setAttribute("msg", msg);
+		request.getRequestDispatcher(url).forward(request, response);
+		try {
+			Database.DB_Close();
+		} catch (Throwable e) {
+			System.out.println("error closing connection");
+			e.printStackTrace();
+>>>>>>> FETCH_HEAD
 		}
 	}
 

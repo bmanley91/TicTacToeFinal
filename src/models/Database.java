@@ -35,6 +35,7 @@ public class Database {
     	return conn;
     }
     
+<<<<<<< HEAD
     public static boolean addFriend(long pId, String newFriend){
     	boolean worked = false;				// return value for function
     	PreparedStatement add = null;	
@@ -42,19 +43,24 @@ public class Database {
     	Connection con = null;
     	String statement =					// insert statement to update friends table
     			"INSERT INTO Player_Friend (playerId, friendId) VALUES(?,(SELECT p_id FROM Player WHERE p_username = ?))";
+=======
+    public static boolean addFriend(long pId, long newFriendId){
+    	boolean worked = false;			// return value for function
+    	PreparedStatement add = null;	
+    	ResultSet rs = null;
+    	Connection con = null;
+    	String statement =				// insert statement to update friends table
+    			"INSERT INTO Player_Friend (playerId, friendId) VALUES(?,?)";
+>>>>>>> FETCH_HEAD
     	try{
     		con = Database.getConnection();
     		add = con.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS);
     		add.setLong(1, pId);			// put player's id into the statement
-    		add.setString(2, newFriend);	// put new friend's username into the statement
+    		add.setLong(2, newFriendId);	// put new friend's username into the statement
     		add.executeUpdate();			// execute the statement
     		rs = add.getGeneratedKeys();	// get result set
     		if(rs!=null && rs.next()){		// check statement was executed correctly
     			worked = true;
-    		}
-    		else{
-    			worked = false;
-    			System.out.println("Friend not successfully added");
     		}
     	}
     	catch(SQLException | ClassNotFoundException e){
@@ -75,17 +81,19 @@ public class Database {
     	return worked;						// return true if update worked, false if not
     }
     
-    public static ArrayList<Player> searchFriends(String searchEntry){
+    public static ArrayList<Player> searchFriends(String searchEntry, String userName, long userId){
     	ArrayList<Player> searchResults = new ArrayList<Player>();		// arraylist of players to store search results
     	PreparedStatement search = null;
     	ResultSet rs = null; 
     	Connection con = null;
     	String statement =												// statement to return player parameters from database based on search
-    			"SELECT p_id, p_username, p_wins, p_tie, p_loss FROM Player WHERE p_username LIKE ?";
+    			"SELECT p.p_id, p.p_username, p.p_wins, p.p_tie, p.p_loss FROM Player p WHERE (p_username LIKE ? AND p_username <> ? AND p_id NOT IN(Select friendId FROM Player_Friend WHERE playerId = ?))";
     	try{
     		con = Database.getConnection();
     		search = con.prepareStatement(statement);
     		search.setString(1, "%"+searchEntry+"%");
+    		search.setString(2, userName);
+    		search.setLong(3, userId);
     		rs = search.executeQuery();
     		while(rs.next()){
     			Player friend = new Player();							// create player object based on returned values from database
@@ -420,7 +428,8 @@ public class Database {
 					System.out.println("Error finding players, or I guess p2 can be a computer");
 				
 				int playersTurn = rs.getInt("g_playersTurn");
-				long winnderId = rs.getLong("g_winnerId"); //TODOD
+				long winnerId = rs.getLong("g_winner"); //TODOD
+				System.out.println(winnerId);
 				Player p1 = findPlayerById(p1Id);
 				Player p2 = findPlayerById(p2Id);
 				Map<String, ArrayList<Integer>> tiles = Database.getTilesForGame(gameId);

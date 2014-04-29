@@ -165,14 +165,6 @@
 				out.print("<br>");
 				
 				out.print("</form>");
-				
-				out.print(
-						
-						"<form action='challengeFriend' id='challengeForm' method='post'/>" +
-						"<input type='hidden' value='2' name='friendId'>" +
-						"<input type='submit' value='challenge!'/>" +
-						"</form>"
-				);
 			}
 			else {
 				out.print("You are not logged in. <a href='"+path+"/views/login.jsp'>Home</a>");

@@ -20,9 +20,10 @@
 		out.print("<p>No results found.</p>");
 	}
 	else{
-		for(int i=0; i < searchResults.size(); i++){
-			out.print("<p>"+searchResults.get(i).getName()+ " Wins: "+searchResults.get(i).getWins()+
+		for(Player p: searchResults){
+			out.print("<p>"+p.getName()+ " Wins: "+p.getWins()+
 					"<form action='addFriend' method='post'>"+
+					"<input type='hidden' name='friendId' value='"+p.getId()+"'/>" +
 					"<input type='submit' name='button' value='Add Friend' />"+
 					"</form>"+
 					"</p>");

@@ -36,8 +36,13 @@ public class FindFriendServlet extends HttpServlet {
 				url = "/views/findfriends.jsp";
 			}
 			else{
+<<<<<<< HEAD
 				ArrayList<Player> searchResults = Database.searchFriends(friendSearch);	// call searchFriends method from database object
 				request.setAttribute("playerSearch", searchResults);				// save result list in request
+=======
+				ArrayList<Player> searchResults = Database.searchFriends(friendSearch, user.username, user.getId());
+				request.setAttribute("playerSearch", searchResults);
+>>>>>>> FETCH_HEAD
 				user.setFriendsSearch(searchResults);
 				url = "/views/searchResults.jsp";
 			}
