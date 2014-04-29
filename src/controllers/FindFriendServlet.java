@@ -25,19 +25,24 @@ public class FindFriendServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Player user = (Player) session.getAttribute("user");
+		Player user = (Player) session.getAttribute("user");						// Get player from session
 		String msg = null;
 		String url = null;
 		
 		if(user!=null){
-			String friendSearch = (String)request.getParameter("friendSearch");
-			if(friendSearch.length()==0){
+			String friendSearch = (String)request.getParameter("friendSearch");		// get form info from jsp page
+			if(friendSearch.length()==0){											// if nothing was entered print error message
 				msg = "Please fill in search field.";
 				url = "/views/findfriends.jsp";
 			}
 			else{
+<<<<<<< HEAD
+				ArrayList<Player> searchResults = Database.searchFriends(friendSearch);	// call searchFriends method from database object
+				request.setAttribute("playerSearch", searchResults);				// save result list in request
+=======
 				ArrayList<Player> searchResults = Database.searchFriends(friendSearch, user.username, user.getId());
 				request.setAttribute("playerSearch", searchResults);
+>>>>>>> FETCH_HEAD
 				user.setFriendsSearch(searchResults);
 				url = "/views/searchResults.jsp";
 			}

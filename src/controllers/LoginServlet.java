@@ -50,7 +50,6 @@ public class LoginServlet extends HttpServlet {
 		}
 		if(player != null) {
 			session.setAttribute("user", player);
-			session.setAttribute("loggedIn", "true");
 			msg=player.getName()+", you are logged in!";
 		}
 		else {

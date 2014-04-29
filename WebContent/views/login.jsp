@@ -16,11 +16,10 @@
 			ServletContext sc = this.getServletContext();
 			String path = sc.getContextPath();//This code get the path relative to the root web content directory of the project
 			String msg = (String)request.getAttribute("msg");
-			String loggedInString = (String)session.getAttribute("loggedIn");
-			boolean loggedIn = (loggedInString != null && loggedInString.equals("true"));
+			Player player = (Player)session.getAttribute("user");	// Get player from session
 			if(msg != null)
 				out.print("<h1>"+msg+"</h1>");
-			if(!loggedIn) {
+			if(player==null) {										// If no player is found in session print login form
 				out.print(
 						"<form action='login' id='loginForm' method='post'>"+
 							"<div>" +
@@ -38,9 +37,7 @@
 				
 				
 			}
-			else {
-				//User user = (User)session.getAttribute("user");
-				Player player = (Player)session.getAttribute("user");
+			else {													// If player is found in session do not print login form
 				out.print(
 						"<a href='views/gameBoard.jsp'>Start a local game</a>" +
 						"<a href=''>Find Friends</a>"

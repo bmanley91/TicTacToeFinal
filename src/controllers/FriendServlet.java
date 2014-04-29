@@ -29,15 +29,14 @@ public class FriendServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Player user = (Player)session.getAttribute("user");
+		Player user = (Player)session.getAttribute("user");					// Get player from session
 		String msg = null;
 		String url = "/views/friends.jsp";
 		System.out.println("test");
-		if(user!=null){		// Check if user is logged in
-			System.out.println("user is not null");
-			ArrayList<Player> friendList = Database.showFriends(user);
-			System.out.println(friendList);
-			request.setAttribute("playerList", friendList);
+		if(user!=null){														// Check if user is logged in
+			ArrayList<Player> friendList = Database.showFriends(user);		// Call show friends method from database object
+			user.setPlayerFriends(friendList);								// Save friendList on player object
+			request.setAttribute("playerList", friendList);					// Save friendList on request
 		}
 	else{
 		msg = "You are not logged in!";
@@ -45,7 +44,7 @@ public class FriendServlet extends HttpServlet {
 		request.setAttribute("msg", msg);
 		}
 		
-		request.getRequestDispatcher(url).forward(request, response);
+		request.getRequestDispatcher(url).forward(request, response);		// Redirect to friend page to display friends
 		try {
 			Database.DB_Close();
 		} catch (Throwable e) {
