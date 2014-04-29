@@ -22,20 +22,20 @@ public class AddFriendServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Player user = (Player) session.getAttribute("user");
-		ArrayList<Player> searchResults = user.getFriendsSearch();
+		Player user = (Player) session.getAttribute("user");			// Get player from session
+		ArrayList<Player> searchResults = user.getFriendsSearch();		// Get friend search results from player object
 		String friendName = searchResults.get(0).getName();
-		if(friendName==null) friendName = "";
+		if(friendName==null) friendName = "";							
 
 		String url = "/views/friendAdded.jsp";
 		String msg = "";
 		
 		if(user!=null){
 			long pId = user.getId();
-			boolean newFriendship = Database.addFriend(pId, friendName);
+			boolean newFriendship = Database.addFriend(pId, friendName);	// Call addFriend method from database object
 			msg = "Friend added successfully!";
 			request.setAttribute("msg", msg);
-			request.getRequestDispatcher(url).forward(request, response);
+			request.getRequestDispatcher(url).forward(request, response);	// Redirect to success page
 			try {
 				Database.DB_Close();
 			} catch (Throwable e) {

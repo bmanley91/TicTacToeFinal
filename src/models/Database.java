@@ -36,11 +36,11 @@ public class Database {
     }
     
     public static boolean addFriend(long pId, String newFriend){
-    	boolean worked = false;			// return value for function
+    	boolean worked = false;				// return value for function
     	PreparedStatement add = null;	
     	ResultSet rs = null;
     	Connection con = null;
-    	String statement =				// insert statement to update friends table
+    	String statement =					// insert statement to update friends table
     			"INSERT INTO Player_Friend (playerId, friendId) VALUES(?,(SELECT p_id FROM Player WHERE p_username = ?))";
     	try{
     		con = Database.getConnection();
@@ -130,7 +130,7 @@ public class Database {
     		getIds =con.prepareStatement(firstStatement);
     		getIds.setLong(1,user.getId());
     		rs = getIds.executeQuery();
-    		while(rs.next()){
+    		while(rs.next()){		// save returned friend info in new player object
     			player  = new Player(rs.getString("p_username"), rs.getString("p_password"),rs.getLong("p_id"),
 						rs.getInt("p_wins"), rs.getInt("p_loss"), rs.getInt("p_tie"));
     			friendList.add(player);
