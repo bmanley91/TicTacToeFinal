@@ -37,7 +37,6 @@ public class GameServlet extends HttpServlet {
 		if(isLocalGame != null && isLocalGame.equals("true"))
 			game = (Game)session.getAttribute("localGame");
 		else {
-			System.out.println(request.getParameter("gameId"));
 			Long gameId = Long.parseLong(request.getParameter("gameId"));
 			game = Database.findGameById(gameId);
 		}
