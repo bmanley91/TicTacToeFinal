@@ -36,7 +36,7 @@ public class FindFriendServlet extends HttpServlet {
 				url = "/views/findfriends.jsp";
 			}
 			else{
-				ArrayList<Player> searchResults = Database.searchFriends(friendSearch);
+				ArrayList<Player> searchResults = Database.searchFriends(friendSearch, user.username, user.getId());
 				request.setAttribute("playerSearch", searchResults);
 				user.setFriendsSearch(searchResults);
 				url = "/views/searchResults.jsp";

@@ -24,24 +24,28 @@ public class AddFriendServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		Player user = (Player) session.getAttribute("user");
 		ArrayList<Player> searchResults = user.getFriendsSearch();
-		String friendName = searchResults.get(0).getName();
-		if(friendName==null) friendName = "";
-
-		String url = "/views/friendAdded.jsp";
-		String msg = "";
+		long friendId = Long.parseLong(request.getParameter("friendId"));
+		String url = "friendAdded.jsp";
+		String msg = "Friend added successfully!";
 		
-		if(user!=null){
-			long pId = user.getId();
-			boolean newFriendship = Database.addFriend(pId, friendName);
-			msg = "Friend added successfully!";
-			request.setAttribute("msg", msg);
-			request.getRequestDispatcher(url).forward(request, response);
-			try {
-				Database.DB_Close();
-			} catch (Throwable e) {
-				System.out.println("error closing connection");
-				e.printStackTrace();
-			}
+		if(user == null) {
+			msg = "You must be logged in to perform this action";
+			url = "login.jsp";
+		}
+		else if(friendId == 0) {
+			msg = "Error finding friend, please try again";
+			url = "findFriends.jsp";
+		} 
+		else if(!Database.addFriend(user.getId(), friendId)) 
+			msg = "Error adding friend, please try again";
+		
+		request.setAttribute("msg", msg);
+		request.getRequestDispatcher(url).forward(request, response);
+		try {
+			Database.DB_Close();
+		} catch (Throwable e) {
+			System.out.println("error closing connection");
+			e.printStackTrace();
 		}
 	}
 
