@@ -45,19 +45,17 @@ public class GameServlet extends HttpServlet {
 		xChoice =  request.getParameter("xChoice");
 		yChoice =  request.getParameter("yChoice");
 		int playersTurn = Integer.valueOf(request.getParameter("playersTurn"));	
-		game.takeTurn(xChoice,yChoice,playersTurn);
-		msg=game.getMsg();
 		
-		request.setAttribute("msg", msg);
-		request.setAttribute("game", game);
-		
-		if(!game.isLocalGame()) {
+		if(game.takeTurn(xChoice,yChoice,playersTurn) && !game.isLocalGame()) {
 			Database.updateGame(game);
 			// update both players game count
 			if(game.isOver() && game.isLocalGame()){
 				Database.updateWins(game);
 			}
 		}
+		msg=game.getMsg();
+		request.setAttribute("msg", msg);
+		request.setAttribute("game", game);
 		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url); 
 			dispatcher.forward(request, response);

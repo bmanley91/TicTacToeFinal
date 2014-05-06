@@ -49,7 +49,7 @@ public class Game{
 		this.board = new GameBoard();
 	}
 
-	public void takeTurn(String xChoice, String yChoice, int playersTurn2) {
+	public boolean takeTurn(String xChoice, String yChoice, int playersTurn2) {
 		
 		String move[] = new String[2];
 		
@@ -71,9 +71,10 @@ public class Game{
 			checkForTie(board);
 			if(this.getCurrentPlayer().isComputer() && !this.isOver())
 				this.takeTurn(xChoice, yChoice, playersTurn);
+			return true;
 		}
 		else
-			System.out.println("Wrong turn!");
+			return false;
 	}
 	
 	public boolean isCorner(String m[]){

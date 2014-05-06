@@ -111,12 +111,9 @@ public class Database {
     }
     public static ArrayList<Player> showFriends(Player user){
     	ArrayList<Player> friendList = new ArrayList<Player>();
-    	ArrayList<Integer> friendIds = new ArrayList<Integer>();
     	PreparedStatement getIds = null;
-    	PreparedStatement showFriend = null;
     	Player player = null;
     	Connection con = null;
-    	ResultSet ids = null;
     	ResultSet rs = null;
     	String firstStatement=		// statement to return all friendIds linked to the player's id
     			"SELECT p.* FROM Player p INNER JOIN Player_Friend F2 ON p.p_id = F2.friendId WHERE F2.playerId = ?";
@@ -583,7 +580,7 @@ public class Database {
     	PreparedStatement findGame = null;
     	ResultSet rs = null;
     	String selectStatement =			//logic for prepared statement
-				 "SELECT * FROM Game WHERE g_player1 = ? OR g_player2 = ?";
+				 "SELECT * FROM Game WHERE (g_player1 = ? OR g_player2 = ?) AND (g_winner = 0 OR g_winner IS NULL) ";
     	try{
     		conn = getConnection();
     		findGame = conn.prepareStatement(selectStatement);	//get connection and declare prepared statement
@@ -594,6 +591,7 @@ public class Database {
 				long p1Id = rs.getLong("g_player1");
 				long p2Id = rs.getLong("g_player2");
 				long gameId = rs.getLong("g_id");
+				System.out.println(gameId);
 				if(p1Id == 0 || p2Id == 0) 
 					System.out.println("Error finding players, or I guess p2 can be a computer");
 				
@@ -620,7 +618,6 @@ public class Database {
 				} 
            }
        }
-    	System.out.println("game =" + games);
 		return games;
 	} 
 }
