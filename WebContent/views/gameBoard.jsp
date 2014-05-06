@@ -25,7 +25,6 @@
 			
 			
 			if(game != null && user != null) {
-				out.print("<h1>"+game.playersTurn+"</h1>");
 				GameBoard board = game.board;
 				int playersTurn = game.playersTurn;
 				

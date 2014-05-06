@@ -43,8 +43,13 @@ public class GameBoard{
 	public ArrayList<Integer> getRow3() {
 		return tiles.get("row3");
 	}
-	public void setPlayerChoice(String xChoice, String yChoice, int playersTurn) {
-		tiles.get(xChoice).set(Integer.parseInt(yChoice), playersTurn);
+	public boolean setPlayerChoice(String xChoice, String yChoice, int playersTurn) {
+		int y = Integer.parseInt(yChoice);
+		if(tiles.get(xChoice).get(y) == 0) {
+			tiles.get(xChoice).set(y, playersTurn);
+			return true;
+		}
+		return false;
 	}
 	public ArrayList<Integer> getUpHillDiagonal() {
 		ArrayList<Integer> diagonal = new ArrayList<Integer>();

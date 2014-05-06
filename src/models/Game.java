@@ -59,8 +59,7 @@ public class Game{
 			yChoice = move[1];
 		}
 		
-		if(this.playersTurn == playersTurn2) {
-			board.setPlayerChoice(xChoice,yChoice,playersTurn);
+		if(this.playersTurn == playersTurn2 && board.setPlayerChoice(xChoice,yChoice,playersTurn)) {
 			this.getCurrentPlayer().setLastMove(xChoice, yChoice);
 			
 			if (playersTurn == 1)
