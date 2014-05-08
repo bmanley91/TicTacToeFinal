@@ -19,8 +19,6 @@ public class Player {
 	public boolean isLocal;
 	
 	public Player(String username, String password,  long id) {
-		
-		//this.name = name;   for now we are just going to use username
 		this.setPassword(password);
 		this.username = username;
 		this.setId(id);
@@ -38,10 +36,6 @@ public class Player {
 		this.wins = wins;
 		this.draws = ties;
 		this.losses = losses;
-		
-		
-		
-		// TODO Auto-generated constructor stub
 	}
 	
 	
@@ -160,8 +154,9 @@ public class Player {
 	
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof Player)
+		if(o instanceof Player) 
 			return ((Player)o).getId() == this.getId();
 		return super.equals(o);
+		
 	}
 }

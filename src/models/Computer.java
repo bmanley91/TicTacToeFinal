@@ -55,12 +55,8 @@ public class Computer extends Player {
 	}
 	
 	private String[] medTurn(){
-		System.out.println("med turn");
-		
 		Player human = game.getOtherPlayer();
-		
 		move = this.winMove();
-		System.out.println("winmove: "+move[0]+", "+move[1]);
 		if(move[0] != null){
 			return move;
 		}
@@ -84,19 +80,12 @@ public class Computer extends Player {
 	}
 	
 	private String[] hardTurn(){
-		
-		System.out.println("Hard diff");
-		
 		Player human = game.getOtherPlayer();
-		
 		move = this.winMove();
 		//block opponent's winning move
 		//or make the winning move
-		if(board.isValidMove(move)){
+		if(board.isValidMove(move))
 			return move;
-		}
-		
-		
 		if(game.numTurn()%2 == 0){//computer went first
 			if(game.numTurn() == 0)
 				return game.getCorner();
@@ -161,7 +150,6 @@ public class Computer extends Player {
 			//block opponent's winning move
 			m = game.getWinningMove(1);
 		}
-		//System.out.println("move = "+move[0]+" "+move[1]);
 		if(m[0] != null && board.isValidMove(m[0], m[1])){
 			return m;
 		}

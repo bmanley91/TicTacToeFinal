@@ -49,9 +49,10 @@ public class GameServlet extends HttpServlet {
 		if(game.takeTurn(xChoice,yChoice,playersTurn) && !game.isLocalGame()) {
 			Database.updateGame(game);
 			// update both players game count
-			if(game.isOver() && game.isLocalGame()){
+			if(game.isOver())
 				Database.updateWins(game);
-			}
+			else
+				url = "/views/myGames.jsp";
 		}
 		msg=game.getMsg();
 		request.setAttribute("msg", msg);

@@ -408,7 +408,6 @@ public class Game{
 			else if(currentTileInRow != i)
 				return false;
 		}
-		System.out.println("Setting winner id:" +currentTileInRow);
 		winnerId = currentTileInRow;
 		return true;
 		
@@ -424,10 +423,16 @@ public class Game{
 	}
 	
 	public Player getWinner() {
-		System.out.println("returning winner: "+winnerId);
 		if(winnerId == 0)
 			return null;
 		return players.get(winnerId-1);
+	}
+	
+	public Player getLoser() {
+		for(Player p: this.players)
+			if(!p.equals(getWinner()))
+				return p;
+		return null;
 	}
 	
 	public List<String> getRow1Imgs() {

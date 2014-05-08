@@ -32,7 +32,6 @@ public class FriendServlet extends HttpServlet {
 		Player user = (Player)session.getAttribute("user");					// Get player from session
 		String msg = null;
 		String url = "/views/friends.jsp";
-		System.out.println("test");
 		if(user!=null){														// Check if user is logged in
 			ArrayList<Player> friendList = Database.showFriends(user);		// Call show friends method from database object
 			user.setPlayerFriends(friendList);								// Save friendList on player object

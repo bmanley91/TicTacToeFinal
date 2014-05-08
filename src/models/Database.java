@@ -23,11 +23,8 @@ public class Database {
 	        String username = "sql232715";
 	        String password = "jR3!dD8%";
 	        String driver = "com.mysql.jdbc.Driver";
-	        System.out.println("a");
 	    	Class.forName(driver);
-	    	System.out.println("b");
 	    	conn = DriverManager.getConnection(url,username,password);
-	    	System.out.println("c");	
     	}
     	return conn;
     }
@@ -198,7 +195,6 @@ public class Database {
 			while(rs.next()) {
 				player  = new Player(rs.getString("p_username"), rs.getString("p_password"),rs.getLong("p_id"),
 						rs.getInt("p_wins"), rs.getInt("p_loss"), rs.getInt("p_tie"));
-				//System.out.println("here "+rs.getInt("p_loss"));
 			}
        }
        catch (SQLException | ClassNotFoundException s){
@@ -221,13 +217,12 @@ public class Database {
     }
     
     public static void updateWins(Game game){
+    	System.out.println("updateing wins");
     	PreparedStatement update1 = null;
 		PreparedStatement update2 = null;
-		//Connection con = null;
 		Player player1 = game.getPlayer1();
 		Player player2 = game.getPlayer2();
 		
-    	ResultSet rs = null;
     	String selectStatement =			//logic for prepared statement
 				 "UPDATE Player SET p_wins = p_wins + 1 WHERE p_username = ?;";
     	String selectStatement2 =			//logic for prepared statement
@@ -235,13 +230,17 @@ public class Database {
     	if(game.isTie){
     		selectStatement = "UPDATE Player SET p_tie = p_tie + 1 WHERE p_username = ?;";
     		selectStatement2 = "UPDATE Player SET p_tie = p_tie + 1 WHERE p_username = ?;";
+    		player1.draws++;
+    		player2.draws++;
     	}
     	else if(!player1.equals(game.getWinner())){
     		selectStatement = "UPDATE Player SET p_loss = p_loss + 1 WHERE p_username = ?;";
     		selectStatement2 = "UPDATE Player SET p_wins = p_wins + 1 WHERE p_username = ?;";
     	}
-    	
-    	
+    	if(!game.isTie) {
+    		game.getWinner().wins++;
+    		game.getLoser().losses++;
+    	}
     	try{
     		conn = Database.getConnection();
     		update1 = conn.prepareStatement(selectStatement);	//get connection and declare prepared statement
@@ -261,9 +260,10 @@ public class Database {
            	}
        }
        finally {
-           if (update1 != null || update2 != null) { 
+           if (update1 != null && update2 != null) { 
            	try {
-           		conn.close();
+           		update1.close();
+           		update2.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				} 
@@ -286,7 +286,6 @@ public class Database {
 			while(rs.next()) {
 				player  = new Player(rs.getString("p_username"), rs.getString("p_password"),rs.getLong("p_id"),
 						rs.getInt("p_wins"), rs.getInt("p_loss"), rs.getInt("p_tie"));
-				//System.out.println("here "+rs.getInt("p_loss"));
 			}
        }
        catch (SQLException | ClassNotFoundException s){
@@ -403,7 +402,6 @@ public class Database {
     		findGame = conn.prepareStatement(selectStatement);	//get connection and declare prepared statement
     		findGame.setLong(1, gameId); 		// set input parameter 1
     		rs = findGame.executeQuery(); 					// execute statement
-    		System.out.println("Just executed");
 			while(rs.next()) {
 				long p1Id = rs.getLong("g_player1");
 				long p2Id = rs.getLong("g_player2");
@@ -412,13 +410,17 @@ public class Database {
 					System.out.println("Error finding players, or I guess p2 can be a computer");
 				
 				int playersTurn = rs.getInt("g_playersTurn");
-				int winnerId = rs.getInt("g_winner"); //TODOD
+				int winnerId = rs.getInt("g_winner");
 				Player p1 = findPlayerById(p1Id);
 				Player p2 = findPlayerById(p2Id);
 				Map<String, ArrayList<Integer>> tiles = Database.getTilesForGame(gameId);
-				System.out.println("&&&&&"+p1);
 				game  = new Game(p1, p2, tiles,playersTurn, gameId);
-				game.winnerId = winnerId;
+				if(p1.getId() == winnerId)
+					game.winnerId = 1;
+				else if(p2.getId() == winnerId)
+					game.winnerId = 2;
+				else
+					game.winnerId = 0;
 			}
        }
        catch (SQLException | ClassNotFoundException s){
@@ -437,7 +439,6 @@ public class Database {
 				} 
            }
        }
-    	System.out.println("game =" + game);
 		return game;
 	}
     
